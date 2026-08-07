@@ -9,6 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@codemirror/lang-css": "^6.3.1",
+    "@codemirror/lang-html": "^6.4.12",
+    "@codemirror/lang-javascript": "^6.2.5",
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.112.2",
+    "@uiw/react-codemirror": "^4.25.11",
     "next": "16.3.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
