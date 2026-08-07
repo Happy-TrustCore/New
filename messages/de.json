@@ -11,7 +11,9 @@
     "startFree": "Kostenlos starten"
   },
   "footer": {
-    "tagline": "Starte bei null. Baue echte Dinge. Werde Entwickler."
+    "tagline": "Starte bei null. Baue echte Dinge. Werde Entwickler.",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen"
   },
   "landing": {
     "hero": {

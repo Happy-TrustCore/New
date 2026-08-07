@@ -11,7 +11,9 @@
     "startFree": "Start Learning Free"
   },
   "footer": {
-    "tagline": "Start from zero. Build real things. Become a developer."
+    "tagline": "Start from zero. Build real things. Become a developer.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
   },
   "landing": {
     "hero": {

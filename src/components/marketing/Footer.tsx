@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -10,6 +11,14 @@ export function Footer() {
           &lt;/&gt; CodePath<span className="text-gradient">Academy</span>
         </p>
         <p>{t("tagline")}</p>
+        <div className="flex items-center gap-4">
+          <Link href="/privacy" className="hover:text-foreground">
+            {t("privacy")}
+          </Link>
+          <Link href="/terms" className="hover:text-foreground">
+            {t("terms")}
+          </Link>
+        </div>
         <p>&copy; {new Date().getFullYear()} CodePath Academy</p>
       </div>
     </footer>
