@@ -7,16 +7,26 @@ export function LessonFormFields({
   courses: Course[];
   lesson?: Lesson;
 }) {
-  const contentText = (lesson?.content ?? []).map((c) => c.text).join("\n\n---\n\n");
+  const contentTextEn = (lesson?.content ?? []).map((c) => c.text.en).join("\n\n---\n\n");
+  const contentTextDe = (lesson?.content ?? []).map((c) => c.text.de).join("\n\n---\n\n");
 
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
-          <span className="text-sm text-muted">Title</span>
+          <span className="text-sm text-muted">Title (English)</span>
           <input
-            name="title"
-            defaultValue={lesson?.title}
+            name="title_en"
+            defaultValue={lesson?.title.en}
+            required
+            className="mt-1 w-full rounded-lg border border-border bg-surface px-3 py-2"
+          />
+        </label>
+        <label className="block">
+          <span className="text-sm text-muted">Title (German)</span>
+          <input
+            name="title_de"
+            defaultValue={lesson?.title.de}
             required
             className="mt-1 w-full rounded-lg border border-border bg-surface px-3 py-2"
           />
@@ -41,7 +51,7 @@ export function LessonFormFields({
           >
             {courses.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.title}
+                {c.title.en}
               </option>
             ))}
           </select>
@@ -74,21 +84,35 @@ export function LessonFormFields({
         </label>
       </div>
 
-      <label className="mt-4 block">
-        <span className="text-sm text-muted">
-          Content steps — separate each step with a line containing only ---
-        </span>
-        <textarea
-          name="content"
-          defaultValue={contentText}
-          rows={6}
-          className="mt-1 w-full rounded-lg border border-border bg-surface px-3 py-2 font-mono text-sm"
-        />
-      </label>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <label className="block">
+          <span className="text-sm text-muted">
+            Content steps (English) — separate each step with a line containing only ---
+          </span>
+          <textarea
+            name="content_en"
+            defaultValue={contentTextEn}
+            rows={8}
+            className="mt-1 w-full rounded-lg border border-border bg-surface px-3 py-2 font-mono text-sm"
+          />
+        </label>
+        <label className="block">
+          <span className="text-sm text-muted">
+            Content steps (German) — same number of steps, same order
+          </span>
+          <textarea
+            name="content_de"
+            defaultValue={contentTextDe}
+            rows={8}
+            className="mt-1 w-full rounded-lg border border-border bg-surface px-3 py-2 font-mono text-sm"
+          />
+        </label>
+      </div>
 
       <div className="mt-4 space-y-3">
         <p className="text-sm text-muted">
-          Code editor — leave a language unchecked if it hasn&rsquo;t been introduced yet
+          Code editor — leave a language unchecked if it hasn&rsquo;t been introduced yet.
+          Code itself is not translated.
         </p>
         {(["html", "css", "js"] as const).map((lang) => (
           <div key={lang}>

@@ -1,0 +1,157 @@
+{
+  "metadata": {
+    "title": "CodePath Academy — Become a Developer by Building",
+    "description": "Learn Foundation, Frontend, and Backend development by building real projects step by step. Start free."
+  },
+  "nav": {
+    "roadmap": "Roadmap",
+    "howItWorks": "How it works",
+    "pricing": "Pricing",
+    "login": "Log in",
+    "startFree": "Start Learning Free"
+  },
+  "footer": {
+    "tagline": "Start from zero. Build real things. Become a developer."
+  },
+  "landing": {
+    "hero": {
+      "badge": "Foundation is 100% free — no card required",
+      "titlePrefix": "Become a developer by",
+      "titleHighlight": "building",
+      "titleSuffix": ", not watching.",
+      "subtitle": "CodePath Academy takes you from “I have never written code” to shipping real websites and applications — one growing project at a time, through Foundation, Frontend, and Backend.",
+      "ctaPrimary": "Start Learning Free",
+      "ctaSecondary": "See the roadmap",
+      "codeSample": "Hello, my name is",
+      "codeSampleP": "This is my first website."
+    },
+    "methods": {
+      "title": "The CodePath teaching system",
+      "subtitle": "Real developers don’t learn one language at a time. Every technology starts from zero, but what you already know keeps growing right alongside it.",
+      "learn": { "label": "Learn", "desc": "A new concept, explained simply with a real example." },
+      "use": { "label": "Use", "desc": "Write the code yourself in the built-in editor." },
+      "improve": { "label": "Improve", "desc": "Take the same project further, never start over." },
+      "combine": { "label": "Combine", "desc": "Bring technologies together into one real result." }
+    },
+    "roadmap": {
+      "title": "Your learning path",
+      "subtitle": "Three parts. One growing journey. No skipping ahead.",
+      "foundation": {
+        "title": "Foundation",
+        "tagline": "2 short lessons. Understand how code and the web work.",
+        "tech": "How programming works,How websites work",
+        "access": "Free"
+      },
+      "frontend": {
+        "title": "Frontend Development",
+        "tagline": "HTML grows into CSS, then JavaScript, then React — one project at a time.",
+        "tech": "HTML,CSS,JavaScript,React",
+        "access": "First 16 lessons free"
+      },
+      "backend": {
+        "title": "Backend Development",
+        "tagline": "Servers, Node.js, databases, and authentication — built the same way.",
+        "tech": "Node.js,Express,PostgreSQL,Auth",
+        "access": "First 16 lessons free"
+      }
+    },
+    "pricing": {
+      "title": "Simple pricing",
+      "subtitle": "Learn Foundation and the first 16 lessons of Frontend and Backend completely free. Upgrade only when you want to keep going.",
+      "free": {
+        "title": "Free",
+        "item1": "Full Foundation track",
+        "item2": "16 free Frontend lessons",
+        "item3": "16 free Backend lessons",
+        "item4": "Practice, quizzes & progress saved",
+        "cta": "Start Free"
+      },
+      "pro": {
+        "title": "CodePath Pro",
+        "perMonth": "/mo",
+        "item1": "All lessons, projects & exams",
+        "item2": "CodeBuddy AI mentor",
+        "item3": "Certificates",
+        "item4": "Real client project opportunities",
+        "cta": "Go Pro"
+      }
+    }
+  },
+  "auth": {
+    "register": {
+      "backHome": "Back home",
+      "title": "Create your account",
+      "subtitle": "Start Foundation for free — no card required.",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "login": "Log in"
+    },
+    "login": {
+      "backHome": "Back home",
+      "title": "Welcome back",
+      "subtitle": "Continue where you left off.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Log in",
+      "newHere": "New here?",
+      "startFree": "Start learning free"
+    }
+  },
+  "dashboardChrome": {
+    "level": "Level",
+    "dashboard": "Dashboard",
+    "logout": "Log out"
+  },
+  "dashboard": {
+    "welcome": "Welcome, {name}",
+    "goalLabel": "Your goal:",
+    "goalValue": "Become a Full Stack Developer",
+    "currentPath": "Current Learning Path",
+    "lessonProgress": "Lesson {done}/{total}",
+    "noLessons": "No lessons published yet — check back soon.",
+    "continueLearning": "Continue learning",
+    "percentComplete": "{percent}% complete",
+    "dailyMission": "Today’s Mission",
+    "dailyMissionExample": "Create a button that changes color using JavaScript."
+  },
+  "learn": {
+    "paywall": {
+      "title": "This lesson needs CodePath Pro",
+      "body": "You’ve completed all free lessons in this course. Upgrade for €4.99/month to keep going.",
+      "cta": "See plans"
+    },
+    "sidebar": {
+      "pro": "Pro"
+    },
+    "content": {
+      "difficulty": {
+        "beginner": "beginner",
+        "intermediate": "intermediate",
+        "advanced": "advanced"
+      },
+      "stepOf": "Step {current} of {total}",
+      "back": "Back",
+      "continue": "Continue"
+    },
+    "quiz": {
+      "title": "Quiz",
+      "alreadyPassed": "You already passed this quiz — feel free to retake it.",
+      "checking": "Checking…",
+      "submit": "Submit quiz",
+      "passed": "Passed! {correct}/{total} correct.",
+      "failed": "{correct}/{total} correct — try again."
+    },
+    "editor": {
+      "run": "Run",
+      "preview": "Preview",
+      "consolePlaceholder": "Console output appears here.",
+      "saving": "Saving…",
+      "practiceComplete": "Practice complete",
+      "markPracticeComplete": "Mark practice complete",
+      "saveError": "Something went wrong — try again."
+    }
+  }
+}

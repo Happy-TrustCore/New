@@ -1,6 +1,10 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 
 export function Navbar() {
+  const t = useTranslations("nav");
+
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -11,28 +15,29 @@ export function Navbar() {
 
         <nav className="hidden items-center gap-8 text-sm text-muted md:flex">
           <a href="#roadmap" className="hover:text-foreground">
-            Roadmap
+            {t("roadmap")}
           </a>
           <a href="#how-it-works" className="hover:text-foreground">
-            How it works
+            {t("howItWorks")}
           </a>
           <a href="#pricing" className="hover:text-foreground">
-            Pricing
+            {t("pricing")}
           </a>
         </nav>
 
         <div className="flex items-center gap-3">
+          <LocaleSwitcher />
           <Link
             href="/login"
             className="hidden text-sm text-muted hover:text-foreground sm:block"
           >
-            Log in
+            {t("login")}
           </Link>
           <Link
             href="/register"
             className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition hover:opacity-90"
           >
-            Start Learning Free
+            {t("startFree")}
           </Link>
         </div>
       </div>

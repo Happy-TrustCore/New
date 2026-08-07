@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import CodeMirror from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
@@ -60,6 +61,7 @@ export function CodeWorkspace({
   practicePassed: boolean;
 }) {
   const router = useRouter();
+  const t = useTranslations("learn.editor");
   const [isPending, startTransition] = useTransition();
 
   const enabled = useMemo<Lang[]>(() => {
@@ -130,7 +132,7 @@ export function CodeWorkspace({
           onClick={runCode}
           className="rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-accent-foreground hover:opacity-90"
         >
-          ▶ Run
+          ▶ {t("run")}
         </button>
       </div>
 
@@ -146,17 +148,17 @@ export function CodeWorkspace({
 
       <div className="flex min-h-0 flex-[2] flex-col border-t border-border">
         <div className="border-b border-border bg-surface-2 px-3 py-1.5 text-xs font-mono text-muted">
-          Preview
+          {t("preview")}
         </div>
         <iframe
           srcDoc={srcDoc}
           sandbox="allow-scripts"
-          title="Live preview"
+          title={t("preview")}
           className="min-h-0 flex-1 bg-white"
         />
         <div className="h-24 shrink-0 overflow-y-auto border-t border-border bg-black px-3 py-2 font-mono text-xs">
           {consoleLines.length === 0 ? (
-            <p className="text-muted">Console output appears here.</p>
+            <p className="text-muted">{t("consolePlaceholder")}</p>
           ) : (
             consoleLines.map((line, i) => (
               <p
@@ -182,10 +184,10 @@ export function CodeWorkspace({
           disabled={isPending || saveState === "done"}
           className="w-full rounded-lg bg-accent py-2 text-sm font-semibold text-accent-foreground transition hover:opacity-90 disabled:opacity-60"
         >
-          {isPending ? "Saving…" : saveState === "done" ? "✓ Practice complete" : "Mark practice complete"}
+          {isPending ? t("saving") : saveState === "done" ? `✓ ${t("practiceComplete")}` : t("markPracticeComplete")}
         </button>
         {saveState === "error" && (
-          <p className="mt-2 text-xs text-red-400">Something went wrong — try again.</p>
+          <p className="mt-2 text-xs text-red-400">{t("saveError")}</p>
         )}
       </div>
     </div>

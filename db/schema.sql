@@ -17,22 +17,26 @@ create table if not exists profiles (
 
 -- ── tracks / courses ────────────────────────────────────────────────────────
 -- foundation, frontend, backend
+-- title/description are bilingual: {"en": "...", "de": "..."}
 create table if not exists courses (
   id uuid primary key default gen_random_uuid(),
   slug text unique not null,
-  title text not null,
-  description text,
+  title jsonb not null,
+  description jsonb,
   sort_order integer not null default 0
 );
 
 -- ── lessons ─────────────────────────────────────────────────────────────────
+-- title is bilingual: {"en": "...", "de": "..."}.
+-- content is [{ "step": 1, "text": { "en": "...", "de": "..." } }, ...] —
+-- step numbering is language-agnostic, only the "text" is per-locale.
 create table if not exists lessons (
   id uuid primary key default gen_random_uuid(),
   course_id uuid not null references courses (id) on delete cascade,
   slug text unique not null,
-  title text not null,
-  content jsonb not null default '[]',   -- step-by-step content blocks
-  starter_code jsonb,                    -- { html, css, js } seed for the editor
+  title jsonb not null,
+  content jsonb not null default '[]',
+  starter_code jsonb,                    -- { html, css, js } seed for the editor (code isn't translated)
   difficulty text not null default 'beginner' check (difficulty in ('beginner', 'intermediate', 'advanced')),
   is_free boolean not null default false,
   sort_order integer not null,           -- absolute order within the course; drives unlock logic
@@ -40,11 +44,15 @@ create table if not exists lessons (
 );
 
 -- ── quizzes ─────────────────────────────────────────────────────────────────
+-- question is bilingual: {"en": "...", "de": "..."}.
+-- choices is bilingual too: {"en": ["...", ...], "de": ["...", ...]} — the
+-- arrays must stay the same length and order across locales since
+-- correct_index refers to a position, not a specific language's array.
 create table if not exists quiz_questions (
   id uuid primary key default gen_random_uuid(),
   lesson_id uuid not null references lessons (id) on delete cascade,
-  question text not null,
-  choices jsonb not null,               -- ["A) ...", "B) ...", "C) ..."]
+  question jsonb not null,
+  choices jsonb not null,
   correct_index integer not null,
   sort_order integer not null default 0,
   unique (lesson_id, question)

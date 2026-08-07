@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminLessonsPage() {
@@ -26,7 +26,7 @@ export default async function AdminLessonsPage() {
           return (
             <div key={course.id}>
               <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
-                {course.title}
+                {course.title.en}
               </h2>
               <div className="mt-2 divide-y divide-border rounded-xl border border-border bg-surface">
                 {courseLessons.map((lesson) => (
@@ -36,7 +36,7 @@ export default async function AdminLessonsPage() {
                     className="flex items-center justify-between px-4 py-3 text-sm hover:bg-surface-2"
                   >
                     <span>
-                      {lesson.sort_order}. {lesson.title}
+                      {lesson.sort_order}. {lesson.title.en}
                     </span>
                     <span className="text-xs text-muted">
                       {lesson.is_free ? "Free" : "Pro"} · {lesson.difficulty}

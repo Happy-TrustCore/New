@@ -94,6 +94,12 @@ account to reach the dashboard.
 - An admin panel (`/admin`) — lesson + quiz CRUD, an overview dashboard, and
   a users page for manually granting Pro access (no payment provider is
   wired up yet, so this is how you comp accounts for now)
+- Full English/German support (next-intl): every UI page and all 26 lessons
+  + 23 quiz questions are translated. English is unprefixed (`/dashboard`),
+  German lives at `/de/...` (`/de/dashboard`). A language switcher sits in
+  the navbar and the app header. The admin panel itself stays English-only
+  (it's a tool for you, not learner-facing) — but the lesson content you
+  author through it is bilingual (separate EN/DE fields in the form).
 
 ## What's next
 

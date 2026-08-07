@@ -1,7 +1,10 @@
-import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { notFound } from "next/navigation";
+import { Link, redirect } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { computeLessonAccess, hasPremiumAccess } from "@/lib/lessons";
+import { pickLocale } from "@/lib/i18n-content";
 import { LessonSidebar } from "@/components/learn/LessonSidebar";
 import { LessonContent } from "@/components/learn/LessonContent";
 import { QuizPanel } from "@/components/learn/QuizPanel";
@@ -9,8 +12,8 @@ import { CodeWorkspace } from "@/components/learn/CodeWorkspace";
 
 export default async function LessonPage({
   params,
-}: PageProps<"/learn/[lessonSlug]">) {
-  const { lessonSlug } = await params;
+}: PageProps<"/[locale]/learn/[lessonSlug]">) {
+  const { locale, lessonSlug } = (await params) as { locale: Locale; lessonSlug: string };
   const supabase = await createClient();
 
   const {
@@ -18,7 +21,7 @@ export default async function LessonPage({
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    return redirect({ href: "/login", locale });
   }
 
   const { data: lesson } = await supabase
@@ -76,13 +79,16 @@ export default async function LessonPage({
     const firstReachable = withAccess.find(
       (l) => l.access === "available" || l.access === "paywall"
     );
-    redirect(firstReachable ? `/learn/${firstReachable.slug}` : "/dashboard");
+    redirect({
+      href: firstReachable ? `/learn/${firstReachable.slug}` : "/dashboard",
+      locale,
+    });
   }
 
   return (
     <div className="grid h-full grid-cols-[240px_1fr_1fr] overflow-hidden">
       <LessonSidebar
-        courseTitle={course?.title ?? ""}
+        courseTitle={course ? pickLocale(course.title, locale) : ""}
         lessons={withAccess}
         currentLessonId={lesson.id}
       />
@@ -102,19 +108,7 @@ export default async function LessonPage({
       </div>
       <div className="overflow-hidden">
         {target.access === "paywall" ? (
-          <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
-            <p className="text-lg font-semibold">This lesson needs CodePath Pro</p>
-            <p className="max-w-xs text-sm text-muted">
-              You&rsquo;ve completed all free lessons in this course. Upgrade for
-              €4.99/month to keep going.
-            </p>
-            <Link
-              href="/#pricing"
-              className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:opacity-90"
-            >
-              See plans
-            </Link>
-          </div>
+          <PaywallPanel />
         ) : (
           <CodeWorkspace
             lessonId={lesson.id}
@@ -123,6 +117,23 @@ export default async function LessonPage({
           />
         )}
       </div>
+    </div>
+  );
+}
+
+function PaywallPanel() {
+  const t = useTranslations("learn.paywall");
+
+  return (
+    <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
+      <p className="text-lg font-semibold">{t("title")}</p>
+      <p className="max-w-xs text-sm text-muted">{t("body")}</p>
+      <Link
+        href="/#pricing"
+        className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:opacity-90"
+      >
+        {t("cta")}
+      </Link>
     </div>
   );
 }

@@ -1,39 +1,50 @@
-import Link from "next/link";
-import { signIn } from "@/lib/actions/auth";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
+import { signUp } from "@/lib/actions/auth";
 
-export default async function LoginPage({
+export default async function RegisterPage({
+  params,
   searchParams,
-}: PageProps<"/login">) {
-  const params = await searchParams;
-  const error = typeof params.error === "string" ? params.error : null;
-  const notice = typeof params.notice === "string" ? params.notice : null;
-  const next = typeof params.next === "string" ? params.next : "/dashboard";
+}: PageProps<"/[locale]/register">) {
+  const { locale } = (await params) as { locale: Locale };
+  setRequestLocale(locale);
+  const t = await getTranslations("auth.register");
+
+  const sp = await searchParams;
+  const error = typeof sp.error === "string" ? sp.error : null;
 
   return (
     <main className="flex flex-1 items-center justify-center px-6 py-16">
       <div className="w-full max-w-sm">
         <Link href="/" className="font-mono text-sm text-muted">
-          &larr; Back home
+          &larr; {t("backHome")}
         </Link>
-        <h1 className="mt-4 text-2xl font-bold">Welcome back</h1>
-        <p className="mt-1 text-sm text-muted">Continue where you left off.</p>
+        <h1 className="mt-4 text-2xl font-bold">{t("title")}</h1>
+        <p className="mt-1 text-sm text-muted">{t("subtitle")}</p>
 
-        {notice && (
-          <p className="mt-4 rounded-lg border border-accent/40 bg-accent/10 px-4 py-2 text-sm text-accent">
-            {notice}
-          </p>
-        )}
         {error && (
           <p className="mt-4 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-2 text-sm text-red-400">
             {error}
           </p>
         )}
 
-        <form action={signIn} className="mt-6 space-y-4">
-          <input type="hidden" name="next" value={next} />
+        <form action={signUp} className="mt-6 space-y-4">
+          <div>
+            <label htmlFor="name" className="text-sm text-muted">
+              {t("name")}
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              className="mt-1 w-full rounded-lg border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
+            />
+          </div>
           <div>
             <label htmlFor="email" className="text-sm text-muted">
-              Email
+              {t("email")}
             </label>
             <input
               id="email"
@@ -45,13 +56,14 @@ export default async function LoginPage({
           </div>
           <div>
             <label htmlFor="password" className="text-sm text-muted">
-              Password
+              {t("password")}
             </label>
             <input
               id="password"
               name="password"
               type="password"
               required
+              minLength={8}
               className="mt-1 w-full rounded-lg border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
             />
           </div>
@@ -59,14 +71,14 @@ export default async function LoginPage({
             type="submit"
             className="w-full rounded-lg bg-accent py-2.5 font-semibold text-accent-foreground transition hover:opacity-90"
           >
-            Log in
+            {t("submit")}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted">
-          New here?{" "}
-          <Link href="/register" className="text-accent">
-            Start learning free
+          {t("haveAccount")}{" "}
+          <Link href="/login" className="text-accent">
+            {t("login")}
           </Link>
         </p>
       </div>

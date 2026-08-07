@@ -1,33 +1,44 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/navigation";
+import { getLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import type { AccountType, Difficulty, LessonContentBlock, StarterCode } from "@/lib/supabase/types";
 
 async function requireAdmin() {
+  const locale = await getLocale();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (!user) return redirect({ href: "/login", locale });
 
   const { data: profile } = await supabase
     .from("profiles")
     .select("is_admin")
     .eq("id", user.id)
     .single();
-  if (!profile?.is_admin) redirect("/dashboard");
+  if (!profile?.is_admin) return redirect({ href: "/dashboard", locale });
 
-  return supabase;
+  return { supabase, locale };
 }
 
-function parseSteps(raw: string): LessonContentBlock[] {
+function splitSteps(raw: string): string[] {
   return raw
     .split(/\n\s*---\s*\n/)
     .map((s) => s.trim())
-    .filter(Boolean)
-    .map((text, i) => ({ step: i + 1, text }));
+    .filter(Boolean);
+}
+
+function parseSteps(rawEn: string, rawDe: string): LessonContentBlock[] {
+  const en = splitSteps(rawEn);
+  const de = splitSteps(rawDe);
+  const count = Math.max(en.length, de.length);
+  return Array.from({ length: count }, (_, i) => ({
+    step: i + 1,
+    text: { en: en[i] ?? "", de: de[i] ?? "" },
+  }));
 }
 
 function parseStarterCode(formData: FormData): StarterCode | null {
@@ -52,31 +63,40 @@ function lessonFieldsFromForm(formData: FormData) {
   return {
     course_id: String(formData.get("course_id")),
     slug: String(formData.get("slug")).trim(),
-    title: String(formData.get("title")).trim(),
+    title: {
+      en: String(formData.get("title_en") ?? "").trim(),
+      de: String(formData.get("title_de") ?? "").trim(),
+    },
     difficulty: String(formData.get("difficulty")) as Difficulty,
     is_free: formData.get("is_free") === "on",
     sort_order: Number(formData.get("sort_order")),
-    content: parseSteps(String(formData.get("content") ?? "")),
+    content: parseSteps(
+      String(formData.get("content_en") ?? ""),
+      String(formData.get("content_de") ?? "")
+    ),
     starter_code: parseStarterCode(formData),
   };
 }
 
 export async function createLesson(formData: FormData) {
-  const supabase = await requireAdmin();
+  const { supabase, locale } = await requireAdmin();
 
   const { error } = await supabase.from("lessons").insert(lessonFieldsFromForm(formData));
 
   if (error) {
-    redirect(`/admin/lessons/new?error=${encodeURIComponent(error.message)}`);
+    redirect({
+      href: `/admin/lessons/new?error=${encodeURIComponent(error.message)}`,
+      locale,
+    });
   }
 
   revalidatePath("/admin/lessons");
   revalidatePath("/learn", "layout");
-  redirect("/admin/lessons");
+  redirect({ href: "/admin/lessons", locale });
 }
 
 export async function updateLesson(lessonId: string, formData: FormData) {
-  const supabase = await requireAdmin();
+  const { supabase, locale } = await requireAdmin();
 
   const { error } = await supabase
     .from("lessons")
@@ -84,28 +104,35 @@ export async function updateLesson(lessonId: string, formData: FormData) {
     .eq("id", lessonId);
 
   if (error) {
-    redirect(`/admin/lessons/${lessonId}?error=${encodeURIComponent(error.message)}`);
+    redirect({
+      href: `/admin/lessons/${lessonId}?error=${encodeURIComponent(error.message)}`,
+      locale,
+    });
   }
 
   revalidatePath("/admin/lessons");
   revalidatePath("/learn", "layout");
-  redirect("/admin/lessons");
+  redirect({ href: "/admin/lessons", locale });
 }
 
 export async function deleteLesson(lessonId: string) {
-  const supabase = await requireAdmin();
+  const { supabase, locale } = await requireAdmin();
   await supabase.from("lessons").delete().eq("id", lessonId);
   revalidatePath("/admin/lessons");
   revalidatePath("/learn", "layout");
-  redirect("/admin/lessons");
+  redirect({ href: "/admin/lessons", locale });
 }
 
 export async function addQuizQuestion(lessonId: string, formData: FormData) {
-  const supabase = await requireAdmin();
+  const { supabase, locale } = await requireAdmin();
 
-  const choices = [0, 1, 2, 3]
-    .map((i) => String(formData.get(`choice_${i}`) ?? "").trim())
-    .filter(Boolean);
+  // English is the authoritative source for which choice slots are "real" —
+  // a slot is kept only if its English value is filled in, and the matching
+  // German value (even if blank) rides along at the same index so
+  // correct_index stays valid for both languages.
+  const rawEn = [0, 1, 2, 3].map((i) => String(formData.get(`choice_${i}_en`) ?? "").trim());
+  const rawDe = [0, 1, 2, 3].map((i) => String(formData.get(`choice_${i}_de`) ?? "").trim());
+  const keepIndices = rawEn.map((v, i) => (v !== "" ? i : -1)).filter((i) => i !== -1);
 
   const { count } = await supabase
     .from("quiz_questions")
@@ -114,25 +141,31 @@ export async function addQuizQuestion(lessonId: string, formData: FormData) {
 
   await supabase.from("quiz_questions").insert({
     lesson_id: lessonId,
-    question: String(formData.get("question") ?? "").trim(),
-    choices,
+    question: {
+      en: String(formData.get("question_en") ?? "").trim(),
+      de: String(formData.get("question_de") ?? "").trim(),
+    },
+    choices: {
+      en: keepIndices.map((i) => rawEn[i]),
+      de: keepIndices.map((i) => rawDe[i]),
+    },
     correct_index: Number(formData.get("correct_index")),
     sort_order: (count ?? 0) + 1,
   });
 
   revalidatePath(`/admin/lessons/${lessonId}`);
-  redirect(`/admin/lessons/${lessonId}`);
+  redirect({ href: `/admin/lessons/${lessonId}`, locale });
 }
 
 export async function deleteQuizQuestion(lessonId: string, questionId: string) {
-  const supabase = await requireAdmin();
+  const { supabase, locale } = await requireAdmin();
   await supabase.from("quiz_questions").delete().eq("id", questionId);
   revalidatePath(`/admin/lessons/${lessonId}`);
-  redirect(`/admin/lessons/${lessonId}`);
+  redirect({ href: `/admin/lessons/${lessonId}`, locale });
 }
 
 export async function setAccountType(userId: string, accountType: AccountType) {
-  const supabase = await requireAdmin();
+  const { supabase } = await requireAdmin();
   await supabase.from("profiles").update({ account_type: accountType }).eq("id", userId);
   await supabase.from("subscriptions").update({ plan: accountType }).eq("user_id", userId);
   revalidatePath("/admin/users");

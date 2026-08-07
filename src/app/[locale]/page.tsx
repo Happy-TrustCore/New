@@ -1,39 +1,19 @@
-import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import { Navbar } from "@/components/marketing/Navbar";
 import { Footer } from "@/components/marketing/Footer";
 
-const roadmap = [
-  {
-    step: "01",
-    title: "Foundation",
-    tagline: "2 short lessons. Understand how code and the web work.",
-    tech: ["How programming works", "How websites work"],
-    access: "Free",
-  },
-  {
-    step: "02",
-    title: "Frontend Development",
-    tagline: "HTML grows into CSS, then JavaScript, then React — one project at a time.",
-    tech: ["HTML", "CSS", "JavaScript", "React"],
-    access: "First 16 lessons free",
-  },
-  {
-    step: "03",
-    title: "Backend Development",
-    tagline: "Servers, Node.js, databases, and authentication — built the same way.",
-    tech: ["Node.js", "Express", "PostgreSQL", "Auth"],
-    access: "First 16 lessons free",
-  },
-];
+const TRACK_KEYS = ["foundation", "frontend", "backend"] as const;
+const METHOD_KEYS = ["learn", "use", "improve", "combine"] as const;
 
-const method = [
-  { label: "Learn", desc: "A new concept, explained simply with a real example." },
-  { label: "Use", desc: "Write the code yourself in the built-in editor." },
-  { label: "Improve", desc: "Take the same project further, never start over." },
-  { label: "Combine", desc: "Bring technologies together into one real result." },
-];
+export default async function Home({
+  params,
+}: PageProps<"/[locale]">) {
+  const { locale } = (await params) as { locale: Locale };
+  setRequestLocale(locale);
+  const t = await getTranslations("landing");
 
-export default function Home() {
   return (
     <>
       <Navbar />
@@ -41,29 +21,25 @@ export default function Home() {
         {/* Hero */}
         <section className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-20 pt-20 text-center sm:pt-28">
           <span className="rounded-full border border-border bg-surface px-4 py-1 text-xs text-muted">
-            Foundation is 100% free — no card required
+            {t("hero.badge")}
           </span>
           <h1 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
-            Become a developer by{" "}
-            <span className="text-gradient">building</span>, not watching.
+            {t("hero.titlePrefix")} <span className="text-gradient">{t("hero.titleHighlight")}</span>
+            {t("hero.titleSuffix")}
           </h1>
-          <p className="max-w-2xl text-lg text-muted">
-            CodePath Academy takes you from &ldquo;I have never written code&rdquo; to
-            shipping real websites and applications — one growing project at a
-            time, through Foundation, Frontend, and Backend.
-          </p>
+          <p className="max-w-2xl text-lg text-muted">{t("hero.subtitle")}</p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/register"
               className="rounded-lg bg-accent px-6 py-3 font-semibold text-accent-foreground transition hover:opacity-90"
             >
-              Start Learning Free
+              {t("hero.ctaPrimary")}
             </Link>
             <a
               href="#roadmap"
               className="rounded-lg border border-border px-6 py-3 font-semibold text-foreground transition hover:bg-surface"
             >
-              See the roadmap
+              {t("hero.ctaSecondary")}
             </a>
           </div>
 
@@ -78,12 +54,12 @@ export default function Home() {
             <pre className="overflow-x-auto p-5 font-mono text-sm leading-relaxed">
               <code>
                 <span className="text-muted">{"<h1>"}</span>
-                {"Hello, my name is "}
-                <span className="text-accent">Ahmed</span>
+                {t("hero.codeSample")}
+                <span className="text-accent"> Ahmed</span>
                 <span className="text-muted">{"</h1>"}</span>
                 {"\n"}
                 <span className="text-muted">{"<p>"}</span>
-                {"This is my first website."}
+                {t("hero.codeSampleP")}
                 <span className="text-muted">{"</p>"}</span>
               </code>
             </pre>
@@ -93,25 +69,16 @@ export default function Home() {
         {/* How it works */}
         <section id="how-it-works" className="border-t border-border bg-surface/40 py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <h2 className="text-center text-3xl font-bold">
-              The CodePath teaching system
-            </h2>
+            <h2 className="text-center text-3xl font-bold">{t("methods.title")}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-center text-muted">
-              Real developers don&rsquo;t learn one language at a time. Every
-              technology starts from zero, but what you already know keeps
-              growing right alongside it.
+              {t("methods.subtitle")}
             </p>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {method.map((m, i) => (
-                <div
-                  key={m.label}
-                  className="rounded-xl border border-border bg-surface p-6"
-                >
-                  <span className="font-mono text-sm text-accent">
-                    0{i + 1}
-                  </span>
-                  <h3 className="mt-2 text-lg font-semibold">{m.label}</h3>
-                  <p className="mt-2 text-sm text-muted">{m.desc}</p>
+              {METHOD_KEYS.map((key, i) => (
+                <div key={key} className="rounded-xl border border-border bg-surface p-6">
+                  <span className="font-mono text-sm text-accent">0{i + 1}</span>
+                  <h3 className="mt-2 text-lg font-semibold">{t(`methods.${key}.label`)}</h3>
+                  <p className="mt-2 text-sm text-muted">{t(`methods.${key}.desc`)}</p>
                 </div>
               ))}
             </div>
@@ -121,31 +88,35 @@ export default function Home() {
         {/* Roadmap */}
         <section id="roadmap" className="py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <h2 className="text-center text-3xl font-bold">Your learning path</h2>
+            <h2 className="text-center text-3xl font-bold">{t("roadmap.title")}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-center text-muted">
-              Three parts. One growing journey. No skipping ahead.
+              {t("roadmap.subtitle")}
             </p>
             <div className="mt-12 grid gap-6 lg:grid-cols-3">
-              {roadmap.map((r) => (
+              {TRACK_KEYS.map((key, i) => (
                 <div
-                  key={r.step}
+                  key={key}
                   className="flex flex-col rounded-xl border border-border bg-surface p-6"
                 >
-                  <span className="font-mono text-sm text-muted">{r.step}</span>
-                  <h3 className="mt-2 text-xl font-semibold">{r.title}</h3>
-                  <p className="mt-2 text-sm text-muted">{r.tagline}</p>
+                  <span className="font-mono text-sm text-muted">
+                    0{i + 1}
+                  </span>
+                  <h3 className="mt-2 text-xl font-semibold">{t(`roadmap.${key}.title`)}</h3>
+                  <p className="mt-2 text-sm text-muted">{t(`roadmap.${key}.tagline`)}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {r.tech.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-border bg-surface-2 px-3 py-1 text-xs font-mono text-foreground"
-                      >
-                        {t}
-                      </span>
-                    ))}
+                    {t(`roadmap.${key}.tech`)
+                      .split(",")
+                      .map((tech) => (
+                        <span
+                          key={tech}
+                          className="rounded-full border border-border bg-surface-2 px-3 py-1 text-xs font-mono text-foreground"
+                        >
+                          {tech}
+                        </span>
+                      ))}
                   </div>
                   <span className="mt-6 inline-block w-fit rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-                    {r.access}
+                    {t(`roadmap.${key}.access`)}
                   </span>
                 </div>
               ))}
@@ -156,46 +127,43 @@ export default function Home() {
         {/* Pricing */}
         <section id="pricing" className="border-t border-border bg-surface/40 py-20">
           <div className="mx-auto max-w-4xl px-6">
-            <h2 className="text-center text-3xl font-bold">Simple pricing</h2>
+            <h2 className="text-center text-3xl font-bold">{t("pricing.title")}</h2>
             <p className="mx-auto mt-3 max-w-xl text-center text-muted">
-              Learn Foundation and the first 16 lessons of Frontend and Backend
-              completely free. Upgrade only when you want to keep going.
+              {t("pricing.subtitle")}
             </p>
             <div className="mt-12 grid gap-6 sm:grid-cols-2">
               <div className="rounded-xl border border-border bg-surface p-8">
-                <h3 className="text-lg font-semibold">Free</h3>
+                <h3 className="text-lg font-semibold">{t("pricing.free.title")}</h3>
                 <p className="mt-1 text-3xl font-bold">€0</p>
                 <ul className="mt-6 space-y-3 text-sm text-muted">
-                  <li>✓ Full Foundation track</li>
-                  <li>✓ 16 free Frontend lessons</li>
-                  <li>✓ 16 free Backend lessons</li>
-                  <li>✓ Practice, quizzes &amp; progress saved</li>
+                  <li>✓ {t("pricing.free.item1")}</li>
+                  <li>✓ {t("pricing.free.item2")}</li>
+                  <li>✓ {t("pricing.free.item3")}</li>
+                  <li>✓ {t("pricing.free.item4")}</li>
                 </ul>
                 <Link
                   href="/register"
                   className="mt-8 block rounded-lg border border-border py-2.5 text-center font-semibold hover:bg-surface-2"
                 >
-                  Start Free
+                  {t("pricing.free.cta")}
                 </Link>
               </div>
               <div className="rounded-xl border border-accent/60 bg-surface p-8 shadow-[0_0_40px_-15px_var(--accent)]">
-                <h3 className="text-lg font-semibold text-accent">
-                  CodePath Pro
-                </h3>
+                <h3 className="text-lg font-semibold text-accent">{t("pricing.pro.title")}</h3>
                 <p className="mt-1 text-3xl font-bold">
-                  €4.99<span className="text-base font-normal text-muted">/mo</span>
+                  €4.99<span className="text-base font-normal text-muted">{t("pricing.pro.perMonth")}</span>
                 </p>
                 <ul className="mt-6 space-y-3 text-sm text-muted">
-                  <li>✓ All lessons, projects &amp; exams</li>
-                  <li>✓ CodeBuddy AI mentor</li>
-                  <li>✓ Certificates</li>
-                  <li>✓ Real client project opportunities</li>
+                  <li>✓ {t("pricing.pro.item1")}</li>
+                  <li>✓ {t("pricing.pro.item2")}</li>
+                  <li>✓ {t("pricing.pro.item3")}</li>
+                  <li>✓ {t("pricing.pro.item4")}</li>
                 </ul>
                 <Link
                   href="/register"
                   className="mt-8 block rounded-lg bg-accent py-2.5 text-center font-semibold text-accent-foreground hover:opacity-90"
                 >
-                  Go Pro
+                  {t("pricing.pro.cta")}
                 </Link>
               </div>
             </div>

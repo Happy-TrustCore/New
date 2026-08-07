@@ -1,0 +1,157 @@
+{
+  "metadata": {
+    "title": "CodePath Academy — Werde Entwickler durchs Bauen",
+    "description": "Lerne Foundation, Frontend und Backend, indem du Schritt für Schritt echte Projekte baust. Kostenlos starten."
+  },
+  "nav": {
+    "roadmap": "Roadmap",
+    "howItWorks": "So funktioniert's",
+    "pricing": "Preise",
+    "login": "Anmelden",
+    "startFree": "Kostenlos starten"
+  },
+  "footer": {
+    "tagline": "Starte bei null. Baue echte Dinge. Werde Entwickler."
+  },
+  "landing": {
+    "hero": {
+      "badge": "Foundation ist 100 % kostenlos — keine Karte nötig",
+      "titlePrefix": "Werde Entwickler, indem du",
+      "titleHighlight": "baust",
+      "titleSuffix": ", nicht nur zuschaust.",
+      "subtitle": "CodePath Academy bringt dich von „Ich habe noch nie Code geschrieben“ bis zu echten Websites und Anwendungen — mit einem wachsenden Projekt, Schritt für Schritt, durch Foundation, Frontend und Backend.",
+      "ctaPrimary": "Kostenlos starten",
+      "ctaSecondary": "Roadmap ansehen",
+      "codeSample": "Hallo, mein Name ist",
+      "codeSampleP": "Das ist meine erste Website."
+    },
+    "methods": {
+      "title": "Das CodePath-Lernsystem",
+      "subtitle": "Echte Entwickler lernen nicht eine Sprache nach der anderen. Jede Technologie startet bei null, aber das, was du schon kannst, wächst direkt mit.",
+      "learn": { "label": "Lernen", "desc": "Ein neues Konzept, einfach erklärt anhand eines echten Beispiels." },
+      "use": { "label": "Anwenden", "desc": "Schreibe den Code selbst im integrierten Editor." },
+      "improve": { "label": "Verbessern", "desc": "Baue dasselbe Projekt weiter aus, statt neu anzufangen." },
+      "combine": { "label": "Kombinieren", "desc": "Führe Technologien zu einem echten Ergebnis zusammen." }
+    },
+    "roadmap": {
+      "title": "Dein Lernpfad",
+      "subtitle": "Drei Teile. Eine wachsende Reise. Kein Überspringen.",
+      "foundation": {
+        "title": "Foundation",
+        "tagline": "2 kurze Lektionen. Verstehe, wie Code und das Web funktionieren.",
+        "tech": "Wie Programmieren funktioniert,Wie Websites funktionieren",
+        "access": "Kostenlos"
+      },
+      "frontend": {
+        "title": "Frontend-Entwicklung",
+        "tagline": "HTML wächst zu CSS, dann JavaScript, dann React — ein Projekt nach dem anderen.",
+        "tech": "HTML,CSS,JavaScript,React",
+        "access": "Erste 16 Lektionen kostenlos"
+      },
+      "backend": {
+        "title": "Backend-Entwicklung",
+        "tagline": "Server, Node.js, Datenbanken und Authentifizierung — genauso aufgebaut.",
+        "tech": "Node.js,Express,PostgreSQL,Auth",
+        "access": "Erste 16 Lektionen kostenlos"
+      }
+    },
+    "pricing": {
+      "title": "Einfache Preise",
+      "subtitle": "Foundation und die ersten 16 Lektionen von Frontend und Backend komplett kostenlos. Upgrade nur, wenn du weitermachen willst.",
+      "free": {
+        "title": "Kostenlos",
+        "item1": "Vollständiger Foundation-Track",
+        "item2": "16 kostenlose Frontend-Lektionen",
+        "item3": "16 kostenlose Backend-Lektionen",
+        "item4": "Übungen, Quizze & Fortschritt gespeichert",
+        "cta": "Kostenlos starten"
+      },
+      "pro": {
+        "title": "CodePath Pro",
+        "perMonth": "/Monat",
+        "item1": "Alle Lektionen, Projekte & Prüfungen",
+        "item2": "CodeBuddy KI-Mentor",
+        "item3": "Zertifikate",
+        "item4": "Echte Kundenprojekt-Möglichkeiten",
+        "cta": "Pro werden"
+      }
+    }
+  },
+  "auth": {
+    "register": {
+      "backHome": "Zurück zur Startseite",
+      "title": "Konto erstellen",
+      "subtitle": "Starte Foundation kostenlos — keine Karte nötig.",
+      "name": "Name",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Konto erstellen",
+      "haveAccount": "Schon ein Konto?",
+      "login": "Anmelden"
+    },
+    "login": {
+      "backHome": "Zurück zur Startseite",
+      "title": "Willkommen zurück",
+      "subtitle": "Mach weiter, wo du aufgehört hast.",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "newHere": "Neu hier?",
+      "startFree": "Kostenlos starten"
+    }
+  },
+  "dashboardChrome": {
+    "level": "Level",
+    "dashboard": "Dashboard",
+    "logout": "Abmelden"
+  },
+  "dashboard": {
+    "welcome": "Willkommen, {name}",
+    "goalLabel": "Dein Ziel:",
+    "goalValue": "Full-Stack-Entwickler werden",
+    "currentPath": "Aktueller Lernpfad",
+    "lessonProgress": "Lektion {done}/{total}",
+    "noLessons": "Noch keine Lektionen veröffentlicht — schau bald wieder vorbei.",
+    "continueLearning": "Weiterlernen",
+    "percentComplete": "{percent}% abgeschlossen",
+    "dailyMission": "Heutige Mission",
+    "dailyMissionExample": "Erstelle einen Button, der mit JavaScript die Farbe wechselt."
+  },
+  "learn": {
+    "paywall": {
+      "title": "Diese Lektion braucht CodePath Pro",
+      "body": "Du hast alle kostenlosen Lektionen dieses Kurses abgeschlossen. Upgrade für 4,99 €/Monat, um weiterzumachen.",
+      "cta": "Pläne ansehen"
+    },
+    "sidebar": {
+      "pro": "Pro"
+    },
+    "content": {
+      "difficulty": {
+        "beginner": "Anfänger",
+        "intermediate": "Fortgeschritten",
+        "advanced": "Profi"
+      },
+      "stepOf": "Schritt {current} von {total}",
+      "back": "Zurück",
+      "continue": "Weiter"
+    },
+    "quiz": {
+      "title": "Quiz",
+      "alreadyPassed": "Du hast dieses Quiz schon bestanden — du kannst es gerne nochmal machen.",
+      "checking": "Wird geprüft…",
+      "submit": "Quiz abschicken",
+      "passed": "Bestanden! {correct}/{total} richtig.",
+      "failed": "{correct}/{total} richtig — versuch's nochmal."
+    },
+    "editor": {
+      "run": "Ausführen",
+      "preview": "Vorschau",
+      "consolePlaceholder": "Konsolenausgabe erscheint hier.",
+      "saving": "Wird gespeichert…",
+      "practiceComplete": "Übung abgeschlossen",
+      "markPracticeComplete": "Übung als erledigt markieren",
+      "saveError": "Etwas ist schiefgelaufen — versuch's nochmal."
+    }
+  }
+}

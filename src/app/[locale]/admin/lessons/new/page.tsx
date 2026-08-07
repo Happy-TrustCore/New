@@ -4,7 +4,7 @@ import { LessonFormFields } from "@/components/admin/LessonFormFields";
 
 export default async function NewLessonPage({
   searchParams,
-}: PageProps<"/admin/lessons/new">) {
+}: PageProps<"/[locale]/admin/lessons/new">) {
   const params = await searchParams;
   const error = typeof params.error === "string" ? params.error : null;
 

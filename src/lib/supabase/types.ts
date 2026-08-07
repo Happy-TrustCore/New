@@ -24,17 +24,24 @@ export type Profile = {
   created_at: string;
 };
 
+// Bilingual text fields, e.g. { "en": "Hello", "de": "Hallo" }.
+export type LocalizedText = { en: string; de: string };
+
+// Bilingual choice lists — arrays must stay the same length/order across
+// locales, since correct_index refers to a position, not a specific list.
+export type LocalizedChoices = { en: string[]; de: string[] };
+
 export type Course = {
   id: string;
   slug: string;
-  title: string;
-  description: string | null;
+  title: LocalizedText;
+  description: LocalizedText | null;
   sort_order: number;
 };
 
 export type LessonContentBlock = {
   step: number;
-  text: string;
+  text: LocalizedText;
 };
 
 export type StarterCode = {
@@ -47,7 +54,7 @@ export type Lesson = {
   id: string;
   course_id: string;
   slug: string;
-  title: string;
+  title: LocalizedText;
   content: LessonContentBlock[];
   starter_code: StarterCode | null;
   difficulty: Difficulty;
@@ -59,8 +66,8 @@ export type Lesson = {
 export type QuizQuestion = {
   id: string;
   lesson_id: string;
-  question: string;
-  choices: string[];
+  question: LocalizedText;
+  choices: LocalizedChoices;
   correct_index: number;
   sort_order: number;
 };

@@ -1,21 +1,22 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import { Link, redirect } from "@/i18n/navigation";
+import { getLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/lib/actions/auth";
 
-export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
+export default async function AdminLayout({ children }: LayoutProps<"/[locale]/admin">) {
+  const locale = await getLocale();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (!user) return redirect({ href: "/login", locale });
 
   const { data: profile } = await supabase
     .from("profiles")
     .select("is_admin")
     .eq("id", user.id)
     .single();
-  if (!profile?.is_admin) redirect("/dashboard");
+  if (!profile?.is_admin) return redirect({ href: "/dashboard", locale });
 
   return (
     <div className="flex min-h-screen">

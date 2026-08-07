@@ -1,10 +1,12 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/lib/actions/auth";
 
 export default async function LearnLayout({
   children,
-}: LayoutProps<"/learn">) {
+}: LayoutProps<"/[locale]/learn">) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -14,6 +16,18 @@ export default async function LearnLayout({
     ? await supabase.from("profiles").select("xp, level").eq("id", user.id).single()
     : { data: null };
 
+  return <LearnChrome profile={profile}>{children}</LearnChrome>;
+}
+
+function LearnChrome({
+  profile,
+  children,
+}: {
+  profile: { xp: number; level: number } | null;
+  children: React.ReactNode;
+}) {
+  const t = useTranslations("dashboardChrome");
+
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <header className="flex shrink-0 items-center justify-between border-b border-border bg-surface/60 px-4 py-2.5">
@@ -22,15 +36,16 @@ export default async function LearnLayout({
           <span className="text-gradient">Academy</span>
         </Link>
         <div className="flex items-center gap-4">
+          <LocaleSwitcher />
           <span className="rounded-full border border-border bg-surface-2 px-3 py-1 text-xs font-mono text-muted">
-            Level {profile?.level ?? 1} · {profile?.xp ?? 0} XP
+            {t("level")} {profile?.level ?? 1} · {profile?.xp ?? 0} XP
           </span>
           <Link href="/dashboard" className="text-sm text-muted hover:text-foreground">
-            Dashboard
+            {t("dashboard")}
           </Link>
           <form action={signOut}>
             <button type="submit" className="text-sm text-muted hover:text-foreground">
-              Log out
+              {t("logout")}
             </button>
           </form>
         </div>

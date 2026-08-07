@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { submitQuiz } from "@/lib/actions/quiz";
+import type { LocalizedChoices, LocalizedText } from "@/lib/supabase/types";
+import { pickLocale, pickLocaleChoices } from "@/lib/i18n-content";
 
 type QuizQuestionPublic = {
   id: string;
-  question: string;
-  choices: string[];
+  question: LocalizedText;
+  choices: LocalizedChoices;
 };
 
 export function QuizPanel({
@@ -20,6 +23,8 @@ export function QuizPanel({
   alreadyPassed: boolean;
 }) {
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("learn.quiz");
   const [isPending, startTransition] = useTransition();
   const [answers, setAnswers] = useState<number[]>(() => questions.map(() => -1));
   const [result, setResult] = useState<{ passed: boolean; correctCount: number; total: number } | null>(
@@ -45,34 +50,37 @@ export function QuizPanel({
 
   return (
     <div className="border-t border-border p-6">
-      <p className="text-sm font-semibold text-accent">Quiz</p>
+      <p className="text-sm font-semibold text-accent">{t("title")}</p>
       {alreadyPassed && !result && (
-        <p className="mt-1 text-xs text-muted">You already passed this quiz — feel free to retake it.</p>
+        <p className="mt-1 text-xs text-muted">{t("alreadyPassed")}</p>
       )}
 
       <div className="mt-4 space-y-6">
-        {questions.map((q, qi) => (
-          <div key={q.id}>
-            <p className="text-sm font-medium">{q.question}</p>
-            <div className="mt-2 space-y-2">
-              {q.choices.map((choice, ci) => (
-                <button
-                  key={ci}
-                  onClick={() =>
-                    setAnswers((prev) => prev.map((a, i) => (i === qi ? ci : a)))
-                  }
-                  className={`block w-full rounded-lg border px-3 py-2 text-left text-sm ${
-                    answers[qi] === ci
-                      ? "border-accent bg-accent/10 text-accent"
-                      : "border-border bg-surface hover:bg-surface-2"
-                  }`}
-                >
-                  {choice}
-                </button>
-              ))}
+        {questions.map((q, qi) => {
+          const choices = pickLocaleChoices(q.choices, locale);
+          return (
+            <div key={q.id}>
+              <p className="text-sm font-medium">{pickLocale(q.question, locale)}</p>
+              <div className="mt-2 space-y-2">
+                {choices.map((choice, ci) => (
+                  <button
+                    key={ci}
+                    onClick={() =>
+                      setAnswers((prev) => prev.map((a, i) => (i === qi ? ci : a)))
+                    }
+                    className={`block w-full rounded-lg border px-3 py-2 text-left text-sm ${
+                      answers[qi] === ci
+                        ? "border-accent bg-accent/10 text-accent"
+                        : "border-border bg-surface hover:bg-surface-2"
+                    }`}
+                  >
+                    {choice}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <button
@@ -80,16 +88,14 @@ export function QuizPanel({
         disabled={!allAnswered || isPending}
         className="mt-6 w-full rounded-lg bg-accent py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90 disabled:opacity-50"
       >
-        {isPending ? "Checking…" : "Submit quiz"}
+        {isPending ? t("checking") : t("submit")}
       </button>
 
       {result && (
-        <p
-          className={`mt-3 text-sm ${result.passed ? "text-accent" : "text-red-400"}`}
-        >
+        <p className={`mt-3 text-sm ${result.passed ? "text-accent" : "text-red-400"}`}>
           {result.passed
-            ? `Passed! ${result.correctCount}/${result.total} correct.`
-            : `${result.correctCount}/${result.total} correct — try again.`}
+            ? t("passed", { correct: result.correctCount, total: result.total })
+            : t("failed", { correct: result.correctCount, total: result.total })}
         </p>
       )}
     </div>
