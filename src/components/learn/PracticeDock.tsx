@@ -1,8 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { CodeWorkspace } from "./CodeWorkspace";
+import { startCheckout } from "@/lib/actions/billing";
 import type { StarterCode } from "@/lib/supabase/types";
 
 export function PracticeDock({
@@ -32,9 +32,11 @@ export function PracticeDock({
     return (
       <div className="shrink-0 border-t border-border bg-surface p-4 text-center">
         <p className="text-sm text-muted">{t("paywall")}</p>
-        <Link href="/#pricing" className="btn-primary mt-2 inline-block rounded-lg px-4 py-1.5 text-sm">
-          {t("upgrade")}
-        </Link>
+        <form action={startCheckout}>
+          <button type="submit" className="btn-primary mt-2 rounded-lg px-4 py-1.5 text-sm">
+            {t("upgrade")}
+          </button>
+        </form>
       </div>
     );
   }

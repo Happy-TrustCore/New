@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { computeLessonAccess, hasPremiumAccess } from "@/lib/lessons";
 import { pickLocale } from "@/lib/i18n-content";
 import { computeBadgeStatus } from "@/lib/achievements";
+import { startCheckout, manageBilling } from "@/lib/actions/billing";
 
 const TRACK_SLUGS = ["foundation", "frontend", "backend"] as const;
 
@@ -103,6 +104,7 @@ export default async function DashboardPage({
       badgeStatus={badgeStatus}
       portfolio={portfolio}
       certificates={earnedCertificates}
+      isPremium={isPremium}
     />
   );
 }
@@ -136,6 +138,7 @@ function DashboardBody({
   badgeStatus,
   portfolio,
   certificates,
+  isPremium,
 }: {
   name: string;
   currentTrack: Track;
@@ -143,6 +146,7 @@ function DashboardBody({
   badgeStatus: ReturnType<typeof computeBadgeStatus>;
   portfolio: PortfolioItem[];
   certificates: CertificateItem[];
+  isPremium: boolean;
 }) {
   const t = useTranslations("dashboard");
 
@@ -240,6 +244,34 @@ function DashboardBody({
               </Link>
             ))}
           </div>
+        )}
+      </section>
+
+      <section className="mt-6 glow-accent card flex items-center justify-between p-6">
+        {isPremium ? (
+          <>
+            <div>
+              <p className="text-sm font-semibold text-accent">{t("billing.proTitle")}</p>
+              <p className="mt-1 text-sm text-muted">{t("billing.proBlurb")}</p>
+            </div>
+            <form action={manageBilling}>
+              <button type="submit" className="shrink-0 rounded-lg border border-border px-4 py-2 text-sm transition hover:bg-surface-2">
+                {t("billing.manage")}
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <div>
+              <p className="text-sm font-semibold text-accent">{t("billing.freeTitle")}</p>
+              <p className="mt-1 text-sm text-muted">{t("billing.freeBlurb")}</p>
+            </div>
+            <form action={startCheckout}>
+              <button type="submit" className="btn-primary shrink-0 rounded-lg px-4 py-2 text-sm">
+                {t("billing.upgrade")}
+              </button>
+            </form>
+          </>
         )}
       </section>
 

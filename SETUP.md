@@ -97,12 +97,18 @@ simulated frontend fetch layer to a simulated backend API and database.
 **63 lessons total, 60 with a quiz, 11 requiring a project submission.**
 Safe to paste more than once.
 
-Finally, paste
+Then paste
 [`db/phase7_marketplace_certificates.sql`](db/phase7_marketplace_certificates.sql)
 and run it. This adds three brand-new tables (not more curriculum content):
 `certificates`, `real_projects`, and `project_interests` — see "What's
 built so far" below for what they power. Safe to paste more than once
 (every `create table` already uses `if not exists`).
+
+Finally, if you're setting up real payments (see "Turn on real payments"
+below), paste [`db/phase8_payments.sql`](db/phase8_payments.sql) and run
+it. It adds two columns to the existing `subscriptions` table
+(`stripe_customer_id`, `stripe_subscription_id`) — skip this until you're
+actually setting up Stripe, there's nothing to see without it.
 
 ### Make yourself an admin
 
@@ -134,6 +140,55 @@ Users page above to test it.
 
 Leave it blank and the mentor panel just shows "isn't configured yet"
 instead of erroring — the rest of the site works fine without it.
+
+### Optional: turn on real payments (Stripe)
+
+Stripe itself is free to sign up for and has no monthly fee — they only
+take a cut once a real payment happens, so this doesn't cost anything
+until you actually have paying students. Until you do this, "Upgrade"
+buttons just send people back to the pricing section, and Pro access
+still works fine via the manual admin grant.
+
+1. Create a free account at https://stripe.com.
+2. **Get your secret key**: Developers -> API keys -> copy the **Secret
+   key** (starts with `sk_test_...` while you're testing, `sk_live_...`
+   once you flip Stripe out of test mode).
+3. **Create the Pro price**: Product catalog -> + Add product. Name it
+   "CodePath Pro", set it to **Recurring**, **€4.99**, **Monthly**. Save,
+   then copy the **Price ID** (starts with `price_...`) — not the Product
+   ID.
+4. **Get your Supabase service role key** (needed regardless of Stripe —
+   the webhook writes to the database with no logged-in user, so it can't
+   use the normal RLS-scoped key): Supabase dashboard -> Project Settings
+   -> API -> copy the **service_role** secret. Never expose this to the
+   browser.
+5. Run [`db/phase8_payments.sql`](db/phase8_payments.sql) in the Supabase
+   SQL Editor.
+6. Add to `.env.local`:
+   ```
+   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+   STRIPE_SECRET_KEY=sk_test_...
+   STRIPE_PRICE_ID=price_...
+   ```
+7. **Webhook, for local testing**: install the
+   [Stripe CLI](https://stripe.com/docs/stripe-cli), then run
+   `stripe listen --forward-to localhost:3000/api/stripe/webhook` — it
+   prints a webhook signing secret (`whsec_...`) to use as
+   `STRIPE_WEBHOOK_SECRET` locally. Stripe can't reach `localhost`
+   directly, which is why this step exists only for local dev.
+8. **Webhook, for production**: Stripe dashboard -> Developers -> Webhooks
+   -> Add endpoint -> `https://your-domain/api/stripe/webhook`, subscribed
+   to `checkout.session.completed`, `customer.subscription.updated`, and
+   `customer.subscription.deleted`. Copy that endpoint's signing secret
+   into Vercel's `STRIPE_WEBHOOK_SECRET` (it's different from the CLI's
+   local one).
+9. Add all four variables
+   (`SUPABASE_SERVICE_ROLE_KEY`/`STRIPE_SECRET_KEY`/`STRIPE_PRICE_ID`/`STRIPE_WEBHOOK_SECRET`)
+   to Vercel -> Project Settings -> Environment Variables and redeploy.
+
+Test with [Stripe's test card numbers](https://stripe.com/docs/testing)
+(`4242 4242 4242 4242`, any future expiry, any CVC) before switching to
+live keys.
 
 ## 5. Run the app
 
@@ -175,8 +230,17 @@ account to reach the dashboard.
   quizzes, 11 with assignments, plus mid-part checkpoint exams — see "Add
   the curriculum" above
 - An admin panel (`/admin`) — lesson + quiz CRUD, an overview dashboard, and
-  a users page for manually granting Pro access (no payment provider is
-  wired up yet, so this is how you comp accounts for now)
+  a users page for manually granting Pro access (still useful even with
+  real payments wired up — comp accounts, support cases, etc.)
+- Real payments (Stripe): "Upgrade" buttons on the dashboard, practice dock
+  paywall, CodeBuddy upsell, and marketplace paywall start a real Stripe
+  Checkout session; a webhook (`/api/stripe/webhook`) keeps `account_type`
+  and the `subscriptions` row in sync as the subscription is created,
+  renewed, or canceled; Pro students get a "Manage subscription" button
+  that opens Stripe's own hosted Customer Portal. Optional — see "Turn on
+  real payments" above. Until configured, Upgrade buttons just go back to
+  the pricing section and the manual admin grant keeps working exactly as
+  before
 - Achievements: 9 badges derived from lesson completion, shown on the
   dashboard
 - Certificates: issued automatically the moment every lesson in a course
@@ -205,16 +269,16 @@ account to reach the dashboard.
 
 ## What's next
 
-- Real subscription/payment integration — needs a payment provider account
-  (paywall UI + manual admin grant exist, nothing actually charges yet).
-  The real project marketplace has the same "no payment provider yet"
-  shape — interest is tracked, nothing gets paid or contracted through the
-  platform itself yet
-- Deployed-service integration next: everything above is taught, including
-  a full-stack capstone, but it's still all simulated in plain JS — no
-  lesson runs a real Express server or real SQL against a real Postgres
-  database. Course content past what's listed above (deeper database
-  design, more advanced auth patterns, more capstones) is authorable
-  through the admin panel without touching code
+- The real project marketplace still has a "no payment provider" shape on
+  purpose — interest is tracked, nothing gets paid or contracted through
+  the platform itself. Wiring actual project payments through Stripe too
+  would be a reasonable next step now that the billing plumbing exists
+- Everything above is taught, including a full-stack capstone, but it's
+  still all simulated in plain JS — no lesson runs a real Express server or
+  real SQL against a real Postgres database. Course content past what's
+  listed above (deeper database design, more advanced auth patterns, more
+  capstones) is authorable through the admin panel without touching code
 
-All of this can continue to run on free tiers (Vercel + Supabase free plans).
+All of this can continue to run on free tiers (Vercel + Supabase free
+plans) — Stripe is the one piece here that isn't a flat free tier, but it
+costs nothing until real money actually moves through it.

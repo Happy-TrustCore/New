@@ -12,6 +12,9 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    // "api" is excluded so webhook routes (e.g. Stripe) reach the handler
+    // untouched — no locale redirect, no auth-cookie rewriting on a request
+    // that has neither locale context nor a browser session.
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

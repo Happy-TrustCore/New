@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { askCodeBuddy } from "@/lib/actions/mentor";
+import { startCheckout } from "@/lib/actions/billing";
 
 export function CodeBuddyPanel({
   lessonId,
@@ -37,12 +37,14 @@ export function CodeBuddyPanel({
   if (!isPremium) {
     return (
       <div className="shrink-0 border-t border-black/40 bg-[#252526] p-3">
-        <p className="flex items-center justify-between gap-3 text-xs text-muted">
+        <div className="flex items-center justify-between gap-3 text-xs text-muted">
           <span>🤖 {t("upsell")}</span>
-          <Link href="/#pricing" className="shrink-0 font-semibold text-accent-3 hover:underline">
-            {t("upgrade")}
-          </Link>
-        </p>
+          <form action={startCheckout}>
+            <button type="submit" className="shrink-0 font-semibold text-accent-3 hover:underline">
+              {t("upgrade")}
+            </button>
+          </form>
+        </div>
       </div>
     );
   }

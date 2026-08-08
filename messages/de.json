@@ -203,6 +203,14 @@
       "title": "Echte-Projekte-Marktplatz",
       "blurb": "Bereit für echte Arbeit? Entdecke freiberufliche Projekte von kleinen Unternehmen.",
       "cta": "Projekte ansehen"
+    },
+    "billing": {
+      "proTitle": "Du bist bei CodePath Pro",
+      "proBlurb": "Verwalte deine Zahlungsmethode oder kündige jederzeit.",
+      "manage": "Abo verwalten",
+      "freeTitle": "Auf CodePath Pro upgraden",
+      "freeBlurb": "4,99 €/Monat für jede Lektion, jedes Projekt, jede Prüfung, den KI-Mentor und Zertifikate.",
+      "upgrade": "Jetzt upgraden"
     }
   },
   "learn": {

@@ -92,8 +92,14 @@ create table if not exists subscriptions (
   plan text not null default 'free' check (plan in ('free', 'premium', 'student')),
   status text not null default 'active' check (status in ('active', 'canceled', 'expired')),
   current_period_end timestamptz,
+  stripe_customer_id text,
+  stripe_subscription_id text,
   created_at timestamptz not null default now()
 );
+
+create unique index if not exists subscriptions_stripe_subscription_id_key
+  on subscriptions (stripe_subscription_id)
+  where stripe_subscription_id is not null;
 
 -- ── certificates ────────────────────────────────────────────────────────────
 -- One row per (student, course), issued automatically once every lesson in

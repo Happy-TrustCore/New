@@ -203,6 +203,14 @@
       "title": "Real Project Marketplace",
       "blurb": "Ready for real work? Browse freelance-style projects from small businesses.",
       "cta": "Browse projects"
+    },
+    "billing": {
+      "proTitle": "You're on CodePath Pro",
+      "proBlurb": "Manage your payment method or cancel anytime.",
+      "manage": "Manage subscription",
+      "freeTitle": "Upgrade to CodePath Pro",
+      "freeBlurb": "€4.99/month for every lesson, project, exam, AI mentor, and certificates.",
+      "upgrade": "Upgrade now"
     }
   },
   "learn": {

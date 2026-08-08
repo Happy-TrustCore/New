@@ -1,10 +1,11 @@
 import { getTranslations } from "next-intl/server";
-import { Link, redirect } from "@/i18n/navigation";
+import { redirect } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { hasPremiumAccess } from "@/lib/lessons";
 import { pickLocale } from "@/lib/i18n-content";
 import { InterestButton } from "@/components/marketplace/InterestButton";
+import { startCheckout } from "@/lib/actions/billing";
 
 const TRACK_LABEL: Record<string, string> = {
   frontend: "Frontend",
@@ -33,9 +34,11 @@ export default async function MarketplacePage({
         <span className="text-4xl">🚀</span>
         <h1 className="text-2xl font-bold">{t("paywall.title")}</h1>
         <p className="text-muted">{t("paywall.body")}</p>
-        <Link href="/#pricing" className="btn-primary rounded-lg px-6 py-3 text-sm">
-          {t("paywall.cta")}
-        </Link>
+        <form action={startCheckout}>
+          <button type="submit" className="btn-primary rounded-lg px-6 py-3 text-sm">
+            {t("paywall.cta")}
+          </button>
+        </form>
       </div>
     );
   }

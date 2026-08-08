@@ -101,6 +101,8 @@ export type Subscription = {
   plan: SubscriptionPlan;
   status: SubscriptionStatus;
   current_period_end: string | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
   created_at: string;
 };
 
