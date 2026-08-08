@@ -18,10 +18,10 @@ export default async function AdminOverviewPage() {
   ]);
 
   const stats = [
-    { label: "Students", value: userCount ?? 0 },
-    { label: "Lessons published", value: lessonCount ?? 0 },
-    { label: "Lessons completed", value: completionCount ?? 0 },
-    { label: "Pro subscribers", value: premiumCount ?? 0 },
+    { label: "Students", value: userCount ?? 0, color: "text-accent" },
+    { label: "Lessons published", value: lessonCount ?? 0, color: "text-accent-2" },
+    { label: "Lessons completed", value: completionCount ?? 0, color: "text-accent-3" },
+    { label: "Pro subscribers", value: premiumCount ?? 0, color: "text-accent-warm" },
   ];
 
   return (
@@ -29,8 +29,8 @@ export default async function AdminOverviewPage() {
       <h1 className="text-2xl font-bold">Overview</h1>
       <div className="mt-6 grid gap-4 sm:grid-cols-4">
         {stats.map((s) => (
-          <div key={s.label} className="rounded-xl border border-border bg-surface p-5">
-            <p className="text-2xl font-bold">{s.value}</p>
+          <div key={s.label} className="card card-hover p-5">
+            <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
             <p className="mt-1 text-sm text-muted">{s.label}</p>
           </div>
         ))}

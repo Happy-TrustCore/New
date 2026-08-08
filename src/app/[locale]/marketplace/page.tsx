@@ -60,11 +60,14 @@ export default async function MarketplacePage({
       <p className="mt-1 text-muted">{t("subtitle")}</p>
 
       {(projects ?? []).length === 0 ? (
-        <p className="mt-8 text-sm text-muted">{t("empty")}</p>
+        <div className="mt-8 flex flex-col items-center gap-2 rounded-xl border border-border bg-surface px-6 py-16 text-center">
+          <span className="text-3xl">📭</span>
+          <p className="text-sm text-muted">{t("empty")}</p>
+        </div>
       ) : (
         <div className="mt-8 space-y-4">
           {(projects ?? []).map((project) => (
-            <div key={project.id} className="card p-6">
+            <div key={project.id} className="card card-hover p-6">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="pill px-3 py-1 text-xs font-mono text-accent">
                   {TRACK_LABEL[project.skill_track] ?? project.skill_track}

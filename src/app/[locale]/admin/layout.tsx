@@ -20,23 +20,23 @@ export default async function AdminLayout({ children }: LayoutProps<"/[locale]/a
 
   return (
     <div className="flex min-h-screen">
-      <aside className="w-56 shrink-0 border-r border-border bg-surface/60 p-4">
-        <Link href="/dashboard" className="font-mono text-sm font-semibold">
-          <span className="text-accent">&lt;/&gt;</span> CodePath
+      <aside className="w-56 shrink-0 border-r border-border bg-surface/60 p-4 backdrop-blur-xl">
+        <Link href="/dashboard" className="font-mono text-sm font-semibold transition hover:opacity-90">
+          <span className="text-accent-3">&lt;/&gt;</span> CodePath
           <span className="text-gradient">Academy</span>
         </Link>
         <p className="mt-1 text-xs text-muted">Admin panel</p>
         <nav className="mt-6 space-y-1 text-sm">
-          <Link href="/admin" className="block rounded-lg px-3 py-2 hover:bg-surface-2">
+          <Link href="/admin" className="block rounded-lg px-3 py-2 transition hover:bg-surface-2">
             Overview
           </Link>
-          <Link href="/admin/lessons" className="block rounded-lg px-3 py-2 hover:bg-surface-2">
+          <Link href="/admin/lessons" className="block rounded-lg px-3 py-2 transition hover:bg-surface-2">
             Lessons
           </Link>
-          <Link href="/admin/users" className="block rounded-lg px-3 py-2 hover:bg-surface-2">
+          <Link href="/admin/users" className="block rounded-lg px-3 py-2 transition hover:bg-surface-2">
             Users
           </Link>
-          <Link href="/admin/marketplace" className="block rounded-lg px-3 py-2 hover:bg-surface-2">
+          <Link href="/admin/marketplace" className="block rounded-lg px-3 py-2 transition hover:bg-surface-2">
             Marketplace
           </Link>
         </nav>

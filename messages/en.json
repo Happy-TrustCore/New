@@ -89,6 +89,12 @@
         "item4": "Real client project opportunities",
         "cta": "Go Pro"
       }
+    },
+    "stats": {
+      "lessons": "Lessons",
+      "free": "Free lessons",
+      "tracks": "Learning tracks",
+      "languages": "Languages"
     }
   },
   "auth": {

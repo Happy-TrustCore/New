@@ -70,6 +70,23 @@ export default async function Home({
           </div>
         </section>
 
+        {/* Stats */}
+        <section className="border-t border-border py-12">
+          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-6 sm:grid-cols-4">
+            {[
+              { value: "63", label: t("stats.lessons"), color: "text-accent" },
+              { value: "28", label: t("stats.free"), color: "text-accent-2" },
+              { value: "3", label: t("stats.tracks"), color: "text-accent-3" },
+              { value: "2", label: t("stats.languages"), color: "text-accent-warm" },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p className={`text-3xl font-bold sm:text-4xl ${stat.color}`}>{stat.value}</p>
+                <p className="mt-1 text-xs text-muted sm:text-sm">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* How it works */}
         <section id="how-it-works" className="border-t border-border bg-surface/40 py-20">
           <div className="mx-auto max-w-6xl px-6">

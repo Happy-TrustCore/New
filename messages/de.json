@@ -89,6 +89,12 @@
         "item4": "Echte Kundenprojekt-Möglichkeiten",
         "cta": "Pro werden"
       }
+    },
+    "stats": {
+      "lessons": "Lektionen",
+      "free": "Kostenlose Lektionen",
+      "tracks": "Lernpfade",
+      "languages": "Sprachen"
     }
   },
   "auth": {

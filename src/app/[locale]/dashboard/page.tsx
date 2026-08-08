@@ -248,7 +248,10 @@ function DashboardBody({
       <section className="mt-6">
         <p className="text-sm font-semibold">{t("certificates.title")}</p>
         {certificates.length === 0 ? (
-          <p className="mt-2 text-sm text-muted">{t("certificates.empty")}</p>
+          <div className="mt-3 flex flex-col items-center gap-2 rounded-xl border border-border bg-surface px-6 py-10 text-center">
+            <span className="text-2xl">🏆</span>
+            <p className="text-sm text-muted">{t("certificates.empty")}</p>
+          </div>
         ) : (
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {certificates.map((cert) => (
@@ -314,11 +317,14 @@ function DashboardBody({
       <section className="mt-6">
         <p className="text-sm font-semibold">{t("portfolio.title")}</p>
         {portfolio.length === 0 ? (
-          <p className="mt-2 text-sm text-muted">{t("portfolio.empty")}</p>
+          <div className="mt-3 flex flex-col items-center gap-2 rounded-xl border border-border bg-surface px-6 py-10 text-center">
+            <span className="text-2xl">💼</span>
+            <p className="text-sm text-muted">{t("portfolio.empty")}</p>
+          </div>
         ) : (
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {portfolio.map((item) => (
-              <div key={item.id} className="rounded-xl border border-border bg-surface p-4">
+              <div key={item.id} className="card card-hover p-4">
                 <p className="text-sm font-semibold">{item.title}</p>
                 <p className="mt-1 text-xs text-muted">
                   {new Date(item.submittedAt).toLocaleDateString()}
