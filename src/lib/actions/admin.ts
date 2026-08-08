@@ -4,7 +4,14 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "@/i18n/navigation";
 import { getLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
-import type { AccountType, Difficulty, LessonContentBlock, StarterCode } from "@/lib/supabase/types";
+import type {
+  AccountType,
+  Difficulty,
+  LessonContentBlock,
+  RealProjectStatus,
+  SkillTrack,
+  StarterCode,
+} from "@/lib/supabase/types";
 
 async function requireAdmin() {
   const locale = await getLocale();
@@ -174,4 +181,43 @@ export async function setAccountType(userId: string, accountType: AccountType) {
   await supabase.from("profiles").update({ account_type: accountType }).eq("id", userId);
   await supabase.from("subscriptions").update({ plan: accountType }).eq("user_id", userId);
   revalidatePath("/admin/users");
+}
+
+export async function createRealProject(formData: FormData) {
+  const { supabase } = await requireAdmin();
+
+  const { count } = await supabase
+    .from("real_projects")
+    .select("id", { count: "exact", head: true });
+
+  await supabase.from("real_projects").insert({
+    title: {
+      en: String(formData.get("title_en") ?? "").trim(),
+      de: String(formData.get("title_de") ?? "").trim(),
+    },
+    description: {
+      en: String(formData.get("description_en") ?? "").trim(),
+      de: String(formData.get("description_de") ?? "").trim(),
+    },
+    skill_track: String(formData.get("skill_track")) as SkillTrack,
+    client_name: String(formData.get("client_name") ?? "").trim() || null,
+    sort_order: (count ?? 0) + 1,
+  });
+
+  revalidatePath("/admin/marketplace");
+  revalidatePath("/marketplace");
+}
+
+export async function setRealProjectStatus(projectId: string, status: RealProjectStatus) {
+  const { supabase } = await requireAdmin();
+  await supabase.from("real_projects").update({ status }).eq("id", projectId);
+  revalidatePath("/admin/marketplace");
+  revalidatePath("/marketplace");
+}
+
+export async function deleteRealProject(projectId: string) {
+  const { supabase } = await requireAdmin();
+  await supabase.from("real_projects").delete().eq("id", projectId);
+  revalidatePath("/admin/marketplace");
+  revalidatePath("/marketplace");
 }

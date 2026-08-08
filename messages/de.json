@@ -175,6 +175,15 @@
       "title": "Portfolio",
       "empty": "Projekte, die du für Aufgaben einreichst, erscheinen hier.",
       "viewLesson": "Lektion ansehen"
+    },
+    "certificates": {
+      "title": "Zertifikate",
+      "empty": "Schließe einen kompletten Track ab, um dein erstes Zertifikat zu erhalten."
+    },
+    "marketplace": {
+      "title": "Echte-Projekte-Marktplatz",
+      "blurb": "Bereit für echte Arbeit? Entdecke freiberufliche Projekte von kleinen Unternehmen.",
+      "cta": "Projekte ansehen"
     }
   },
   "learn": {
@@ -219,6 +228,31 @@
       "collapse": "Schließen",
       "paywall": "Die praktische Übung dieser Lektion braucht CodePath Pro.",
       "upgrade": "Pläne ansehen"
+    }
+  },
+  "certificate": {
+    "eyebrow": "Abschlusszertifikat",
+    "title": "CodePath Academy",
+    "issuedTo": "Dies bestätigt, dass",
+    "forCompleting": "erfolgreich abgeschlossen hat:",
+    "issuedOn": "Ausgestellt am {date}",
+    "backHome": "Zurück zu CodePath Academy"
+  },
+  "marketplace": {
+    "title": "Echte-Projekte-Marktplatz",
+    "subtitle": "Freiberufliche Möglichkeiten von echten kleinen Unternehmen, für Pro-Studierende.",
+    "empty": "Aktuell keine offenen Projekte — schau bald wieder vorbei.",
+    "expressInterest": "Interesse anmelden",
+    "messagePlaceholder": "Optionale Notiz (Erfahrung, Verfügbarkeit, ...)",
+    "sending": "Wird gesendet…",
+    "send": "Senden",
+    "cancel": "Abbrechen",
+    "interested": "Du bist auf der Liste — wir melden uns per E-Mail.",
+    "error": "Etwas ist schiefgelaufen — versuch es nochmal.",
+    "paywall": {
+      "title": "Echte Projekte brauchen CodePath Pro",
+      "body": "Upgrade, um freiberufliche Möglichkeiten von echten kleinen Unternehmen zu sehen.",
+      "cta": "Pläne ansehen"
     }
   }
 }

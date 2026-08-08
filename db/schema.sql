@@ -95,6 +95,44 @@ create table if not exists subscriptions (
   created_at timestamptz not null default now()
 );
 
+-- ── certificates ────────────────────────────────────────────────────────────
+-- One row per (student, course), issued automatically once every lesson in
+-- that course is completed (see finalizeIfReady). student_name is a
+-- snapshot taken at issuance time so a public /certificate/[id] page never
+-- needs to read the (RLS-protected) profiles table.
+create table if not exists certificates (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references profiles (id) on delete cascade,
+  course_id uuid not null references courses (id) on delete cascade,
+  student_name text not null,
+  issued_at timestamptz not null default now(),
+  unique (user_id, course_id)
+);
+
+-- ── real_projects / project_interests ───────────────────────────────────────
+-- Admin-curated freelance-style opportunities offered to Pro students (the
+-- PRD's "real project marketplace"). No payment/contract flow yet — an
+-- admin follows up manually with anyone who expresses interest.
+create table if not exists real_projects (
+  id uuid primary key default gen_random_uuid(),
+  title jsonb not null,
+  description jsonb not null,
+  skill_track text not null check (skill_track in ('frontend', 'backend', 'fullstack')),
+  client_name text,
+  status text not null default 'open' check (status in ('open', 'closed')),
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists project_interests (
+  id uuid primary key default gen_random_uuid(),
+  real_project_id uuid not null references real_projects (id) on delete cascade,
+  user_id uuid not null references profiles (id) on delete cascade,
+  message text,
+  created_at timestamptz not null default now(),
+  unique (real_project_id, user_id)
+);
+
 -- ── row level security ──────────────────────────────────────────────────────
 alter table profiles enable row level security;
 alter table lesson_progress enable row level security;
@@ -103,6 +141,9 @@ alter table subscriptions enable row level security;
 alter table courses enable row level security;
 alter table lessons enable row level security;
 alter table quiz_questions enable row level security;
+alter table certificates enable row level security;
+alter table real_projects enable row level security;
+alter table project_interests enable row level security;
 
 -- everyone (including anonymous visitors) can read course/lesson metadata
 create policy "courses are publicly readable" on courses for select using (true);
@@ -117,6 +158,18 @@ create policy "users insert own profile" on profiles for insert with check (auth
 create policy "users manage own progress" on lesson_progress for all using (auth.uid() = user_id);
 create policy "users manage own projects" on projects for all using (auth.uid() = user_id);
 create policy "users read own subscription" on subscriptions for select using (auth.uid() = user_id);
+
+-- certificates are shareable by design (an employer might click the link),
+-- so read access is public like lessons/courses; only the owning user can
+-- issue their own (finalizeIfReady decides *whether* to, server-side)
+create policy "certificates are publicly readable" on certificates for select using (true);
+create policy "users issue own certificates" on certificates for insert with check (auth.uid() = user_id);
+
+-- real projects are public metadata; the /marketplace page itself decides
+-- what to show based on Pro status, same pattern as the lesson paywall
+create policy "real projects are publicly readable" on real_projects for select using (true);
+
+create policy "users manage own interest" on project_interests for all using (auth.uid() = user_id);
 
 -- ── admin access ────────────────────────────────────────────────────────────
 -- security definer so this can check profiles.is_admin without the calling
@@ -133,6 +186,8 @@ create policy "admins read all profiles" on profiles for select using (public.is
 create policy "admins update all profiles" on profiles for update using (public.is_admin(auth.uid()));
 create policy "admins read all progress" on lesson_progress for select using (public.is_admin(auth.uid()));
 create policy "admins read all subscriptions" on subscriptions for select using (public.is_admin(auth.uid()));
+create policy "admins manage real projects" on real_projects for all using (public.is_admin(auth.uid()));
+create policy "admins read all interests" on project_interests for select using (public.is_admin(auth.uid()));
 
 -- auto-create a profile row whenever a new auth user signs up
 create or replace function public.handle_new_user()

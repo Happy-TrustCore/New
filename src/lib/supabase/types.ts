@@ -104,6 +104,36 @@ export type Subscription = {
   created_at: string;
 };
 
+export type Certificate = {
+  id: string;
+  user_id: string;
+  course_id: string;
+  student_name: string;
+  issued_at: string;
+};
+
+export type SkillTrack = "frontend" | "backend" | "fullstack";
+export type RealProjectStatus = "open" | "closed";
+
+export type RealProject = {
+  id: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  skill_track: SkillTrack;
+  client_name: string | null;
+  status: RealProjectStatus;
+  sort_order: number;
+  created_at: string;
+};
+
+export type ProjectInterest = {
+  id: string;
+  real_project_id: string;
+  user_id: string;
+  message: string | null;
+  created_at: string;
+};
+
 type NoRelationships = { Relationships: [] };
 
 export type Database = {
@@ -131,6 +161,21 @@ export type Database = {
         Row: Subscription;
         Insert: Partial<Subscription>;
         Update: Partial<Subscription>;
+      } & NoRelationships;
+      certificates: {
+        Row: Certificate;
+        Insert: Partial<Certificate>;
+        Update: Partial<Certificate>;
+      } & NoRelationships;
+      real_projects: {
+        Row: RealProject;
+        Insert: Partial<RealProject>;
+        Update: Partial<RealProject>;
+      } & NoRelationships;
+      project_interests: {
+        Row: ProjectInterest;
+        Insert: Partial<ProjectInterest>;
+        Update: Partial<ProjectInterest>;
       } & NoRelationships;
     };
     Views: Record<string, never>;

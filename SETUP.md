@@ -90,6 +90,13 @@ simulated frontend fetch layer to a simulated backend API and database.
 **63 lessons total, 60 with a quiz, 11 requiring a project submission.**
 Safe to paste more than once.
 
+Finally, paste
+[`db/phase7_marketplace_certificates.sql`](db/phase7_marketplace_certificates.sql)
+and run it. This adds three brand-new tables (not more curriculum content):
+`certificates`, `real_projects`, and `project_interests` — see "What's
+built so far" below for what they power. Safe to paste more than once
+(every `create table` already uses `if not exists`).
+
 ### Make yourself an admin
 
 Register a normal account first (step 5 below), then in the SQL Editor run:
@@ -144,6 +151,16 @@ account to reach the dashboard.
   wired up yet, so this is how you comp accounts for now)
 - Achievements: 9 badges derived from lesson completion, shown on the
   dashboard
+- Certificates: issued automatically the moment every lesson in a course
+  (Foundation/Frontend/Backend) is completed — see the "Certificates"
+  section on the dashboard, each links to a public, shareable
+  `/certificate/[id]` page (no login required to view — the point is you
+  can send the link to an employer)
+- Real Project Marketplace (`/marketplace`, gated to Pro): admin-curated
+  freelance-style opportunities from small businesses. Students express
+  interest with an optional note; there's no payment/contract flow yet, so
+  an admin follows up manually — manage projects and see who's interested
+  at `/admin/marketplace`
 - Bilingual Privacy Policy and Terms of Service pages (`/privacy`, `/terms`)
   — uses placeholder contact emails you should replace before real users
   sign up, and isn't a substitute for real legal review
@@ -158,7 +175,10 @@ account to reach the dashboard.
 
 - AI mentor — needs you to pick an LLM provider and create an API key
 - Real subscription/payment integration — needs a payment provider account
-  (paywall UI + manual admin grant exist, nothing actually charges yet)
+  (paywall UI + manual admin grant exist, nothing actually charges yet).
+  The real project marketplace has the same "no payment provider yet"
+  shape — interest is tracked, nothing gets paid or contracted through the
+  platform itself yet
 - Deployed-service integration next: everything above is taught, including
   a full-stack capstone, but it's still all simulated in plain JS — no
   lesson runs a real Express server or real SQL against a real Postgres

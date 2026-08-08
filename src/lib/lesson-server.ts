@@ -6,6 +6,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { computeLessonAccess, hasPremiumAccess } from "@/lib/lessons";
+import { isCourseFullyCompleted } from "@/lib/certificates";
 import type { Lesson } from "@/lib/supabase/types";
 
 export const XP_PER_LESSON = 10;
@@ -80,7 +81,7 @@ export async function finalizeIfReady(supabase: Client, userId: string, lessonId
     .eq("user_id", userId)
     .eq("lesson_id", lessonId);
 
-  const { data: profile } = await supabase.from("profiles").select("xp").eq("id", userId).single();
+  const { data: profile } = await supabase.from("profiles").select("xp, name").eq("id", userId).single();
   if (profile) {
     const newXp = profile.xp + XP_PER_LESSON;
     await supabase
@@ -88,4 +89,34 @@ export async function finalizeIfReady(supabase: Client, userId: string, lessonId
       .update({ xp: newXp, level: Math.floor(newXp / 100) + 1 })
       .eq("id", userId);
   }
+
+  await maybeIssueCertificate(supabase, userId, lesson.course_id, profile?.name);
+}
+
+async function maybeIssueCertificate(
+  supabase: Client,
+  userId: string,
+  courseId: string,
+  studentName: string | undefined
+) {
+  if (!studentName) return;
+
+  const [{ data: courseLessons }, { data: completedRows }] = await Promise.all([
+    supabase.from("lessons").select("id").eq("course_id", courseId),
+    supabase
+      .from("lesson_progress")
+      .select("lesson_id")
+      .eq("user_id", userId)
+      .eq("status", "completed"),
+  ]);
+
+  const completedIds = new Set((completedRows ?? []).map((row) => row.lesson_id));
+  if (!isCourseFullyCompleted(courseLessons ?? [], completedIds)) return;
+
+  await supabase
+    .from("certificates")
+    .upsert(
+      { user_id: userId, course_id: courseId, student_name: studentName },
+      { onConflict: "user_id,course_id", ignoreDuplicates: true }
+    );
 }

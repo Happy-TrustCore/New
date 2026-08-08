@@ -175,6 +175,15 @@
       "title": "Portfolio",
       "empty": "Projects you submit for assignments will show up here.",
       "viewLesson": "View lesson"
+    },
+    "certificates": {
+      "title": "Certificates",
+      "empty": "Complete a full track to earn your first certificate."
+    },
+    "marketplace": {
+      "title": "Real Project Marketplace",
+      "blurb": "Ready for real work? Browse freelance-style projects from small businesses.",
+      "cta": "Browse projects"
     }
   },
   "learn": {
@@ -219,6 +228,31 @@
       "collapse": "Close",
       "paywall": "Hands-on practice for this lesson needs CodePath Pro.",
       "upgrade": "See plans"
+    }
+  },
+  "certificate": {
+    "eyebrow": "Certificate of Completion",
+    "title": "CodePath Academy",
+    "issuedTo": "This certifies that",
+    "forCompleting": "has successfully completed",
+    "issuedOn": "Issued on {date}",
+    "backHome": "Back to CodePath Academy"
+  },
+  "marketplace": {
+    "title": "Real Project Marketplace",
+    "subtitle": "Freelance-style opportunities from real small businesses, for Pro students.",
+    "empty": "No open projects right now — check back soon.",
+    "expressInterest": "I'm interested",
+    "messagePlaceholder": "Optional note to include (experience, availability, ...)",
+    "sending": "Sending…",
+    "send": "Send",
+    "cancel": "Cancel",
+    "interested": "You're on the list — we'll follow up by email.",
+    "error": "Something went wrong — try again.",
+    "paywall": {
+      "title": "Real projects need CodePath Pro",
+      "body": "Upgrade to see freelance-style opportunities from real small businesses.",
+      "cta": "See plans"
     }
   }
 }

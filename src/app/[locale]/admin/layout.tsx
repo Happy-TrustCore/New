@@ -36,6 +36,9 @@ export default async function AdminLayout({ children }: LayoutProps<"/[locale]/a
           <Link href="/admin/users" className="block rounded-lg px-3 py-2 hover:bg-surface-2">
             Users
           </Link>
+          <Link href="/admin/marketplace" className="block rounded-lg px-3 py-2 hover:bg-surface-2">
+            Marketplace
+          </Link>
         </nav>
         <Link href="/dashboard" className="mt-6 block text-sm text-muted hover:text-foreground">
           &larr; Back to app

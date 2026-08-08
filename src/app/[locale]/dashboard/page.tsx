@@ -17,22 +17,33 @@ export default async function DashboardPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: profile }, { data: courses }, { data: lessons }, { data: completed }, { data: projects }] =
-    await Promise.all([
-      supabase.from("profiles").select("*").eq("id", user!.id).single(),
-      supabase.from("courses").select("*").order("sort_order"),
-      supabase.from("lessons").select("*"),
-      supabase
-        .from("lesson_progress")
-        .select("lesson_id")
-        .eq("user_id", user!.id)
-        .eq("status", "completed"),
-      supabase
-        .from("projects")
-        .select("*")
-        .eq("user_id", user!.id)
-        .order("submitted_at", { ascending: false }),
-    ]);
+  const [
+    { data: profile },
+    { data: courses },
+    { data: lessons },
+    { data: completed },
+    { data: projects },
+    { data: certificates },
+  ] = await Promise.all([
+    supabase.from("profiles").select("*").eq("id", user!.id).single(),
+    supabase.from("courses").select("*").order("sort_order"),
+    supabase.from("lessons").select("*"),
+    supabase
+      .from("lesson_progress")
+      .select("lesson_id")
+      .eq("user_id", user!.id)
+      .eq("status", "completed"),
+    supabase
+      .from("projects")
+      .select("*")
+      .eq("user_id", user!.id)
+      .order("submitted_at", { ascending: false }),
+    supabase
+      .from("certificates")
+      .select("*")
+      .eq("user_id", user!.id)
+      .order("issued_at", { ascending: false }),
+  ]);
 
   const completedIds = new Set((completed ?? []).map((row) => row.lesson_id));
   const isPremium = hasPremiumAccess(profile);
@@ -75,6 +86,15 @@ export default async function DashboardPage({
     };
   });
 
+  const earnedCertificates = (certificates ?? []).map((c) => {
+    const course = courses?.find((course) => course.id === c.course_id);
+    return {
+      id: c.id,
+      courseTitle: course ? pickLocale(course.title, locale) : "",
+      issuedAt: c.issued_at,
+    };
+  });
+
   return (
     <DashboardBody
       name={name}
@@ -82,6 +102,7 @@ export default async function DashboardPage({
       tracks={tracks}
       badgeStatus={badgeStatus}
       portfolio={portfolio}
+      certificates={earnedCertificates}
     />
   );
 }
@@ -102,18 +123,26 @@ type PortfolioItem = {
   submittedAt: string;
 };
 
+type CertificateItem = {
+  id: string;
+  courseTitle: string;
+  issuedAt: string;
+};
+
 function DashboardBody({
   name,
   currentTrack,
   tracks,
   badgeStatus,
   portfolio,
+  certificates,
 }: {
   name: string;
   currentTrack: Track;
   tracks: Track[];
   badgeStatus: ReturnType<typeof computeBadgeStatus>;
   portfolio: PortfolioItem[];
+  certificates: CertificateItem[];
 }) {
   const t = useTranslations("dashboard");
 
@@ -187,6 +216,44 @@ function DashboardBody({
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="mt-6">
+        <p className="text-sm font-semibold">{t("certificates.title")}</p>
+        {certificates.length === 0 ? (
+          <p className="mt-2 text-sm text-muted">{t("certificates.empty")}</p>
+        ) : (
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            {certificates.map((cert) => (
+              <Link
+                key={cert.id}
+                href={`/certificate/${cert.id}`}
+                className="card card-hover flex items-center justify-between p-4"
+              >
+                <div>
+                  <p className="text-sm font-semibold">{cert.courseTitle}</p>
+                  <p className="mt-1 text-xs text-muted">
+                    {new Date(cert.issuedAt).toLocaleDateString()}
+                  </p>
+                </div>
+                <span className="text-lg">🏆</span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="mt-6 card flex items-center justify-between p-6">
+        <div>
+          <p className="text-sm font-semibold text-accent">{t("marketplace.title")}</p>
+          <p className="mt-1 text-sm text-muted">{t("marketplace.blurb")}</p>
+        </div>
+        <Link
+          href="/marketplace"
+          className="btn-primary shrink-0 rounded-lg px-4 py-2 text-sm"
+        >
+          {t("marketplace.cta")}
+        </Link>
       </section>
 
       <section className="mt-6">
