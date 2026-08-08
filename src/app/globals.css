@@ -1,15 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #05070a;
-  --foreground: #e7ecf3;
-  --surface: #0d1117;
-  --surface-2: #12161f;
-  --border: #1f2632;
-  --muted: #8b95a7;
+  --background: #05070d;
+  --foreground: #eef1f8;
+  --surface: #0e1220;
+  --surface-2: #151b2e;
+  --surface-hover: #1b2338;
+  --border: #232b42;
+  --border-strong: #303a58;
+  --muted: #949eb8;
   --accent: #34d399;
   --accent-2: #38bdf8;
+  --accent-3: #a78bfa;
+  --accent-warm: #fb923c;
   --accent-foreground: #04120c;
+  --danger: #f87171;
+  --radius-card: 1.1rem;
 }
 
 @theme inline {
@@ -17,24 +23,124 @@
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
+  --color-surface-hover: var(--surface-hover);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-accent-warm: var(--accent-warm);
   --color-accent-foreground: var(--accent-foreground);
+  --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(1200px 600px at 15% -10%, color-mix(in srgb, var(--accent) 10%, transparent), transparent),
+    radial-gradient(1000px 500px at 100% 0%, color-mix(in srgb, var(--accent-3) 10%, transparent), transparent),
+    var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background: linear-gradient(90deg, var(--accent), var(--accent-2) 55%, var(--accent-3));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.card {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface), color-mix(in srgb, var(--surface) 92%, black));
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px -16px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.glow-accent {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent),
+    0 20px 60px -20px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: var(--accent-foreground);
+  font-weight: 600;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.pill {
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+@keyframes float-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float-in {
+  animation: float-in 0.35s ease both;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--foreground);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
 }

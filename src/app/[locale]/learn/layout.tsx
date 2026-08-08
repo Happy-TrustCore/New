@@ -30,14 +30,15 @@ function LearnChrome({
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
-      <header className="flex shrink-0 items-center justify-between border-b border-border bg-surface/60 px-4 py-2.5">
-        <Link href="/dashboard" className="font-mono text-sm font-semibold">
-          <span className="text-accent">&lt;/&gt;</span> CodePath
+      <header className="flex shrink-0 items-center justify-between border-b border-border bg-surface/70 px-4 py-2.5 backdrop-blur-xl">
+        <Link href="/dashboard" className="font-mono text-sm font-semibold transition hover:opacity-90">
+          <span className="text-accent-3">&lt;/&gt;</span> CodePath
           <span className="text-gradient">Academy</span>
         </Link>
         <div className="flex items-center gap-4">
           <LocaleSwitcher />
-          <span className="rounded-full border border-border bg-surface-2 px-3 py-1 text-xs font-mono text-muted">
+          <span className="pill flex items-center gap-1.5 px-3 py-1 text-xs font-mono text-muted">
+            <span className="text-accent-warm">⚡</span>
             {t("level")} {profile?.level ?? 1} · {profile?.xp ?? 0} XP
           </span>
           <Link href="/dashboard" className="text-sm text-muted hover:text-foreground">

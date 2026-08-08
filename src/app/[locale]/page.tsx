@@ -20,47 +20,51 @@ export default async function Home({
       <main className="flex-1">
         {/* Hero */}
         <section className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-20 pt-20 text-center sm:pt-28">
-          <span className="rounded-full border border-border bg-surface px-4 py-1 text-xs text-muted">
+          <span className="animate-float-in pill px-4 py-1 text-xs text-muted">
             {t("hero.badge")}
           </span>
-          <h1 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
+          <h1 className="animate-float-in max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
             {t("hero.titlePrefix")} <span className="text-gradient">{t("hero.titleHighlight")}</span>
             {t("hero.titleSuffix")}
           </h1>
-          <p className="max-w-2xl text-lg text-muted">{t("hero.subtitle")}</p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <p className="animate-float-in max-w-2xl text-lg text-muted">{t("hero.subtitle")}</p>
+          <div className="animate-float-in flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/register"
-              className="rounded-lg bg-accent px-6 py-3 font-semibold text-accent-foreground transition hover:opacity-90"
+              className="btn-primary rounded-lg px-6 py-3"
             >
               {t("hero.ctaPrimary")}
             </Link>
             <a
               href="#roadmap"
-              className="rounded-lg border border-border px-6 py-3 font-semibold text-foreground transition hover:bg-surface"
+              className="rounded-lg border border-border px-6 py-3 font-semibold text-foreground transition hover:border-border-strong hover:bg-surface"
             >
               {t("hero.ctaSecondary")}
             </a>
           </div>
 
           {/* mock editor */}
-          <div className="mt-10 w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-surface text-left shadow-2xl">
-            <div className="flex items-center gap-1.5 border-b border-border px-4 py-3">
+          <div className="glow-accent card animate-float-in mt-10 w-full max-w-2xl overflow-hidden text-left">
+            <div className="flex items-center gap-1.5 border-b border-border bg-surface-2 px-4 py-3">
               <span className="h-3 w-3 rounded-full bg-red-500/70" />
               <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
               <span className="h-3 w-3 rounded-full bg-green-500/70" />
               <span className="ml-3 font-mono text-xs text-muted">lesson-01.html</span>
+              <span className="ml-auto flex items-center gap-1.5 font-mono text-[10px] text-accent">
+                <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
+                live
+              </span>
             </div>
             <pre className="overflow-x-auto p-5 font-mono text-sm leading-relaxed">
               <code>
-                <span className="text-muted">{"<h1>"}</span>
+                <span className="text-accent-2">{"<h1>"}</span>
                 {t("hero.codeSample")}
                 <span className="text-accent"> Ahmed</span>
-                <span className="text-muted">{"</h1>"}</span>
+                <span className="text-accent-2">{"</h1>"}</span>
                 {"\n"}
-                <span className="text-muted">{"<p>"}</span>
+                <span className="text-accent-2">{"<p>"}</span>
                 {t("hero.codeSampleP")}
-                <span className="text-muted">{"</p>"}</span>
+                <span className="text-accent-2">{"</p>"}</span>
               </code>
             </pre>
           </div>
@@ -74,13 +78,18 @@ export default async function Home({
               {t("methods.subtitle")}
             </p>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {METHOD_KEYS.map((key, i) => (
-                <div key={key} className="rounded-xl border border-border bg-surface p-6">
-                  <span className="font-mono text-sm text-accent">0{i + 1}</span>
-                  <h3 className="mt-2 text-lg font-semibold">{t(`methods.${key}.label`)}</h3>
-                  <p className="mt-2 text-sm text-muted">{t(`methods.${key}.desc`)}</p>
-                </div>
-              ))}
+              {METHOD_KEYS.map((key, i) => {
+                const colors = ["text-accent", "text-accent-2", "text-accent-3", "text-accent-warm"];
+                return (
+                  <div key={key} className="card card-hover p-6">
+                    <span className={`font-mono text-sm font-semibold ${colors[i % colors.length]}`}>
+                      0{i + 1}
+                    </span>
+                    <h3 className="mt-2 text-lg font-semibold">{t(`methods.${key}.label`)}</h3>
+                    <p className="mt-2 text-sm text-muted">{t(`methods.${key}.desc`)}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -93,33 +102,35 @@ export default async function Home({
               {t("roadmap.subtitle")}
             </p>
             <div className="mt-12 grid gap-6 lg:grid-cols-3">
-              {TRACK_KEYS.map((key, i) => (
-                <div
-                  key={key}
-                  className="flex flex-col rounded-xl border border-border bg-surface p-6"
-                >
-                  <span className="font-mono text-sm text-muted">
-                    0{i + 1}
-                  </span>
-                  <h3 className="mt-2 text-xl font-semibold">{t(`roadmap.${key}.title`)}</h3>
-                  <p className="mt-2 text-sm text-muted">{t(`roadmap.${key}.tagline`)}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {t(`roadmap.${key}.tech`)
-                      .split(",")
-                      .map((tech) => (
-                        <span
-                          key={tech}
-                          className="rounded-full border border-border bg-surface-2 px-3 py-1 text-xs font-mono text-foreground"
-                        >
-                          {tech}
-                        </span>
-                      ))}
+              {TRACK_KEYS.map((key, i) => {
+                const styles = [
+                  { text: "text-accent", badge: "bg-accent/10 text-accent" },
+                  { text: "text-accent-2", badge: "bg-accent-2/10 text-accent-2" },
+                  { text: "text-accent-3", badge: "bg-accent-3/10 text-accent-3" },
+                ];
+                const style = styles[i % styles.length];
+                return (
+                  <div key={key} className="card card-hover flex flex-col p-6">
+                    <span className={`font-mono text-sm font-semibold ${style.text}`}>
+                      0{i + 1}
+                    </span>
+                    <h3 className="mt-2 text-xl font-semibold">{t(`roadmap.${key}.title`)}</h3>
+                    <p className="mt-2 text-sm text-muted">{t(`roadmap.${key}.tagline`)}</p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {t(`roadmap.${key}.tech`)
+                        .split(",")
+                        .map((tech) => (
+                          <span key={tech} className="pill px-3 py-1 text-xs font-mono text-foreground">
+                            {tech}
+                          </span>
+                        ))}
+                    </div>
+                    <span className={`mt-6 inline-block w-fit rounded-full px-3 py-1 text-xs font-semibold ${style.badge}`}>
+                      {t(`roadmap.${key}.access`)}
+                    </span>
                   </div>
-                  <span className="mt-6 inline-block w-fit rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-                    {t(`roadmap.${key}.access`)}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
@@ -132,7 +143,7 @@ export default async function Home({
               {t("pricing.subtitle")}
             </p>
             <div className="mt-12 grid gap-6 sm:grid-cols-2">
-              <div className="rounded-xl border border-border bg-surface p-8">
+              <div className="card p-8">
                 <h3 className="text-lg font-semibold">{t("pricing.free.title")}</h3>
                 <p className="mt-1 text-3xl font-bold">€0</p>
                 <ul className="mt-6 space-y-3 text-sm text-muted">
@@ -143,12 +154,12 @@ export default async function Home({
                 </ul>
                 <Link
                   href="/register"
-                  className="mt-8 block rounded-lg border border-border py-2.5 text-center font-semibold hover:bg-surface-2"
+                  className="mt-8 block rounded-lg border border-border py-2.5 text-center font-semibold transition hover:border-border-strong hover:bg-surface-2"
                 >
                   {t("pricing.free.cta")}
                 </Link>
               </div>
-              <div className="rounded-xl border border-accent/60 bg-surface p-8 shadow-[0_0_40px_-15px_var(--accent)]">
+              <div className="glow-accent card p-8" style={{ borderColor: "color-mix(in srgb, var(--accent) 55%, var(--border))" }}>
                 <h3 className="text-lg font-semibold text-accent">{t("pricing.pro.title")}</h3>
                 <p className="mt-1 text-3xl font-bold">
                   €4.99<span className="text-base font-normal text-muted">{t("pricing.pro.perMonth")}</span>
@@ -161,7 +172,7 @@ export default async function Home({
                 </ul>
                 <Link
                   href="/register"
-                  className="mt-8 block rounded-lg bg-accent py-2.5 text-center font-semibold text-accent-foreground hover:opacity-90"
+                  className="btn-primary mt-8 block rounded-lg py-2.5 text-center"
                 >
                   {t("pricing.pro.cta")}
                 </Link>

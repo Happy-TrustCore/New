@@ -1,14 +1,11 @@
-import { useTranslations } from "next-intl";
+import { redirect } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
-import { Link, redirect } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { computeLessonAccess, hasPremiumAccess } from "@/lib/lessons";
 import { pickLocale } from "@/lib/i18n-content";
 import { LessonSidebar } from "@/components/learn/LessonSidebar";
-import { LessonContent } from "@/components/learn/LessonContent";
-import { QuizPanel } from "@/components/learn/QuizPanel";
-import { CodeWorkspace } from "@/components/learn/CodeWorkspace";
+import { LessonExperience } from "@/components/learn/LessonExperience";
 
 export default async function LessonPage({
   params,
@@ -86,56 +83,25 @@ export default async function LessonPage({
   }
 
   return (
-    <div className="grid h-full grid-cols-[240px_1fr_1fr] overflow-hidden">
+    <div className="grid h-full grid-cols-[240px_1fr] overflow-hidden">
       <LessonSidebar
         courseTitle={course ? pickLocale(course.title, locale) : ""}
         lessons={withAccess}
         currentLessonId={lesson.id}
       />
-      <div className="overflow-y-auto border-r border-border">
-        <LessonContent
-          title={lesson.title}
-          difficulty={lesson.difficulty}
-          steps={lesson.content}
-        />
-        {quizQuestions && quizQuestions.length > 0 && (
-          <QuizPanel
-            lessonId={lesson.id}
-            questions={quizQuestions}
-            alreadyPassed={myProgress?.quiz_passed ?? false}
-          />
-        )}
-      </div>
-      <div className="overflow-hidden">
-        {target.access === "paywall" ? (
-          <PaywallPanel />
-        ) : (
-          <CodeWorkspace
-            lessonId={lesson.id}
-            starterCode={lesson.starter_code}
-            practicePassed={myProgress?.practice_passed ?? false}
-            hasAssignment={lesson.has_assignment}
-            assignmentPassed={myProgress?.assignment_passed ?? false}
-          />
-        )}
-      </div>
-    </div>
-  );
-}
-
-function PaywallPanel() {
-  const t = useTranslations("learn.paywall");
-
-  return (
-    <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
-      <p className="text-lg font-semibold">{t("title")}</p>
-      <p className="max-w-xs text-sm text-muted">{t("body")}</p>
-      <Link
-        href="/#pricing"
-        className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:opacity-90"
-      >
-        {t("cta")}
-      </Link>
+      <LessonExperience
+        title={lesson.title}
+        difficulty={lesson.difficulty}
+        steps={lesson.content}
+        quizQuestions={quizQuestions ?? []}
+        quizPassed={myProgress?.quiz_passed ?? false}
+        lessonId={lesson.id}
+        starterCode={lesson.starter_code}
+        practicePassed={myProgress?.practice_passed ?? false}
+        hasAssignment={lesson.has_assignment}
+        assignmentPassed={myProgress?.assignment_passed ?? false}
+        paywalled={target.access === "paywall"}
+      />
     </div>
   );
 }

@@ -6,10 +6,10 @@ export function Navbar() {
   const t = useTranslations("nav");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2 font-mono text-lg font-semibold">
-          <span className="text-accent">&lt;/&gt;</span>
+        <Link href="/" className="flex items-center gap-2 font-mono text-lg font-semibold transition hover:opacity-90">
+          <span className="text-accent-3">&lt;/&gt;</span>
           CodePath<span className="text-gradient">Academy</span>
         </Link>
 
@@ -35,7 +35,7 @@ export function Navbar() {
           </Link>
           <Link
             href="/register"
-            className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition hover:opacity-90"
+            className="btn-primary rounded-lg px-4 py-2 text-sm"
           >
             {t("startFree")}
           </Link>

@@ -30,10 +30,22 @@
     "methods": {
       "title": "Das CodePath-Lernsystem",
       "subtitle": "Echte Entwickler lernen nicht eine Sprache nach der anderen. Jede Technologie startet bei null, aber das, was du schon kannst, wächst direkt mit.",
-      "learn": { "label": "Lernen", "desc": "Ein neues Konzept, einfach erklärt anhand eines echten Beispiels." },
-      "use": { "label": "Anwenden", "desc": "Schreibe den Code selbst im integrierten Editor." },
-      "improve": { "label": "Verbessern", "desc": "Baue dasselbe Projekt weiter aus, statt neu anzufangen." },
-      "combine": { "label": "Kombinieren", "desc": "Führe Technologien zu einem echten Ergebnis zusammen." }
+      "learn": {
+        "label": "Lernen",
+        "desc": "Ein neues Konzept, einfach erklärt anhand eines echten Beispiels."
+      },
+      "use": {
+        "label": "Anwenden",
+        "desc": "Schreibe den Code selbst im integrierten Editor."
+      },
+      "improve": {
+        "label": "Verbessern",
+        "desc": "Baue dasselbe Projekt weiter aus, statt neu anzufangen."
+      },
+      "combine": {
+        "label": "Kombinieren",
+        "desc": "Führe Technologien zu einem echten Ergebnis zusammen."
+      }
     },
     "roadmap": {
       "title": "Dein Lernpfad",
@@ -121,15 +133,42 @@
     "achievements": {
       "title": "Erfolge",
       "badges": {
-        "foundation-complete": { "title": "Erste Schritte", "desc": "Schließe den Foundation-Track ab" },
-        "first-website": { "title": "Erste Website", "desc": "Baue deine erste HTML-Seite" },
-        "css-designer": { "title": "CSS-Designer", "desc": "Gestalte deine erste Website mit CSS" },
-        "frontend-graduate": { "title": "Frontend-Absolvent", "desc": "Schließe alle kostenlosen Frontend-Lektionen ab" },
-        "javascript-builder": { "title": "JavaScript-Baumeister", "desc": "Baue einen funktionierenden Taschenrechner mit JavaScript" },
-        "backend-explorer": { "title": "Backend-Entdecker", "desc": "Erstelle deinen ersten Server" },
-        "backend-graduate": { "title": "Backend-Absolvent", "desc": "Schließe alle kostenlosen Backend-Lektionen ab" },
-        "backend-engineer": { "title": "Backend-Ingenieur", "desc": "Baue ein Mini-Authentifizierungssystem" },
-        "full-stack-foundations": { "title": "Full-Stack-Grundlagen", "desc": "Schließe die kostenlosen Frontend- und Backend-Kurse ab" }
+        "foundation-complete": {
+          "title": "Erste Schritte",
+          "desc": "Schließe den Foundation-Track ab"
+        },
+        "first-website": {
+          "title": "Erste Website",
+          "desc": "Baue deine erste HTML-Seite"
+        },
+        "css-designer": {
+          "title": "CSS-Designer",
+          "desc": "Gestalte deine erste Website mit CSS"
+        },
+        "frontend-graduate": {
+          "title": "Frontend-Absolvent",
+          "desc": "Schließe alle kostenlosen Frontend-Lektionen ab"
+        },
+        "javascript-builder": {
+          "title": "JavaScript-Baumeister",
+          "desc": "Baue einen funktionierenden Taschenrechner mit JavaScript"
+        },
+        "backend-explorer": {
+          "title": "Backend-Entdecker",
+          "desc": "Erstelle deinen ersten Server"
+        },
+        "backend-graduate": {
+          "title": "Backend-Absolvent",
+          "desc": "Schließe alle kostenlosen Backend-Lektionen ab"
+        },
+        "backend-engineer": {
+          "title": "Backend-Ingenieur",
+          "desc": "Baue ein Mini-Authentifizierungssystem"
+        },
+        "full-stack-foundations": {
+          "title": "Full-Stack-Grundlagen",
+          "desc": "Schließe die kostenlosen Frontend- und Backend-Kurse ab"
+        }
       }
     },
     "portfolio": {
@@ -139,11 +178,6 @@
     }
   },
   "learn": {
-    "paywall": {
-      "title": "Diese Lektion braucht CodePath Pro",
-      "body": "Du hast alle kostenlosen Lektionen dieses Kurses abgeschlossen. Upgrade für 4,99 €/Monat, um weiterzumachen.",
-      "cta": "Pläne ansehen"
-    },
     "sidebar": {
       "pro": "Pro"
     },
@@ -176,7 +210,15 @@
       "assignmentTitle": "Aufgabe",
       "assignmentNamePlaceholder": "Benenne dein Projekt",
       "submitAssignment": "Ins Portfolio einreichen",
-      "assignmentSubmitted": "In dein Portfolio eingereicht"
+      "assignmentSubmitted": "In dein Portfolio eingereicht",
+      "live": "Live"
+    },
+    "dock": {
+      "title": "Übung",
+      "expand": "Öffnen",
+      "collapse": "Schließen",
+      "paywall": "Die praktische Übung dieser Lektion braucht CodePath Pro.",
+      "upgrade": "Pläne ansehen"
     }
   }
 }

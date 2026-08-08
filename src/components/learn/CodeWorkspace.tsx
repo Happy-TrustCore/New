@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import CodeMirror from "@uiw/react-codemirror";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { javascript } from "@codemirror/lang-javascript";
@@ -13,7 +14,8 @@ import type { StarterCode } from "@/lib/supabase/types";
 
 type Lang = "html" | "css" | "js";
 
-const LANG_LABEL: Record<Lang, string> = { html: "HTML", css: "CSS", js: "JS" };
+const LANG_DOT: Record<Lang, string> = { html: "bg-orange-400", css: "bg-sky-400", js: "bg-yellow-300" };
+const LANG_FILE: Record<Lang, string> = { html: "index.html", css: "style.css", js: "script.js" };
 
 function getExtensions(lang: Lang) {
   switch (lang) {
@@ -103,6 +105,14 @@ export function CodeWorkspace({
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
+  useEffect(() => {
+    const handle = setTimeout(() => {
+      setConsoleLines([]);
+      setSrcDoc(buildPreviewDoc(code, enabled));
+    }, 500);
+    return () => clearTimeout(handle);
+  }, [code, enabled]);
+
   function runCode() {
     setConsoleLines([]);
     setSrcDoc(buildPreviewDoc(code, enabled));
@@ -137,26 +147,27 @@ export function CodeWorkspace({
   }
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between border-b border-border px-3 py-2">
-        <div className="flex gap-1">
+    <div className="flex h-full flex-col bg-[#1e1e1e]">
+      <div className="flex items-center justify-between border-b border-black/40 bg-[#252526] px-2 py-0">
+        <div className="flex gap-0.5">
           {enabled.map((lang) => (
             <button
               key={lang}
               onClick={() => setActiveTab(lang)}
-              className={`rounded-md px-3 py-1 font-mono text-xs ${
+              className={`flex items-center gap-2 border-t-2 px-3 py-2 font-mono text-xs transition ${
                 activeTab === lang
-                  ? "bg-surface-2 text-foreground"
-                  : "text-muted hover:text-foreground"
+                  ? "border-accent-2 bg-[#1e1e1e] text-foreground"
+                  : "border-transparent text-muted hover:bg-white/5 hover:text-foreground"
               }`}
             >
-              {LANG_LABEL[lang]}
+              <span className={`h-2 w-2 rounded-full ${LANG_DOT[lang]}`} />
+              {LANG_FILE[lang]}
             </button>
           ))}
         </div>
         <button
           onClick={runCode}
-          className="rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-accent-foreground hover:opacity-90"
+          className="btn-primary mr-1 flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs"
         >
           ▶ {t("run")}
         </button>
@@ -166,15 +177,19 @@ export function CodeWorkspace({
         <CodeMirror
           value={code[activeTab]}
           height="100%"
-          theme="dark"
+          theme={vscodeDark}
           extensions={getExtensions(activeTab)}
           onChange={(value) => setCode((c) => ({ ...c, [activeTab]: value }))}
         />
       </div>
 
-      <div className="flex min-h-0 flex-[2] flex-col border-t border-border">
-        <div className="border-b border-border bg-surface-2 px-3 py-1.5 text-xs font-mono text-muted">
-          {t("preview")}
+      <div className="flex min-h-0 flex-[2] flex-col border-t border-black/40">
+        <div className="flex items-center justify-between border-b border-black/40 bg-[#252526] px-3 py-1.5 text-xs font-mono text-muted">
+          <span>{t("preview")}</span>
+          <span className="flex items-center gap-1.5 text-accent">
+            <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
+            {t("live")}
+          </span>
         </div>
         <iframe
           srcDoc={srcDoc}
@@ -182,7 +197,7 @@ export function CodeWorkspace({
           title={t("preview")}
           className="min-h-0 flex-1 bg-white"
         />
-        <div className="h-24 shrink-0 overflow-y-auto border-t border-border bg-black px-3 py-2 font-mono text-xs">
+        <div className="h-24 shrink-0 overflow-y-auto border-t border-black/40 bg-black px-3 py-2 font-mono text-xs">
           {consoleLines.length === 0 ? (
             <p className="text-muted">{t("consolePlaceholder")}</p>
           ) : (
@@ -204,21 +219,21 @@ export function CodeWorkspace({
         </div>
       </div>
 
-      <div className="shrink-0 border-t border-border p-3">
+      <div className="shrink-0 border-t border-black/40 bg-[#252526] p-3">
         <button
           onClick={handleComplete}
           disabled={isPending || saveState === "done"}
-          className="w-full rounded-lg bg-accent py-2 text-sm font-semibold text-accent-foreground transition hover:opacity-90 disabled:opacity-60"
+          className="btn-primary w-full rounded-lg py-2 text-sm disabled:opacity-60"
         >
           {isPending ? t("saving") : saveState === "done" ? `✓ ${t("practiceComplete")}` : t("markPracticeComplete")}
         </button>
         {saveState === "error" && (
-          <p className="mt-2 text-xs text-red-400">{t("saveError")}</p>
+          <p className="mt-2 text-xs text-danger">{t("saveError")}</p>
         )}
       </div>
 
       {hasAssignment && (
-        <div className="shrink-0 border-t border-border p-3">
+        <div className="shrink-0 border-t border-black/40 bg-[#252526] p-3">
           <p className="mb-2 text-xs font-semibold text-accent">{t("assignmentTitle")}</p>
           {assignmentState === "done" ? (
             <p className="text-sm text-accent">✓ {t("assignmentSubmitted")}</p>

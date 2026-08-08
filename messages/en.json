@@ -30,10 +30,22 @@
     "methods": {
       "title": "The CodePath teaching system",
       "subtitle": "Real developers don’t learn one language at a time. Every technology starts from zero, but what you already know keeps growing right alongside it.",
-      "learn": { "label": "Learn", "desc": "A new concept, explained simply with a real example." },
-      "use": { "label": "Use", "desc": "Write the code yourself in the built-in editor." },
-      "improve": { "label": "Improve", "desc": "Take the same project further, never start over." },
-      "combine": { "label": "Combine", "desc": "Bring technologies together into one real result." }
+      "learn": {
+        "label": "Learn",
+        "desc": "A new concept, explained simply with a real example."
+      },
+      "use": {
+        "label": "Use",
+        "desc": "Write the code yourself in the built-in editor."
+      },
+      "improve": {
+        "label": "Improve",
+        "desc": "Take the same project further, never start over."
+      },
+      "combine": {
+        "label": "Combine",
+        "desc": "Bring technologies together into one real result."
+      }
     },
     "roadmap": {
       "title": "Your learning path",
@@ -121,15 +133,42 @@
     "achievements": {
       "title": "Achievements",
       "badges": {
-        "foundation-complete": { "title": "First Steps", "desc": "Complete the Foundation track" },
-        "first-website": { "title": "First Website", "desc": "Build your first HTML page" },
-        "css-designer": { "title": "CSS Designer", "desc": "Style your first website with CSS" },
-        "frontend-graduate": { "title": "Frontend Graduate", "desc": "Complete all free Frontend lessons" },
-        "javascript-builder": { "title": "JavaScript Builder", "desc": "Build a working calculator with JavaScript" },
-        "backend-explorer": { "title": "Backend Explorer", "desc": "Create your first server" },
-        "backend-graduate": { "title": "Backend Graduate", "desc": "Complete all free Backend lessons" },
-        "backend-engineer": { "title": "Backend Engineer", "desc": "Build a mini user authentication system" },
-        "full-stack-foundations": { "title": "Full Stack Foundations", "desc": "Complete the Frontend and Backend free tracks" }
+        "foundation-complete": {
+          "title": "First Steps",
+          "desc": "Complete the Foundation track"
+        },
+        "first-website": {
+          "title": "First Website",
+          "desc": "Build your first HTML page"
+        },
+        "css-designer": {
+          "title": "CSS Designer",
+          "desc": "Style your first website with CSS"
+        },
+        "frontend-graduate": {
+          "title": "Frontend Graduate",
+          "desc": "Complete all free Frontend lessons"
+        },
+        "javascript-builder": {
+          "title": "JavaScript Builder",
+          "desc": "Build a working calculator with JavaScript"
+        },
+        "backend-explorer": {
+          "title": "Backend Explorer",
+          "desc": "Create your first server"
+        },
+        "backend-graduate": {
+          "title": "Backend Graduate",
+          "desc": "Complete all free Backend lessons"
+        },
+        "backend-engineer": {
+          "title": "Backend Engineer",
+          "desc": "Build a mini user authentication system"
+        },
+        "full-stack-foundations": {
+          "title": "Full Stack Foundations",
+          "desc": "Complete the Frontend and Backend free tracks"
+        }
       }
     },
     "portfolio": {
@@ -139,11 +178,6 @@
     }
   },
   "learn": {
-    "paywall": {
-      "title": "This lesson needs CodePath Pro",
-      "body": "You’ve completed all free lessons in this course. Upgrade for €4.99/month to keep going.",
-      "cta": "See plans"
-    },
     "sidebar": {
       "pro": "Pro"
     },
@@ -176,7 +210,15 @@
       "assignmentTitle": "Assignment",
       "assignmentNamePlaceholder": "Name your project",
       "submitAssignment": "Submit to portfolio",
-      "assignmentSubmitted": "Submitted to your portfolio"
+      "assignmentSubmitted": "Submitted to your portfolio",
+      "live": "Live"
+    },
+    "dock": {
+      "title": "Practice",
+      "expand": "Open",
+      "collapse": "Close",
+      "paywall": "Hands-on practice for this lesson needs CodePath Pro.",
+      "upgrade": "See plans"
     }
   }
 }
