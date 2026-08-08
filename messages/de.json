@@ -129,6 +129,11 @@
         "backend-graduate": { "title": "Backend-Absolvent", "desc": "Schließe alle kostenlosen Backend-Lektionen ab" },
         "full-stack-foundations": { "title": "Full-Stack-Grundlagen", "desc": "Schließe die kostenlosen Frontend- und Backend-Kurse ab" }
       }
+    },
+    "portfolio": {
+      "title": "Portfolio",
+      "empty": "Projekte, die du für Aufgaben einreichst, erscheinen hier.",
+      "viewLesson": "Lektion ansehen"
     }
   },
   "learn": {
@@ -165,7 +170,11 @@
       "saving": "Wird gespeichert…",
       "practiceComplete": "Übung abgeschlossen",
       "markPracticeComplete": "Übung als erledigt markieren",
-      "saveError": "Etwas ist schiefgelaufen — versuch's nochmal."
+      "saveError": "Etwas ist schiefgelaufen — versuch's nochmal.",
+      "assignmentTitle": "Aufgabe",
+      "assignmentNamePlaceholder": "Benenne dein Projekt",
+      "submitAssignment": "Ins Portfolio einreichen",
+      "assignmentSubmitted": "In dein Portfolio eingereicht"
     }
   }
 }

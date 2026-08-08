@@ -39,6 +39,7 @@ create table if not exists lessons (
   starter_code jsonb,                    -- { html, css, js } seed for the editor (code isn't translated)
   difficulty text not null default 'beginner' check (difficulty in ('beginner', 'intermediate', 'advanced')),
   is_free boolean not null default false,
+  has_assignment boolean not null default false, -- requires a project submission (saved to `projects`) to complete
   sort_order integer not null,           -- absolute order within the course; drives unlock logic
   created_at timestamptz not null default now()
 );

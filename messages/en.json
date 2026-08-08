@@ -129,6 +129,11 @@
         "backend-graduate": { "title": "Backend Graduate", "desc": "Complete all free Backend lessons" },
         "full-stack-foundations": { "title": "Full Stack Foundations", "desc": "Complete the Frontend and Backend free tracks" }
       }
+    },
+    "portfolio": {
+      "title": "Portfolio",
+      "empty": "Projects you submit for assignments will show up here.",
+      "viewLesson": "View lesson"
     }
   },
   "learn": {
@@ -165,7 +170,11 @@
       "saving": "Saving…",
       "practiceComplete": "Practice complete",
       "markPracticeComplete": "Mark practice complete",
-      "saveError": "Something went wrong — try again."
+      "saveError": "Something went wrong — try again.",
+      "assignmentTitle": "Assignment",
+      "assignmentNamePlaceholder": "Name your project",
+      "submitAssignment": "Submit to portfolio",
+      "assignmentSubmitted": "Submitted to your portfolio"
     }
   }
 }

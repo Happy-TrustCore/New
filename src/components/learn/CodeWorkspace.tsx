@@ -8,6 +8,7 @@ import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { javascript } from "@codemirror/lang-javascript";
 import { submitPractice } from "@/lib/actions/practice";
+import { submitAssignment } from "@/lib/actions/assignment";
 import type { StarterCode } from "@/lib/supabase/types";
 
 type Lang = "html" | "css" | "js";
@@ -55,14 +56,19 @@ export function CodeWorkspace({
   lessonId,
   starterCode,
   practicePassed,
+  hasAssignment,
+  assignmentPassed,
 }: {
   lessonId: string;
   starterCode: StarterCode | null;
   practicePassed: boolean;
+  hasAssignment: boolean;
+  assignmentPassed: boolean;
 }) {
   const router = useRouter();
   const t = useTranslations("learn.editor");
   const [isPending, startTransition] = useTransition();
+  const [isSubmittingAssignment, startAssignmentTransition] = useTransition();
 
   const enabled = useMemo<Lang[]>(() => {
     const langs: Lang[] = [];
@@ -82,6 +88,10 @@ export function CodeWorkspace({
   const [consoleLines, setConsoleLines] = useState<{ type: string; text: string }[]>([]);
   const [saveState, setSaveState] = useState<"idle" | "done" | "error">(
     practicePassed ? "done" : "idle"
+  );
+  const [projectTitle, setProjectTitle] = useState("");
+  const [assignmentState, setAssignmentState] = useState<"idle" | "done" | "error">(
+    assignmentPassed ? "done" : "idle"
   );
 
   useEffect(() => {
@@ -106,6 +116,22 @@ export function CodeWorkspace({
         return;
       }
       setSaveState("done");
+      router.refresh();
+    });
+  }
+
+  function handleSubmitAssignment() {
+    startAssignmentTransition(async () => {
+      const projectCode: StarterCode = {};
+      enabled.forEach((lang) => {
+        projectCode[lang] = code[lang];
+      });
+      const result = await submitAssignment(lessonId, projectTitle, projectCode);
+      if (!result.ok) {
+        setAssignmentState("error");
+        return;
+      }
+      setAssignmentState("done");
       router.refresh();
     });
   }
@@ -190,6 +216,34 @@ export function CodeWorkspace({
           <p className="mt-2 text-xs text-red-400">{t("saveError")}</p>
         )}
       </div>
+
+      {hasAssignment && (
+        <div className="shrink-0 border-t border-border p-3">
+          <p className="mb-2 text-xs font-semibold text-accent">{t("assignmentTitle")}</p>
+          {assignmentState === "done" ? (
+            <p className="text-sm text-accent">✓ {t("assignmentSubmitted")}</p>
+          ) : (
+            <>
+              <input
+                value={projectTitle}
+                onChange={(e) => setProjectTitle(e.target.value)}
+                placeholder={t("assignmentNamePlaceholder")}
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none focus:border-accent"
+              />
+              <button
+                onClick={handleSubmitAssignment}
+                disabled={isSubmittingAssignment || !projectTitle.trim()}
+                className="mt-2 w-full rounded-lg border border-accent/60 py-2 text-sm font-semibold text-accent transition hover:bg-accent/10 disabled:opacity-50"
+              >
+                {isSubmittingAssignment ? t("saving") : t("submitAssignment")}
+              </button>
+              {assignmentState === "error" && (
+                <p className="mt-2 text-xs text-red-400">{t("saveError")}</p>
+              )}
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -59,6 +59,7 @@ export type Lesson = {
   starter_code: StarterCode | null;
   difficulty: Difficulty;
   is_free: boolean;
+  has_assignment: boolean;
   sort_order: number;
   created_at: string;
 };

@@ -70,8 +70,9 @@ export async function finalizeIfReady(supabase: Client, userId: string, lessonId
   const practiceOk = !practiceRequired || progress.practice_passed;
   const quizRequired = (quizCount ?? 0) > 0;
   const quizOk = !quizRequired || progress.quiz_passed;
+  const assignmentOk = !lesson.has_assignment || progress.assignment_passed;
 
-  if (!practiceOk || !quizOk) return;
+  if (!practiceOk || !quizOk || !assignmentOk) return;
 
   await supabase
     .from("lesson_progress")

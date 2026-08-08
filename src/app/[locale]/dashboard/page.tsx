@@ -17,7 +17,7 @@ export default async function DashboardPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: profile }, { data: courses }, { data: lessons }, { data: completed }] =
+  const [{ data: profile }, { data: courses }, { data: lessons }, { data: completed }, { data: projects }] =
     await Promise.all([
       supabase.from("profiles").select("*").eq("id", user!.id).single(),
       supabase.from("courses").select("*").order("sort_order"),
@@ -27,6 +27,11 @@ export default async function DashboardPage({
         .select("lesson_id")
         .eq("user_id", user!.id)
         .eq("status", "completed"),
+      supabase
+        .from("projects")
+        .select("*")
+        .eq("user_id", user!.id)
+        .order("submitted_at", { ascending: false }),
     ]);
 
   const completedIds = new Set((completed ?? []).map((row) => row.lesson_id));
@@ -60,12 +65,23 @@ export default async function DashboardPage({
   );
   const badgeStatus = computeBadgeStatus(completedSlugs);
 
+  const portfolio = (projects ?? []).map((p) => {
+    const lesson = lessons?.find((l) => l.id === p.lesson_id);
+    return {
+      id: p.id,
+      title: p.title,
+      lessonSlug: lesson?.slug,
+      submittedAt: p.submitted_at,
+    };
+  });
+
   return (
     <DashboardBody
       name={name}
       currentTrack={currentTrack}
       tracks={tracks}
       badgeStatus={badgeStatus}
+      portfolio={portfolio}
     />
   );
 }
@@ -79,16 +95,25 @@ type Track = {
   nextLesson?: { slug: string };
 };
 
+type PortfolioItem = {
+  id: string;
+  title: string;
+  lessonSlug?: string;
+  submittedAt: string;
+};
+
 function DashboardBody({
   name,
   currentTrack,
   tracks,
   badgeStatus,
+  portfolio,
 }: {
   name: string;
   currentTrack: Track;
   tracks: Track[];
   badgeStatus: ReturnType<typeof computeBadgeStatus>;
+  portfolio: PortfolioItem[];
 }) {
   const t = useTranslations("dashboard");
 
@@ -162,6 +187,32 @@ function DashboardBody({
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="mt-6">
+        <p className="text-sm font-semibold">{t("portfolio.title")}</p>
+        {portfolio.length === 0 ? (
+          <p className="mt-2 text-sm text-muted">{t("portfolio.empty")}</p>
+        ) : (
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            {portfolio.map((item) => (
+              <div key={item.id} className="rounded-xl border border-border bg-surface p-4">
+                <p className="text-sm font-semibold">{item.title}</p>
+                <p className="mt-1 text-xs text-muted">
+                  {new Date(item.submittedAt).toLocaleDateString()}
+                </p>
+                {item.lessonSlug && (
+                  <Link
+                    href={`/learn/${item.lessonSlug}`}
+                    className="mt-2 inline-block text-xs text-accent hover:underline"
+                  >
+                    {t("portfolio.viewLesson")} &rarr;
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

@@ -69,6 +69,7 @@ function lessonFieldsFromForm(formData: FormData) {
     },
     difficulty: String(formData.get("difficulty")) as Difficulty,
     is_free: formData.get("is_free") === "on",
+    has_assignment: formData.get("has_assignment") === "on",
     sort_order: Number(formData.get("sort_order")),
     content: parseSteps(
       String(formData.get("content_en") ?? ""),

@@ -82,6 +82,14 @@ export function LessonFormFields({
           <input type="checkbox" name="is_free" defaultChecked={lesson?.is_free ?? false} />
           <span className="text-sm">Free lesson</span>
         </label>
+        <label className="mt-6 flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="has_assignment"
+            defaultChecked={lesson?.has_assignment ?? false}
+          />
+          <span className="text-sm">Requires a project submission (assignment)</span>
+        </label>
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">

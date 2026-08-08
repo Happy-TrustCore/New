@@ -114,6 +114,8 @@ export default async function LessonPage({
             lessonId={lesson.id}
             starterCode={lesson.starter_code}
             practicePassed={myProgress?.practice_passed ?? false}
+            hasAssignment={lesson.has_assignment}
+            assignmentPassed={myProgress?.assignment_passed ?? false}
           />
         )}
       </div>
