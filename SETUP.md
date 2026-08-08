@@ -38,6 +38,13 @@ registers.
 > "Confirm email" while developing so new accounts can log in immediately
 > without clicking a confirmation link.
 
+> For "Forgot password" to work: in **Authentication -> URL Configuration**,
+> add both `http://localhost:3000/reset-password` (and the German
+> `/de/reset-password` variant) and your production
+> `https://your-domain/reset-password` URLs to **Redirect URLs**. Supabase
+> silently ignores `redirectTo` for any URL not on this list, so without
+> this the reset email link sends users to the wrong place.
+
 ### Add the curriculum
 
 Paste [`db/seed.sql`](db/seed.sql) into the SQL Editor and run it. This adds
@@ -140,6 +147,8 @@ account to reach the dashboard.
 ## What's built so far
 
 - Landing page, register/login (Supabase Auth), protected dashboard shell
+- Forgot/reset password (`/forgot-password`, `/reset-password`) — see the
+  Supabase Redirect URLs note above, required for the email link to work
 - Full database schema with row-level security
 - Strict lesson-unlock model, enforced both when listing lessons and again
   server-side before any progress is written (`src/lib/lessons.ts`,

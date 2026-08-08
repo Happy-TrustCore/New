@@ -1,8 +1,10 @@
 "use server";
 
 import { redirect as plainRedirect } from "next/navigation";
+import { headers } from "next/headers";
 import { redirect } from "@/i18n/navigation";
 import { getLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 
 export async function signUp(formData: FormData) {
@@ -77,4 +79,37 @@ export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect({ href: "/", locale });
+}
+
+export async function requestPasswordReset(formData: FormData) {
+  const locale = await getLocale();
+  const email = String(formData.get("email") ?? "").trim();
+
+  if (!email) {
+    redirect({
+      href: `/forgot-password?error=${encodeURIComponent("Enter your email address.")}`,
+      locale,
+    });
+  }
+
+  const headerList = await headers();
+  const host = headerList.get("host") ?? "";
+  const protocol = headerList.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  const origin = headerList.get("origin") ?? `${protocol}://${host}`;
+  const resetPath =
+    locale === routing.defaultLocale ? "/reset-password" : `/${locale}/reset-password`;
+
+  const supabase = await createClient();
+  await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${origin}${resetPath}`,
+  });
+
+  // Deliberately the same message whether or not the email exists — Supabase
+  // itself doesn't reveal that either, so don't let this page leak it.
+  redirect({
+    href: `/login?notice=${encodeURIComponent(
+      "If that email has an account, a reset link is on its way."
+    )}`,
+    locale,
+  });
 }

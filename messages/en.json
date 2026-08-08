@@ -111,7 +111,26 @@
       "password": "Password",
       "submit": "Log in",
       "newHere": "New here?",
-      "startFree": "Start learning free"
+      "startFree": "Start learning free",
+      "forgotPassword": "Forgot password?"
+    },
+    "forgotPassword": {
+      "backLogin": "Back to login",
+      "title": "Reset your password",
+      "subtitle": "Enter your email and we'll send you a reset link.",
+      "email": "Email",
+      "submit": "Send reset link"
+    },
+    "resetPassword": {
+      "title": "Choose a new password",
+      "subtitle": "Enter a new password for your account.",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "submit": "Save new password",
+      "saving": "Saving…",
+      "success": "Password updated — taking you to your dashboard…",
+      "tooShort": "Password must be at least 8 characters.",
+      "mismatch": "Passwords don't match."
     }
   },
   "dashboardChrome": {
