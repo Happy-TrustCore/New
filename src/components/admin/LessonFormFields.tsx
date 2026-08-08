@@ -122,7 +122,7 @@ export function LessonFormFields({
           Code editor — leave a language unchecked if it hasn&rsquo;t been introduced yet.
           Code itself is not translated.
         </p>
-        {(["html", "css", "js"] as const).map((lang) => (
+        {(["html", "css", "js", "jsx"] as const).map((lang) => (
           <div key={lang}>
             <label className="flex items-center gap-2">
               <input

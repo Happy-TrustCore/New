@@ -12,10 +12,20 @@ import { submitPractice } from "@/lib/actions/practice";
 import { submitAssignment } from "@/lib/actions/assignment";
 import type { StarterCode } from "@/lib/supabase/types";
 
-type Lang = "html" | "css" | "js";
+type Lang = "html" | "css" | "js" | "jsx";
 
-const LANG_DOT: Record<Lang, string> = { html: "bg-orange-400", css: "bg-sky-400", js: "bg-yellow-300" };
-const LANG_FILE: Record<Lang, string> = { html: "index.html", css: "style.css", js: "script.js" };
+const LANG_DOT: Record<Lang, string> = {
+  html: "bg-orange-400",
+  css: "bg-sky-400",
+  js: "bg-yellow-300",
+  jsx: "bg-cyan-400",
+};
+const LANG_FILE: Record<Lang, string> = {
+  html: "index.html",
+  css: "style.css",
+  js: "script.js",
+  jsx: "App.jsx",
+};
 
 function getExtensions(lang: Lang) {
   switch (lang) {
@@ -25,13 +35,25 @@ function getExtensions(lang: Lang) {
       return [css()];
     case "js":
       return [javascript()];
+    case "jsx":
+      return [javascript({ jsx: true })];
   }
 }
 
 function buildPreviewDoc(code: Record<Lang, string>, enabled: Lang[]) {
+  const hasJsx = enabled.includes("jsx");
   const bodyHtml = enabled.includes("html") ? code.html : "";
   const styleTag = enabled.includes("css") ? `<style>${code.css}</style>` : "";
   const scriptTag = enabled.includes("js") ? `<script>${code.js}<\/script>` : "";
+  const rootDiv = hasJsx ? '<div id="root"></div>' : "";
+  const reactScripts = hasJsx
+    ? `<script src="https://unpkg.com/react@18/umd/react.development.js"><\/script>
+       <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"><\/script>
+       <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>`
+    : "";
+  const jsxScript = hasJsx
+    ? `<script type="text/babel" data-presets="react">${code.jsx}<\/script>`
+    : "";
 
   const consoleShim = `<script>
     function send(type, args) {
@@ -51,7 +73,7 @@ function buildPreviewDoc(code: Record<Lang, string>, enabled: Lang[]) {
     window.addEventListener("error", function (e) { send("error", [e.message]); });
   <\/script>`;
 
-  return `<!doctype html><html><head>${consoleShim}${styleTag}</head><body>${bodyHtml}${scriptTag}</body></html>`;
+  return `<!doctype html><html><head>${consoleShim}${reactScripts}${styleTag}</head><body>${bodyHtml}${rootDiv}${scriptTag}${jsxScript}</body></html>`;
 }
 
 export function CodeWorkspace({
@@ -77,6 +99,7 @@ export function CodeWorkspace({
     if (starterCode?.html !== undefined) langs.push("html");
     if (starterCode?.css !== undefined) langs.push("css");
     if (starterCode?.js !== undefined) langs.push("js");
+    if (starterCode?.jsx !== undefined) langs.push("jsx");
     return langs.length > 0 ? langs : ["html"];
   }, [starterCode]);
 
@@ -84,6 +107,7 @@ export function CodeWorkspace({
     html: starterCode?.html ?? "<h1>Hello</h1>",
     css: starterCode?.css ?? "",
     js: starterCode?.js ?? "",
+    jsx: starterCode?.jsx ?? "",
   });
   const [activeTab, setActiveTab] = useState<Lang>(enabled[0]);
   const [srcDoc, setSrcDoc] = useState(() => buildPreviewDoc(code, enabled));

@@ -62,6 +62,15 @@ guarded), and safe to run on a database that's never seen `seed.sql` before
 or one that's already had it run — it renumbers existing lessons to make
 room for the new ones either way.
 
+Then paste [`db/react_lessons.sql`](db/react_lessons.sql) and run it too. It
+appends 7 paid-tier Frontend lessons covering React — components, props,
+state (`useState`), events, list rendering, and a "Task Tracker" mini
+project — right after the JavaScript lessons. 53 lessons total, 50 with a
+quiz, 9 requiring a project submission. These are the first lessons that use
+the editor's new `jsx` language tab: the preview iframe loads React,
+ReactDOM, and Babel Standalone from a CDN and transforms JSX in the browser,
+so no build step or bundler is needed. Safe to paste more than once.
+
 ### Make yourself an admin
 
 Register a normal account first (step 5 below), then in the SQL Editor run:
@@ -93,18 +102,22 @@ account to reach the dashboard.
   `assignment.ts`) — free-tier paywalling and sequential unlocking are
   separate checks, so a lesson can be sequentially unlocked but still
   require Pro
-- The three-pane `/learn/[lessonSlug]` page: course sidebar (locked / free-to-
-  continue / paywalled / completed), step-by-step lesson content, and a live
-  HTML/CSS/JS code editor (CodeMirror) with a Run button, sandboxed iframe
-  preview, and a captured console panel
+- The `/learn/[lessonSlug]` page: course sidebar (locked / free-to-continue /
+  paywalled / completed), a wide step-by-step lesson-content column, and a
+  collapsible bottom "practice dock" (auto-opens once the lesson steps are
+  finished) holding a VS Code–themed CodeMirror editor for HTML/CSS/JS/JSX,
+  a sandboxed iframe preview that auto-live-reloads as you type, and a
+  captured console panel
 - A lesson only counts as complete once practice, quiz (when present), and
   assignment (when required) are all passed — matching the PRD's unlock
   rule. XP is awarded once, when everything required is done.
 - Assignment flow + portfolio: lessons can require a project submission,
   saved to a real "Portfolio" section on the dashboard
-- Real curriculum (`db/seed.sql`): 42 lessons across Foundation, Frontend
-  (through JavaScript projects), and Backend (through a mini auth system),
-  39 with quizzes, 4 with assignments — see "Add the curriculum" above
+- Real curriculum (`db/seed.sql` + `db/checkpoint_exams.sql` +
+  `db/react_lessons.sql`): 53 lessons across Foundation, Frontend (through
+  React), and Backend (through a mini auth system), 50 with quizzes, 9 with
+  assignments, plus mid-part checkpoint exams — see "Add the curriculum"
+  above
 - An admin panel (`/admin`) — lesson + quiz CRUD, an overview dashboard, and
   a users page for manually granting Pro access (no payment provider is
   wired up yet, so this is how you comp accounts for now)
@@ -125,8 +138,8 @@ account to reach the dashboard.
 - AI mentor — needs you to pick an LLM provider and create an API key
 - Real subscription/payment integration — needs a payment provider account
   (paywall UI + manual admin grant exist, nothing actually charges yet)
-- React lessons, deeper Node/Express/database content, and course content
-  past what's listed above — the admin panel makes this authorable without
-  touching code
+- Deeper Node/Express/database content, React hooks beyond `useState`
+  (routing, data fetching), and course content past what's listed above —
+  the admin panel makes this authorable without touching code
 
 All of this can continue to run on free tiers (Vercel + Supabase free plans).
