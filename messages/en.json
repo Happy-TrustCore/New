@@ -136,7 +136,8 @@
   "dashboardChrome": {
     "level": "Level",
     "dashboard": "Dashboard",
-    "logout": "Log out"
+    "logout": "Log out",
+    "settings": "Settings"
   },
   "dashboard": {
     "welcome": "Welcome, {name}",
@@ -288,6 +289,30 @@
       "title": "Real projects need CodePath Pro",
       "body": "Upgrade to see freelance-style opportunities from real small businesses.",
       "cta": "See plans"
+    }
+  },
+  "settings": {
+    "title": "Account settings",
+    "profile": {
+      "title": "Profile",
+      "name": "Name",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Saved"
+    },
+    "password": {
+      "title": "Change password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "save": "Update password",
+      "saving": "Saving…",
+      "saved": "Password updated"
+    },
+    "danger": {
+      "title": "Delete account",
+      "body": "This permanently deletes your account and all your data — progress, portfolio, certificates, everything. This can't be undone. If you have an active Pro subscription, it will be canceled first.",
+      "confirmLabel": "Type \"{word}\" to confirm",
+      "submit": "Permanently delete my account"
     }
   }
 }

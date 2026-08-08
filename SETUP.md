@@ -204,6 +204,11 @@ account to reach the dashboard.
 - Landing page, register/login (Supabase Auth), protected dashboard shell
 - Forgot/reset password (`/forgot-password`, `/reset-password`) — see the
   Supabase Redirect URLs note above, required for the email link to work
+- Account settings (`/settings`): change display name, change password, and
+  permanently delete your account — the privacy policy promises deletion
+  rights, this is what actually does it. Cancels any active Stripe
+  subscription first, then removes the auth user via the admin API, which
+  cascades through every other table via existing foreign keys
 - Full database schema with row-level security
 - Strict lesson-unlock model, enforced both when listing lessons and again
   server-side before any progress is written (`src/lib/lessons.ts`,

@@ -136,7 +136,8 @@
   "dashboardChrome": {
     "level": "Level",
     "dashboard": "Dashboard",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "settings": "Einstellungen"
   },
   "dashboard": {
     "welcome": "Willkommen, {name}",
@@ -288,6 +289,30 @@
       "title": "Echte Projekte brauchen CodePath Pro",
       "body": "Upgrade, um freiberufliche Möglichkeiten von echten kleinen Unternehmen zu sehen.",
       "cta": "Pläne ansehen"
+    }
+  },
+  "settings": {
+    "title": "Kontoeinstellungen",
+    "profile": {
+      "title": "Profil",
+      "name": "Name",
+      "save": "Speichern",
+      "saving": "Wird gespeichert…",
+      "saved": "Gespeichert"
+    },
+    "password": {
+      "title": "Passwort ändern",
+      "newPassword": "Neues Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "save": "Passwort aktualisieren",
+      "saving": "Wird gespeichert…",
+      "saved": "Passwort aktualisiert"
+    },
+    "danger": {
+      "title": "Konto löschen",
+      "body": "Das löscht dein Konto und alle deine Daten dauerhaft — Fortschritt, Portfolio, Zertifikate, alles. Das kann nicht rückgängig gemacht werden. Ein aktives Pro-Abo wird vorher gekündigt.",
+      "confirmLabel": "Gib \"{word}\" ein, um zu bestätigen",
+      "submit": "Mein Konto endgültig löschen"
     }
   }
 }

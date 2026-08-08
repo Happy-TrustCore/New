@@ -44,6 +44,9 @@ function LearnChrome({
           <Link href="/dashboard" className="text-sm text-muted hover:text-foreground">
             {t("dashboard")}
           </Link>
+          <Link href="/settings" className="text-sm text-muted hover:text-foreground">
+            {t("settings")}
+          </Link>
           <form action={signOut}>
             <button type="submit" className="text-sm text-muted hover:text-foreground">
               {t("logout")}
