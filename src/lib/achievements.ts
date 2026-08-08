@@ -3,8 +3,10 @@ export type BadgeId =
   | "first-website"
   | "css-designer"
   | "frontend-graduate"
+  | "javascript-builder"
   | "backend-explorer"
   | "backend-graduate"
+  | "backend-engineer"
   | "full-stack-foundations";
 
 export type Badge = {
@@ -22,8 +24,10 @@ export const BADGES: Badge[] = [
   { id: "first-website", icon: "🏆", requiredSlugs: ["html-hello-world"] },
   { id: "css-designer", icon: "🎨", requiredSlugs: ["css-styling-basics"] },
   { id: "frontend-graduate", icon: "🖥️", requiredSlugs: ["frontend-free-exam"] },
+  { id: "javascript-builder", icon: "⚡", requiredSlugs: ["js-calculator-project"] },
   { id: "backend-explorer", icon: "🔌", requiredSlugs: ["creating-your-first-server"] },
   { id: "backend-graduate", icon: "🛠️", requiredSlugs: ["backend-free-exam"] },
+  { id: "backend-engineer", icon: "🔧", requiredSlugs: ["backend-paid-exam"] },
   {
     id: "full-stack-foundations",
     icon: "🚀",

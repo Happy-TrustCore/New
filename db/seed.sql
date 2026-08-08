@@ -166,6 +166,86 @@ values
     '[{"step":1,"text":{"en":"This is your Frontend exam. Build a complete website using only HTML and CSS — no JavaScript yet.","de":"Das ist deine Frontend-Prüfung. Baue eine vollständige Website nur mit HTML und CSS — noch kein JavaScript."}},{"step":2,"text":{"en":"Requirements: a header with navigation, a hero section, at least two content sections, an image, and a footer.","de":"Anforderungen: ein Header mit Navigation, eine Hero-Section, mindestens zwei Inhaltsabschnitte, ein Bild und ein Footer."}},{"step":3,"text":{"en":"Make it responsive: it should still look good on a narrow screen. When you''re happy with it, mark your practice complete, submit the quiz, and submit your finished site to your portfolio below.","de":"Mach sie responsive: Sie sollte auch auf einem schmalen Bildschirm gut aussehen. Wenn du zufrieden bist, markiere die Übung als erledigt, sende das Quiz ab und reiche deine fertige Website unten in dein Portfolio ein."}}]'::jsonb,
     '{"html":"<!-- Build your complete website here -->\n<header>\n  <nav></nav>\n</header>","css":"/* Style your complete website here */"}'::jsonb,
     'intermediate', true, true, 16
+  ),
+  (
+    (select id from courses where slug = 'frontend'),
+    'js-introduction',
+    '{"en":"JavaScript: Making Your Website Do Things","de":"JavaScript: Deine Website zum Handeln bringen"}'::jsonb,
+    '[{"step":1,"text":{"en":"HTML builds structure. CSS makes it look good. JavaScript makes it DO something — react to clicks, update text, and more.","de":"HTML baut die Struktur. CSS lässt sie gut aussehen. JavaScript bringt sie dazu, etwas zu TUN — auf Klicks reagieren, Text aktualisieren und mehr."}},{"step":2,"text":{"en":"addEventListener lets you run code when something happens, like a button being clicked.","de":"addEventListener lässt dich Code ausführen, wenn etwas passiert, zum Beispiel wenn ein Button geklickt wird."}},{"step":3,"text":{"en":"Click the button below to see JavaScript in action, then change the message it shows.","de":"Klicke unten auf den Button, um JavaScript in Aktion zu sehen, und ändere dann die angezeigte Nachricht."}}]'::jsonb,
+    '{"html":"<button id=\"welcome-btn\">Click Me</button>","css":"#welcome-btn {\n  padding: 12px 24px;\n  background: #34d399;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  font-weight: 600;\n}","js":"document.getElementById(\"welcome-btn\").addEventListener(\"click\", function () {\n  alert(\"Welcome!\");\n});"}'::jsonb,
+    'beginner', false, false, 17
+  ),
+  (
+    (select id from courses where slug = 'frontend'),
+    'js-variables',
+    '{"en":"Variables: Storing Information","de":"Variablen: Informationen speichern"}'::jsonb,
+    '[{"step":1,"text":{"en":"A variable stores a piece of information so you can use it later. let creates a variable that can change.","de":"Eine Variable speichert eine Information, damit du sie später verwenden kannst. let erstellt eine Variable, die sich ändern kann."}},{"step":2,"text":{"en":"You can combine text and variables using + to build a sentence.","de":"Du kannst Text und Variablen mit + kombinieren, um einen Satz zu bilden."}},{"step":3,"text":{"en":"Change the username value and run the code again.","de":"Ändere den Wert von username und führe den Code erneut aus."}}]'::jsonb,
+    '{"js":"let username = \"Ahmed\";\nconsole.log(\"Hello, \" + username);"}'::jsonb,
+    'beginner', false, false, 18
+  ),
+  (
+    (select id from courses where slug = 'frontend'),
+    'js-conditions',
+    '{"en":"Conditions: Making Decisions","de":"Bedingungen: Entscheidungen treffen"}'::jsonb,
+    '[{"step":1,"text":{"en":"if checks whether something is true. else runs when it isn''t.","de":"if prüft, ob etwas wahr ist. else läuft, wenn es das nicht ist."}},{"step":2,"text":{"en":"=== checks if two values are exactly equal — it''s the comparison you''ll use most often.","de":"=== prüft, ob zwei Werte exakt gleich sind — das ist der Vergleich, den du am häufigsten benutzen wirst."}},{"step":3,"text":{"en":"Change the age value and run the code to see both branches.","de":"Ändere den Wert von age und führe den Code aus, um beide Zweige zu sehen."}}]'::jsonb,
+    '{"js":"let age = 17;\n\nif (age >= 18) {\n  console.log(\"You can vote.\");\n} else {\n  console.log(\"Not old enough yet.\");\n}"}'::jsonb,
+    'beginner', false, false, 19
+  ),
+  (
+    (select id from courses where slug = 'frontend'),
+    'js-loops',
+    '{"en":"Loops: Repeating Actions","de":"Schleifen: Aktionen wiederholen"}'::jsonb,
+    '[{"step":1,"text":{"en":"A for loop repeats code a set number of times, without you writing it out manually.","de":"Eine for-Schleife wiederholt Code eine festgelegte Anzahl von Malen, ohne dass du ihn manuell ausschreiben musst."}},{"step":2,"text":{"en":"i is just a counter variable — it starts at 1, and goes up by 1 each time, until the condition is false.","de":"i ist einfach eine Zählvariable — sie startet bei 1 und erhöht sich jedes Mal um 1, bis die Bedingung falsch ist."}},{"step":3,"text":{"en":"Change the loop to count to 10 instead of 5.","de":"Ändere die Schleife so, dass sie bis 10 statt bis 5 zählt."}}]'::jsonb,
+    '{"js":"for (let i = 1; i <= 5; i++) {\n  console.log(\"Count: \" + i);\n}"}'::jsonb,
+    'beginner', false, false, 20
+  ),
+  (
+    (select id from courses where slug = 'frontend'),
+    'js-functions',
+    '{"en":"Functions: Reusable Code","de":"Funktionen: Wiederverwendbarer Code"}'::jsonb,
+    '[{"step":1,"text":{"en":"A function is a reusable block of code. You give it a name, and run it whenever you need it.","de":"Eine Funktion ist ein wiederverwendbarer Codeblock. Du gibst ihr einen Namen und führst sie aus, wann immer du sie brauchst."}},{"step":2,"text":{"en":"Parameters (like name) let you pass information into a function. return sends a value back out.","de":"Parameter (wie name) lassen dich Informationen in eine Funktion hineingeben. return gibt einen Wert zurück."}},{"step":3,"text":{"en":"Call greet() again with a different name.","de":"Rufe greet() erneut mit einem anderen Namen auf."}}]'::jsonb,
+    '{"js":"function greet(name) {\n  return \"Hello, \" + name + \"!\";\n}\n\nconsole.log(greet(\"Ahmed\"));"}'::jsonb,
+    'beginner', false, false, 21
+  ),
+  (
+    (select id from courses where slug = 'frontend'),
+    'js-arrays',
+    '{"en":"Arrays: Lists of Data","de":"Arrays: Listen von Daten"}'::jsonb,
+    '[{"step":1,"text":{"en":"An array holds a list of values in order, like a row of boxes you can look up by position.","de":"Ein Array enthält eine geordnete Liste von Werten, wie eine Reihe von Boxen, die du nach Position abrufen kannst."}},{"step":2,"text":{"en":".push() adds a new item to the end of an array.","de":".push() fügt ein neues Element am Ende eines Arrays hinzu."}},{"step":3,"text":{"en":"Add one more fruit to the list and log the result.","de":"Füge der Liste eine weitere Frucht hinzu und gib das Ergebnis aus."}}]'::jsonb,
+    '{"js":"const fruits = [\"Apple\", \"Banana\", \"Mango\"];\nfruits.push(\"Orange\");\nconsole.log(fruits);"}'::jsonb,
+    'beginner', false, false, 22
+  ),
+  (
+    (select id from courses where slug = 'frontend'),
+    'js-objects',
+    '{"en":"Objects: Grouping Related Data","de":"Objekte: Zusammengehörige Daten gruppieren"}'::jsonb,
+    '[{"step":1,"text":{"en":"An object groups related information together using named properties, like a mini profile card in code.","de":"Ein Objekt gruppiert zusammengehörige Informationen mit benannten Eigenschaften, wie eine Mini-Profilkarte im Code."}},{"step":2,"text":{"en":"Use object.property to read a value out of an object.","de":"Nutze objekt.eigenschaft, um einen Wert aus einem Objekt zu lesen."}},{"step":3,"text":{"en":"Add a new property to the student object, like a favorite language.","de":"Füge dem student-Objekt eine neue Eigenschaft hinzu, zum Beispiel eine Lieblingssprache."}}]'::jsonb,
+    '{"js":"const student = {\n  name: \"Ahmed\",\n  level: 3,\n  xp: 250\n};\n\nconsole.log(student.name + \" is level \" + student.level);"}'::jsonb,
+    'beginner', false, false, 23
+  ),
+  (
+    (select id from courses where slug = 'frontend'),
+    'js-dom-basics',
+    '{"en":"The DOM: Changing Your Page Live","de":"Das DOM: Deine Seite live verändern"}'::jsonb,
+    '[{"step":1,"text":{"en":"The DOM is the browser''s live version of your HTML — JavaScript can read and change it after the page has loaded.","de":"Das DOM ist die lebendige Version deines HTML im Browser — JavaScript kann es nach dem Laden der Seite lesen und ändern."}},{"step":2,"text":{"en":"document.getElementById finds an element. .textContent changes what text it shows.","de":"document.getElementById findet ein Element. .textContent ändert den angezeigten Text."}},{"step":3,"text":{"en":"Click the button, then try changing the new text it sets.","de":"Klicke den Button und ändere dann den neuen Text, den er setzt."}}]'::jsonb,
+    '{"html":"<h1 id=\"title\">Hello</h1>\n<button id=\"change-btn\">Change Title</button>","css":"#change-btn {\n  padding: 8px 16px;\n  cursor: pointer;\n}","js":"document.getElementById(\"change-btn\").addEventListener(\"click\", function () {\n  document.getElementById(\"title\").textContent = \"You changed me!\";\n});"}'::jsonb,
+    'beginner', false, false, 24
+  ),
+  (
+    (select id from courses where slug = 'frontend'),
+    'js-name-greeting-project',
+    '{"en":"Project: Name Greeting System","de":"Projekt: Namens-Begrüßungssystem"}'::jsonb,
+    '[{"step":1,"text":{"en":"You''ve now learned enough to combine HTML, CSS, and JavaScript into a real interactive feature.","de":"Du hast jetzt genug gelernt, um HTML, CSS und JavaScript zu einer echten interaktiven Funktion zu kombinieren."}},{"step":2,"text":{"en":"HTML creates the input and button. CSS styles them. JavaScript reads what was typed and reacts to it.","de":"HTML erstellt das Eingabefeld und den Button. CSS gestaltet sie. JavaScript liest, was eingegeben wurde, und reagiert darauf."}},{"step":3,"text":{"en":"Type your name, press the button, then try personalizing the greeting message.","de":"Gib deinen Namen ein, drücke den Button und personalisiere dann die Begrüßungsnachricht."}}]'::jsonb,
+    '{"html":"<input id=\"nameInput\" placeholder=\"Your name\">\n<button id=\"greetBtn\">Say Hello</button>\n<p id=\"output\"></p>","css":"input, button {\n  padding: 8px;\n  margin-right: 8px;\n}","js":"document.getElementById(\"greetBtn\").addEventListener(\"click\", function () {\n  const name = document.getElementById(\"nameInput\").value;\n  document.getElementById(\"output\").textContent = \"Hello, \" + name + \"!\";\n});"}'::jsonb,
+    'beginner', false, false, 25
+  ),
+  (
+    (select id from courses where slug = 'frontend'),
+    'js-calculator-project',
+    '{"en":"Project: Simple Calculator","de":"Projekt: Einfacher Taschenrechner"}'::jsonb,
+    '[{"step":1,"text":{"en":"Number() converts text from an input into an actual number, so + adds instead of joining text together.","de":"Number() wandelt Text aus einem Eingabefeld in eine echte Zahl um, sodass + addiert statt Text aneinanderzuhängen."}},{"step":2,"text":{"en":"Without Number(), \"2\" + \"3\" would give you \"23\" — text joined together, not math.","de":"Ohne Number() würde \"2\" + \"3\" \"23\" ergeben — aneinandergehängter Text, keine Rechnung."}},{"step":3,"text":{"en":"Try the calculator, then add a second button that subtracts instead of adds.","de":"Probiere den Taschenrechner aus und füge dann einen zweiten Button hinzu, der subtrahiert statt addiert."}}]'::jsonb,
+    '{"html":"<input id=\"numA\" type=\"number\" value=\"0\">\n<input id=\"numB\" type=\"number\" value=\"0\">\n<button id=\"addBtn\">Add</button>\n<p id=\"result\"></p>","css":"input, button {\n  padding: 8px;\n  margin-right: 8px;\n}","js":"document.getElementById(\"addBtn\").addEventListener(\"click\", function () {\n  const a = Number(document.getElementById(\"numA\").value);\n  const b = Number(document.getElementById(\"numB\").value);\n  document.getElementById(\"result\").textContent = \"Result: \" + (a + b);\n});"}'::jsonb,
+    'intermediate', false, true, 26
   )
 on conflict (slug) do nothing;
 
@@ -236,6 +316,54 @@ values
     '[{"step":1,"text":{"en":"This is your Backend foundations check. You will not run a real server yet — but you will design one.","de":"Das ist deine Backend-Grundlagenprüfung. Du wirst noch keinen echten Server betreiben — aber einen entwerfen."}},{"step":2,"text":{"en":"Requirements: write a router(path) function with at least 3 routes, and a getUsersEndpoint() function that returns JSON-shaped data.","de":"Anforderungen: Schreibe eine router(path)-Funktion mit mindestens 3 Routen und eine getUsersEndpoint()-Funktion, die JSON-förmige Daten zurückgibt."}},{"step":3,"text":{"en":"This is exactly the mental model real backend frameworks like Express use — you already understand it. When you''re happy with it, mark your practice complete, submit the quiz, and submit it to your portfolio below.","de":"Das ist genau das Grundprinzip, das echte Backend-Frameworks wie Express verwenden — du verstehst es schon. Wenn du zufrieden bist, markiere die Übung als erledigt, sende das Quiz ab und reiche sie unten in dein Portfolio ein."}}]'::jsonb,
     '{"js":"// Write your router(path) function and getUsersEndpoint() function here\n"}'::jsonb,
     'intermediate', true, true, 8
+  ),
+  (
+    (select id from courses where slug = 'backend'),
+    'backend-database-tables',
+    '{"en":"Designing a Real Database Table","de":"Eine echte Datenbanktabelle entwerfen"}'::jsonb,
+    '[{"step":1,"text":{"en":"A real users table needs more than a name — an id to uniquely identify each row, and a created date to know when it was added.","de":"Eine echte users-Tabelle braucht mehr als nur einen Namen — eine id, um jede Zeile eindeutig zu identifizieren, und ein Erstellungsdatum, um zu wissen, wann sie hinzugefügt wurde."}},{"step":2,"text":{"en":"addUser() below simulates an INSERT: it builds a new row and adds it to the table.","de":"addUser() unten simuliert ein INSERT: Es baut eine neue Zeile und fügt sie der Tabelle hinzu."}},{"step":3,"text":{"en":"Run it, then call addUser() again with a different name and email.","de":"Führe es aus und rufe addUser() dann erneut mit einem anderen Namen und einer anderen E-Mail auf."}}]'::jsonb,
+    '{"js":"const usersTable = [\n  { id: 1, name: \"Ahmed\", email: \"ahmed@example.com\", createdAt: \"2026-01-01\" }\n];\n\nfunction addUser(name, email) {\n  const newUser = { id: usersTable.length + 1, name: name, email: email, createdAt: new Date().toISOString() };\n  usersTable.push(newUser);\n  return newUser;\n}\n\nconsole.log(addUser(\"Sara\", \"sara@example.com\"));"}'::jsonb,
+    'beginner', false, false, 9
+  ),
+  (
+    (select id from courses where slug = 'backend'),
+    'backend-password-security',
+    '{"en":"Passwords: Never Store Them in Plain Text","de":"Passwörter: Niemals im Klartext speichern"}'::jsonb,
+    '[{"step":1,"text":{"en":"If passwords were stored as plain, readable text and the database was ever exposed, every user''s real password would be exposed too.","de":"Wenn Passwörter als reiner, lesbarer Text gespeichert würden und die Datenbank jemals offengelegt würde, wäre auch das echte Passwort jedes Nutzers offengelegt."}},{"step":2,"text":{"en":"Hashing turns a password into a scrambled value that can''t be reversed back into the original. Real apps use a proper library (like bcrypt) for this — Supabase already does it for you.","de":"Hashing verwandelt ein Passwort in einen verschlüsselten Wert, der nicht zurück in das Original umgewandelt werden kann. Echte Apps nutzen dafür eine richtige Bibliothek (wie bcrypt) — Supabase macht das bereits automatisch für dich."}},{"step":3,"text":{"en":"This fakeHash function is just for illustration, not real security. Run it with a different password.","de":"Diese fakeHash-Funktion dient nur zur Veranschaulichung, nicht als echte Sicherheit. Führe sie mit einem anderen Passwort aus."}}]'::jsonb,
+    '{"js":"// A real app uses a proper library (like bcrypt) — this is just to see the idea.\nfunction fakeHash(password) {\n  let hash = 0;\n  for (let i = 0; i < password.length; i++) {\n    hash = (hash * 31 + password.charCodeAt(i)) % 1000000;\n  }\n  return \"hash_\" + hash;\n}\n\nconsole.log(fakeHash(\"mypassword123\"));"}'::jsonb,
+    'beginner', false, false, 10
+  ),
+  (
+    (select id from courses where slug = 'backend'),
+    'backend-registration-flow',
+    '{"en":"Building a Register Flow","de":"Einen Registrierungs-Flow bauen"}'::jsonb,
+    '[{"step":1,"text":{"en":"When someone registers, the frontend sends their name, email, and password to the backend — but the backend must never fully trust that data.","de":"Wenn sich jemand registriert, sendet das Frontend Name, E-Mail und Passwort an das Backend — aber das Backend darf diesen Daten niemals vollständig vertrauen."}},{"step":2,"text":{"en":"registerUser() below checks the data is valid before accepting it, and returns a clear error if not.","de":"registerUser() unten prüft, ob die Daten gültig sind, bevor sie akzeptiert werden, und gibt bei Fehlern eine klare Fehlermeldung zurück."}},{"step":3,"text":{"en":"Run it, then try calling registerUser() with a missing field.","de":"Führe es aus und rufe registerUser() dann mit einem fehlenden Feld auf."}}]'::jsonb,
+    '{"js":"function registerUser(name, email, password) {\n  if (!name || !email || !password) {\n    return { error: \"All fields are required.\" };\n  }\n  if (password.length < 8) {\n    return { error: \"Password must be at least 8 characters.\" };\n  }\n  return { success: true, user: { name: name, email: email } };\n}\n\nconsole.log(registerUser(\"Ahmed\", \"ahmed@example.com\", \"short\"));\nconsole.log(registerUser(\"Ahmed\", \"ahmed@example.com\", \"longenough123\"));"}'::jsonb,
+    'beginner', false, false, 11
+  ),
+  (
+    (select id from courses where slug = 'backend'),
+    'backend-sessions-auth',
+    '{"en":"Staying Logged In: Sessions & Tokens","de":"Angemeldet bleiben: Sessions & Tokens"}'::jsonb,
+    '[{"step":1,"text":{"en":"Every request to a server is independent by default — the server doesn''t automatically remember who you are between requests.","de":"Jede Anfrage an einen Server ist standardmäßig unabhängig — der Server merkt sich nicht automatisch, wer du zwischen Anfragen bist."}},{"step":2,"text":{"en":"A session or token is issued when you log in, and sent along with every later request so the server recognizes you.","de":"Eine Session oder ein Token wird beim Login ausgestellt und bei jeder späteren Anfrage mitgeschickt, damit der Server dich erkennt."}},{"step":3,"text":{"en":"Run this simulation, then look up the same token again to confirm it still works.","de":"Führe diese Simulation aus und rufe dasselbe Token dann erneut ab, um zu bestätigen, dass es noch funktioniert."}}]'::jsonb,
+    '{"js":"const activeSessions = {};\n\nfunction login(userId) {\n  const token = \"token_\" + userId + \"_\" + Date.now();\n  activeSessions[token] = userId;\n  return token;\n}\n\nfunction getUserFromToken(token) {\n  return activeSessions[token] || null;\n}\n\nconst myToken = login(1);\nconsole.log(\"Token:\", myToken);\nconsole.log(\"Logged in as user:\", getUserFromToken(myToken));"}'::jsonb,
+    'intermediate', false, false, 12
+  ),
+  (
+    (select id from courses where slug = 'backend'),
+    'backend-error-handling',
+    '{"en":"Handling Errors Gracefully","de":"Fehler sauber behandeln"}'::jsonb,
+    '[{"step":1,"text":{"en":"Things go wrong — a user might not exist, or a request might be malformed. A good API responds clearly instead of crashing.","de":"Dinge gehen schief — ein Nutzer existiert vielleicht nicht, oder eine Anfrage ist fehlerhaft. Eine gute API antwortet klar, statt abzustürzen."}},{"step":2,"text":{"en":"Returning a status and a message (like 404 and \"User not found\") lets the frontend react appropriately instead of guessing.","de":"Ein Status und eine Nachricht (wie 404 und „User not found“) lassen das Frontend angemessen reagieren, statt zu raten."}},{"step":3,"text":{"en":"Run it with an id that exists, then one that doesn''t.","de":"Führe es mit einer existierenden id aus, dann mit einer, die es nicht gibt."}}]'::jsonb,
+    '{"js":"function getUserById(id, usersTable) {\n  const user = usersTable.find(function (u) { return u.id === id; });\n  if (!user) {\n    return { status: 404, error: \"User not found\" };\n  }\n  return { status: 200, data: user };\n}\n\nconst users = [{ id: 1, name: \"Ahmed\" }];\nconsole.log(getUserById(1, users));\nconsole.log(getUserById(99, users));"}'::jsonb,
+    'intermediate', false, false, 13
+  ),
+  (
+    (select id from courses where slug = 'backend'),
+    'backend-paid-exam',
+    '{"en":"Exam: Build a Mini User System","de":"Prüfung: Baue ein Mini-Nutzersystem"}'::jsonb,
+    '[{"step":1,"text":{"en":"Time to combine everything: registration, login, and error handling, into one small system.","de":"Zeit, alles zu kombinieren: Registrierung, Login und Fehlerbehandlung zu einem kleinen System."}},{"step":2,"text":{"en":"Requirements: a registerUser() function, a login() function that issues a token, and a getUserFromToken() function.","de":"Anforderungen: eine registerUser()-Funktion, eine login()-Funktion, die ein Token ausstellt, und eine getUserFromToken()-Funktion."}},{"step":3,"text":{"en":"This is exactly the mental model real authentication systems use — you already understand it. When you''re happy with it, mark your practice complete, submit the quiz, and submit it to your portfolio below.","de":"Das ist genau das Grundprinzip, das echte Authentifizierungssysteme verwenden — du verstehst es schon. Wenn du zufrieden bist, markiere die Übung als erledigt, sende das Quiz ab und reiche sie unten in dein Portfolio ein."}}]'::jsonb,
+    '{"js":"// Combine what you''ve learned: registration, login, and error handling.\n// Write registerUser(), login(), and getUserFromToken() below.\n"}'::jsonb,
+    'intermediate', false, true, 14
   )
 on conflict (slug) do nothing;
 
@@ -324,6 +452,56 @@ values
     '{"en":["JavaScript does not work in browsers","You first master structure (HTML) and design (CSS) before adding behavior","JavaScript is only for backend","CSS can replace JavaScript entirely"],"de":["JavaScript funktioniert nicht in Browsern","Du beherrschst zuerst Struktur (HTML) und Design (CSS), bevor Verhalten dazukommt","JavaScript ist nur für Backend","CSS kann JavaScript vollständig ersetzen"]}'::jsonb, 1, 1
   ),
   (
+    (select id from lessons where slug = 'js-introduction'),
+    '{"en":"What does addEventListener let you do?","de":"Was ermöglicht dir addEventListener?"}'::jsonb,
+    '{"en":["Style an element","Run code when something happens, like a click","Create a database","Send an email"],"de":["Ein Element stylen","Code ausführen, wenn etwas passiert, z. B. ein Klick","Eine Datenbank erstellen","Eine E-Mail senden"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'js-variables'),
+    '{"en":"Which keyword creates a variable that can change later?","de":"Welches Schlüsselwort erstellt eine Variable, die sich später ändern kann?"}'::jsonb,
+    '{"en":["const","let","final","fixed"],"de":["const","let","final","fixed"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'js-conditions'),
+    '{"en":"What does === check?","de":"Was prüft ===?"}'::jsonb,
+    '{"en":["If a variable exists","If two values are strictly equal","If a value is a string","If a loop should stop"],"de":["Ob eine Variable existiert","Ob zwei Werte exakt gleich sind","Ob ein Wert ein String ist","Ob eine Schleife stoppen soll"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'js-loops'),
+    '{"en":"What does a for loop do?","de":"Was macht eine for-Schleife?"}'::jsonb,
+    '{"en":["Deletes variables","Repeats code a set number of times","Creates a function","Connects to a server"],"de":["Löscht Variablen","Wiederholt Code eine festgelegte Anzahl von Malen","Erstellt eine Funktion","Verbindet sich mit einem Server"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'js-functions'),
+    '{"en":"What does the return keyword do in a function?","de":"Was macht das Schlüsselwort return in einer Funktion?"}'::jsonb,
+    '{"en":["Stops the whole program","Sends a value back to where the function was called","Deletes the function","Creates a loop"],"de":["Stoppt das ganze Programm","Gibt einen Wert dorthin zurück, wo die Funktion aufgerufen wurde","Löscht die Funktion","Erstellt eine Schleife"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'js-arrays'),
+    '{"en":"Which method adds an item to the end of an array?","de":"Welche Methode fügt ein Element am Ende eines Arrays hinzu?"}'::jsonb,
+    '{"en":[".push()",".remove()",".delete()",".add()"],"de":[".push()",".remove()",".delete()",".add()"]}'::jsonb, 0, 1
+  ),
+  (
+    (select id from lessons where slug = 'js-objects'),
+    '{"en":"How do you access a property on an object?","de":"Wie greift man auf eine Eigenschaft eines Objekts zu?"}'::jsonb,
+    '{"en":["object[property]() only","object.property or object[\"property\"]","object->property","object::property"],"de":["Nur object[property]()","object.property oder object[\"property\"]","object->property","object::property"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'js-dom-basics'),
+    '{"en":"What is the DOM?","de":"Was ist das DOM?"}'::jsonb,
+    '{"en":["A database format","The browser''s live representation of your page, which JS can change","A CSS framework","A type of server"],"de":["Ein Datenbankformat","Die lebendige Darstellung deiner Seite im Browser, die JS ändern kann","Ein CSS-Framework","Eine Art von Server"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'js-name-greeting-project'),
+    '{"en":"In this lesson, what is JavaScript responsible for?","de":"Wofür ist JavaScript in dieser Lektion verantwortlich?"}'::jsonb,
+    '{"en":["Creating the input element","Styling the button","Reading the input value and updating the page","Storing data in a database"],"de":["Das Eingabefeld erstellen","Den Button gestalten","Den Eingabewert lesen und die Seite aktualisieren","Daten in einer Datenbank speichern"]}'::jsonb, 2, 1
+  ),
+  (
+    (select id from lessons where slug = 'js-calculator-project'),
+    '{"en":"Why do we use Number() around the input values?","de":"Warum verwenden wir Number() um die Eingabewerte?"}'::jsonb,
+    '{"en":["To make them red","Input values are text by default; Number() converts them so + adds instead of joining text","To delete them","To hide them"],"de":["Um sie rot zu färben","Eingabewerte sind standardmäßig Text; Number() wandelt sie um, sodass + addiert statt Text aneinanderzuhängen","Um sie zu löschen","Um sie zu verstecken"]}'::jsonb, 1, 1
+  ),
+  (
     (select id from lessons where slug = 'creating-your-first-server'),
     '{"en":"What does a server do when it receives a request?","de":"Was macht ein Server, wenn er eine Anfrage empfängt?"}'::jsonb,
     '{"en":["Deletes the browser","Processes it and sends back a response","Only stores passwords","Shows a CSS file"],"de":["Löscht den Browser","Verarbeitet sie und sendet eine Antwort zurück","Speichert nur Passwörter","Zeigt eine CSS-Datei"]}'::jsonb, 1, 1
@@ -357,5 +535,35 @@ values
     (select id from lessons where slug = 'backend-free-exam'),
     '{"en":"What have routes and endpoints let you simulate in this lesson?","de":"Was konntest du mit Routen und Endpunkten in dieser Lektion simulieren?"}'::jsonb,
     '{"en":["A CSS animation","How a server responds differently to different requests","A database backup","An image gallery"],"de":["Eine CSS-Animation","Wie ein Server unterschiedlich auf verschiedene Anfragen reagiert","Ein Datenbank-Backup","Eine Bildergalerie"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'backend-database-tables'),
+    '{"en":"Why does each user need a unique id?","de":"Warum braucht jeder Nutzer eine eindeutige id?"}'::jsonb,
+    '{"en":["To make the table colorful","So each row can be found and referenced without confusion","To slow down the database","It''s optional and never used"],"de":["Um die Tabelle bunt zu machen","Damit jede Zeile eindeutig gefunden und referenziert werden kann","Um die Datenbank zu verlangsamen","Sie ist optional und wird nie verwendet"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'backend-password-security'),
+    '{"en":"Why should passwords never be stored in plain text?","de":"Warum sollten Passwörter niemals im Klartext gespeichert werden?"}'::jsonb,
+    '{"en":["It uses more storage space","If the database is ever exposed, attackers would see every real password","It makes login slower","Plain text passwords are illegal everywhere"],"de":["Es braucht mehr Speicherplatz","Wenn die Datenbank jemals offengelegt wird, sehen Angreifer jedes echte Passwort","Es macht den Login langsamer","Klartext-Passwörter sind überall illegal"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'backend-registration-flow'),
+    '{"en":"Why does the backend validate data again, even if the frontend already checked it?","de":"Warum validiert das Backend Daten erneut, obwohl das Frontend sie schon geprüft hat?"}'::jsonb,
+    '{"en":["It doesn''t need to — frontend checks are enough","A request can be sent directly to the backend, bypassing the frontend entirely","To make the code longer","Validation is only for looks"],"de":["Muss es nicht — Frontend-Prüfungen reichen aus","Eine Anfrage kann direkt ans Backend gesendet werden, komplett am Frontend vorbei","Um den Code länger zu machen","Validierung ist nur fürs Aussehen"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'backend-sessions-auth'),
+    '{"en":"Why are sessions/tokens needed?","de":"Warum sind Sessions/Tokens notwendig?"}'::jsonb,
+    '{"en":["Websites look nicer with them","HTTP requests don''t remember each other by default, so the server needs a way to recognize you on the next request","They make the CSS load faster","They replace the need for a database"],"de":["Websites sehen damit hübscher aus","HTTP-Anfragen erinnern sich standardmäßig nicht aneinander, der Server braucht also eine Möglichkeit, dich bei der nächsten Anfrage wiederzuerkennen","Sie lassen CSS schneller laden","Sie ersetzen die Notwendigkeit einer Datenbank"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'backend-error-handling'),
+    '{"en":"What should a well-behaved API do when something goes wrong?","de":"Was sollte eine gut gebaute API tun, wenn etwas schiefgeht?"}'::jsonb,
+    '{"en":["Crash immediately with no message","Return a clear error response so the frontend can react appropriately","Delete the request","Ignore it silently"],"de":["Sofort ohne Meldung abstürzen","Eine klare Fehlerantwort zurückgeben, damit das Frontend angemessen reagieren kann","Die Anfrage löschen","Sie stillschweigend ignorieren"]}'::jsonb, 1, 1
+  ),
+  (
+    (select id from lessons where slug = 'backend-paid-exam'),
+    '{"en":"What have you built across these backend lessons?","de":"Was hast du über diese Backend-Lektionen hinweg gebaut?"}'::jsonb,
+    '{"en":["A CSS animation library","The core mental model behind real authentication systems","A video game","An image editor"],"de":["Eine CSS-Animationsbibliothek","Das Kernprinzip hinter echten Authentifizierungssystemen","Ein Videospiel","Einen Bildeditor"]}'::jsonb, 1, 1
   )
 on conflict (lesson_id, question) do nothing;

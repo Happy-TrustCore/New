@@ -125,8 +125,10 @@
         "first-website": { "title": "First Website", "desc": "Build your first HTML page" },
         "css-designer": { "title": "CSS Designer", "desc": "Style your first website with CSS" },
         "frontend-graduate": { "title": "Frontend Graduate", "desc": "Complete all free Frontend lessons" },
+        "javascript-builder": { "title": "JavaScript Builder", "desc": "Build a working calculator with JavaScript" },
         "backend-explorer": { "title": "Backend Explorer", "desc": "Create your first server" },
         "backend-graduate": { "title": "Backend Graduate", "desc": "Complete all free Backend lessons" },
+        "backend-engineer": { "title": "Backend Engineer", "desc": "Build a mini user authentication system" },
         "full-stack-foundations": { "title": "Full Stack Foundations", "desc": "Complete the Frontend and Backend free tracks" }
       }
     },

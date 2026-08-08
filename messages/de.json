@@ -125,8 +125,10 @@
         "first-website": { "title": "Erste Website", "desc": "Baue deine erste HTML-Seite" },
         "css-designer": { "title": "CSS-Designer", "desc": "Gestalte deine erste Website mit CSS" },
         "frontend-graduate": { "title": "Frontend-Absolvent", "desc": "Schließe alle kostenlosen Frontend-Lektionen ab" },
+        "javascript-builder": { "title": "JavaScript-Baumeister", "desc": "Baue einen funktionierenden Taschenrechner mit JavaScript" },
         "backend-explorer": { "title": "Backend-Entdecker", "desc": "Erstelle deinen ersten Server" },
         "backend-graduate": { "title": "Backend-Absolvent", "desc": "Schließe alle kostenlosen Backend-Lektionen ab" },
+        "backend-engineer": { "title": "Backend-Ingenieur", "desc": "Baue ein Mini-Authentifizierungssystem" },
         "full-stack-foundations": { "title": "Full-Stack-Grundlagen", "desc": "Schließe die kostenlosen Frontend- und Backend-Kurse ab" }
       }
     },
