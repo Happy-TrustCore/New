@@ -79,6 +79,9 @@ export default async function LessonPage({
     });
   }
 
+  const targetIndex = withAccess.findIndex((l) => l.id === lesson.id);
+  const nextLessonSlug = withAccess[targetIndex + 1]?.slug ?? null;
+
   return (
     <div className="grid h-full grid-cols-[240px_1fr] overflow-hidden">
       <LessonSidebar
@@ -99,6 +102,7 @@ export default async function LessonPage({
         assignmentPassed={myProgress?.assignment_passed ?? false}
         paywalled={target.access === "paywall"}
         isPremium={isPremium}
+        nextLessonSlug={nextLessonSlug}
       />
     </div>
   );

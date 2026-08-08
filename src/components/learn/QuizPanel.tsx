@@ -17,10 +17,12 @@ export function QuizPanel({
   lessonId,
   questions,
   alreadyPassed,
+  onPassed,
 }: {
   lessonId: string;
   questions: QuizQuestionPublic[];
   alreadyPassed: boolean;
+  onPassed?: () => void;
 }) {
   const router = useRouter();
   const locale = useLocale();
@@ -44,12 +46,13 @@ export function QuizPanel({
       });
       if (response.passed) {
         router.refresh();
+        onPassed?.();
       }
     });
   }
 
   return (
-    <div className="border-t border-border p-6">
+    <div>
       <p className="text-sm font-semibold text-accent">{t("title")}</p>
       {alreadyPassed && !result && (
         <p className="mt-1 text-xs text-muted">{t("alreadyPassed")}</p>

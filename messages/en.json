@@ -223,6 +223,12 @@
     "streak": {
       "current": "{days}-day streak",
       "longest": "Best: {days} days"
+    },
+    "choosePath": {
+      "label": "Foundation done! Which do you want to start with?",
+      "frontendDesc": "Build what people see and click — HTML, CSS, JavaScript, React.",
+      "backendDesc": "Build what powers the site behind the scenes — servers, databases, auth.",
+      "cta": "Start this track"
     }
   },
   "learn": {
@@ -237,7 +243,8 @@
       },
       "stepOf": "Step {current} of {total}",
       "back": "Back",
-      "continue": "Continue"
+      "continue": "Continue",
+      "startPractice": "Start practice"
     },
     "quiz": {
       "title": "Quiz",
@@ -261,13 +268,6 @@
       "assignmentSubmitted": "Submitted to your portfolio",
       "live": "Live"
     },
-    "dock": {
-      "title": "Practice",
-      "expand": "Open",
-      "collapse": "Close",
-      "paywall": "Hands-on practice for this lesson needs CodePath Pro.",
-      "upgrade": "See plans"
-    },
     "mentor": {
       "title": "Ask CodeBuddy",
       "placeholder": "What are you stuck on? (optional — leave blank for a general review)",
@@ -275,6 +275,22 @@
       "thinking": "Thinking…",
       "upsell": "CodeBuddy AI mentor is a Pro feature.",
       "upgrade": "Upgrade"
+    },
+    "practiceScreen": {
+      "backToLesson": "Back to lesson",
+      "continueToQuiz": "Continue to quiz",
+      "whatYoureDoing": "What you're doing",
+      "paywall": "Hands-on practice for this lesson needs CodePath Pro.",
+      "upgrade": "See plans",
+      "lessonComplete": "Lesson complete!",
+      "nextLesson": "Next lesson",
+      "backToDashboard": "Back to dashboard"
+    },
+    "quizScreen": {
+      "backToPractice": "Back to practice",
+      "lessonComplete": "Lesson complete!",
+      "nextLesson": "Next lesson",
+      "backToDashboard": "Back to dashboard"
     }
   },
   "certificate": {

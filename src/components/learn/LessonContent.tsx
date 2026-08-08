@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Difficulty, LessonContentBlock, LocalizedText } from "@/lib/supabase/types";
 import { pickLocale } from "@/lib/i18n-content";
@@ -15,22 +15,18 @@ export function LessonContent({
   title,
   difficulty,
   steps,
-  onReachLast,
+  onStartPractice,
 }: {
   title: LocalizedText;
   difficulty: Difficulty;
   steps: LessonContentBlock[];
-  onReachLast?: () => void;
+  onStartPractice: () => void;
 }) {
   const [stepIndex, setStepIndex] = useState(0);
   const locale = useLocale();
   const t = useTranslations("learn.content");
   const step = steps[stepIndex];
   const isLast = stepIndex === steps.length - 1;
-
-  useEffect(() => {
-    if (isLast) onReachLast?.();
-  }, [isLast, onReachLast]);
 
   return (
     <div className="animate-float-in p-6">
@@ -70,12 +66,16 @@ export function LessonContent({
             &larr; {t("back")}
           </button>
         )}
-        {!isLast && (
+        {!isLast ? (
           <button
             onClick={() => setStepIndex((i) => Math.min(steps.length - 1, i + 1))}
             className="btn-primary rounded-lg px-4 py-2 text-sm"
           >
             {t("continue")} &rarr;
+          </button>
+        ) : (
+          <button onClick={onStartPractice} className="btn-primary rounded-lg px-4 py-2 text-sm">
+            {t("startPractice")} &rarr;
           </button>
         )}
       </div>

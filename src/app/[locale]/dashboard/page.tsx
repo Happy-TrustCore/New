@@ -69,6 +69,18 @@ export default async function DashboardPage({
     };
   });
 
+  const foundationTrack = tracks.find((t) => t.slug === "foundation");
+  const frontendTrack = tracks.find((t) => t.slug === "frontend");
+  const backendTrack = tracks.find((t) => t.slug === "backend");
+  const foundationDone =
+    !!foundationTrack && foundationTrack.total > 0 && foundationTrack.done === foundationTrack.total;
+  // Foundation is the only track that must come first — Frontend and
+  // Backend are independently unlocked (computeLessonAccess never checks
+  // across courses), so once Foundation is done and neither has been
+  // touched yet, let the student pick instead of defaulting to Frontend.
+  const showPathChoice =
+    foundationDone && !!frontendTrack && !!backendTrack && frontendTrack.done === 0 && backendTrack.done === 0;
+
   const currentTrack = tracks.find((t) => t.total > 0 && t.percent < 100) ?? tracks[0];
   const name = profile?.name ?? "Student";
 
@@ -107,6 +119,9 @@ export default async function DashboardPage({
       isPremium={isPremium}
       currentStreak={profile?.current_streak ?? 0}
       longestStreak={profile?.longest_streak ?? 0}
+      showPathChoice={showPathChoice}
+      frontendTrack={frontendTrack}
+      backendTrack={backendTrack}
     />
   );
 }
@@ -143,6 +158,9 @@ function DashboardBody({
   isPremium,
   currentStreak,
   longestStreak,
+  showPathChoice,
+  frontendTrack,
+  backendTrack,
 }: {
   name: string;
   currentTrack: Track;
@@ -153,6 +171,9 @@ function DashboardBody({
   isPremium: boolean;
   currentStreak: number;
   longestStreak: number;
+  showPathChoice: boolean;
+  frontendTrack?: Track;
+  backendTrack?: Track;
 }) {
   const t = useTranslations("dashboard");
 
@@ -182,23 +203,49 @@ function DashboardBody({
         )}
       </div>
 
-      <section className="mt-8 rounded-xl border border-border bg-surface p-6">
-        <p className="text-sm text-muted">{t("currentPath")}</p>
-        <p className="mt-1 text-lg font-semibold">{currentTrack.title}</p>
-        <p className="text-sm text-muted">
-          {currentTrack.total > 0
-            ? t("lessonProgress", { done: currentTrack.done, total: currentTrack.total })
-            : t("noLessons")}
-        </p>
-        {currentTrack.nextLesson && (
-          <Link
-            href={`/learn/${currentTrack.nextLesson.slug}`}
-            className="mt-4 inline-block rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:opacity-90"
-          >
-            {t("continueLearning")} &rarr;
-          </Link>
-        )}
-      </section>
+      {showPathChoice && frontendTrack && backendTrack ? (
+        <section className="mt-8">
+          <p className="text-sm text-muted">{t("choosePath.label")}</p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2">
+            {[
+              { track: frontendTrack, icon: "🎨", desc: t("choosePath.frontendDesc") },
+              { track: backendTrack, icon: "🗄️", desc: t("choosePath.backendDesc") },
+            ].map(({ track, icon, desc }) => (
+              <div key={track.slug} className="card card-hover flex flex-col p-6">
+                <span className="text-2xl">{icon}</span>
+                <p className="mt-2 text-lg font-semibold">{track.title}</p>
+                <p className="mt-2 flex-1 text-sm text-muted">{desc}</p>
+                {track.nextLesson && (
+                  <Link
+                    href={`/learn/${track.nextLesson.slug}`}
+                    className="btn-primary mt-4 inline-block w-fit rounded-lg px-5 py-2 text-sm"
+                  >
+                    {t("choosePath.cta")} &rarr;
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : (
+        <section className="mt-8 rounded-xl border border-border bg-surface p-6">
+          <p className="text-sm text-muted">{t("currentPath")}</p>
+          <p className="mt-1 text-lg font-semibold">{currentTrack.title}</p>
+          <p className="text-sm text-muted">
+            {currentTrack.total > 0
+              ? t("lessonProgress", { done: currentTrack.done, total: currentTrack.total })
+              : t("noLessons")}
+          </p>
+          {currentTrack.nextLesson && (
+            <Link
+              href={`/learn/${currentTrack.nextLesson.slug}`}
+              className="btn-primary mt-4 inline-block rounded-lg px-5 py-2.5 text-sm"
+            >
+              {t("continueLearning")} &rarr;
+            </Link>
+          )}
+        </section>
+      )}
 
       <section className="mt-6 grid gap-4 sm:grid-cols-3">
         {tracks.map((track) => (

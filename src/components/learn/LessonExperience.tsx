@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { LessonContent } from "./LessonContent";
-import { QuizPanel } from "./QuizPanel";
-import { PracticeDock } from "./PracticeDock";
+import { PracticeScreen } from "./PracticeScreen";
+import { QuizScreen } from "./QuizScreen";
 import type {
   Difficulty,
   LessonContentBlock,
@@ -18,6 +18,8 @@ type QuizQuestionPublic = {
   choices: LocalizedChoices;
 };
 
+type Mode = "lesson" | "practice" | "quiz";
+
 export function LessonExperience({
   title,
   difficulty,
@@ -31,6 +33,7 @@ export function LessonExperience({
   assignmentPassed,
   paywalled,
   isPremium,
+  nextLessonSlug,
 }: {
   title: LocalizedText;
   difficulty: Difficulty;
@@ -44,27 +47,17 @@ export function LessonExperience({
   assignmentPassed: boolean;
   paywalled: boolean;
   isPremium: boolean;
+  nextLessonSlug: string | null;
 }) {
-  const [dockOpen, setDockOpen] = useState(false);
+  const [mode, setMode] = useState<Mode>("lesson");
+  const hasQuiz = quizQuestions.length > 0;
+  const taskText = steps.length > 0 ? steps[steps.length - 1].text : null;
 
-  return (
-    <div className="flex h-full flex-col overflow-hidden">
-      <div className="min-h-0 flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-3xl">
-          <LessonContent
-            title={title}
-            difficulty={difficulty}
-            steps={steps}
-            onReachLast={() => setDockOpen(true)}
-          />
-          {quizQuestions.length > 0 && (
-            <QuizPanel lessonId={lessonId} questions={quizQuestions} alreadyPassed={quizPassed} />
-          )}
-        </div>
-      </div>
-      <PracticeDock
-        open={!paywalled && dockOpen}
-        onToggle={() => setDockOpen((o) => !o)}
+  if (mode === "practice") {
+    return (
+      <PracticeScreen
+        lessonTitle={title}
+        taskText={taskText}
         paywalled={paywalled}
         lessonId={lessonId}
         starterCode={starterCode}
@@ -72,7 +65,36 @@ export function LessonExperience({
         hasAssignment={hasAssignment}
         assignmentPassed={assignmentPassed}
         isPremium={isPremium}
+        hasQuiz={hasQuiz}
+        nextLessonSlug={nextLessonSlug}
+        onBackToLesson={() => setMode("lesson")}
+        onContinueToQuiz={() => setMode("quiz")}
       />
+    );
+  }
+
+  if (mode === "quiz") {
+    return (
+      <QuizScreen
+        lessonId={lessonId}
+        questions={quizQuestions}
+        alreadyPassed={quizPassed}
+        nextLessonSlug={nextLessonSlug}
+        onBackToPractice={() => setMode("practice")}
+      />
+    );
+  }
+
+  return (
+    <div className="h-full overflow-y-auto">
+      <div className="mx-auto max-w-3xl">
+        <LessonContent
+          title={title}
+          difficulty={difficulty}
+          steps={steps}
+          onStartPractice={() => setMode("practice")}
+        />
+      </div>
     </div>
   );
 }

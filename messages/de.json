@@ -223,6 +223,12 @@
     "streak": {
       "current": "{days}-Tage-Serie",
       "longest": "Beste: {days} Tage"
+    },
+    "choosePath": {
+      "label": "Foundation abgeschlossen! Womit möchtest du starten?",
+      "frontendDesc": "Baue, was Nutzer sehen und anklicken — HTML, CSS, JavaScript, React.",
+      "backendDesc": "Baue, was die Seite im Hintergrund antreibt — Server, Datenbanken, Auth.",
+      "cta": "Diesen Track starten"
     }
   },
   "learn": {
@@ -237,7 +243,8 @@
       },
       "stepOf": "Schritt {current} von {total}",
       "back": "Zurück",
-      "continue": "Weiter"
+      "continue": "Weiter",
+      "startPractice": "Übung starten"
     },
     "quiz": {
       "title": "Quiz",
@@ -261,13 +268,6 @@
       "assignmentSubmitted": "In dein Portfolio eingereicht",
       "live": "Live"
     },
-    "dock": {
-      "title": "Übung",
-      "expand": "Öffnen",
-      "collapse": "Schließen",
-      "paywall": "Die praktische Übung dieser Lektion braucht CodePath Pro.",
-      "upgrade": "Pläne ansehen"
-    },
     "mentor": {
       "title": "CodeBuddy fragen",
       "placeholder": "Wo hängst du fest? (optional — leer lassen für eine allgemeine Rückmeldung)",
@@ -275,6 +275,22 @@
       "thinking": "Denkt nach…",
       "upsell": "Der CodeBuddy-KI-Mentor ist eine Pro-Funktion.",
       "upgrade": "Upgrade"
+    },
+    "practiceScreen": {
+      "backToLesson": "Zurück zur Lektion",
+      "continueToQuiz": "Weiter zum Quiz",
+      "whatYoureDoing": "Das machst du gerade",
+      "paywall": "Die praktische Übung dieser Lektion braucht CodePath Pro.",
+      "upgrade": "Pläne ansehen",
+      "lessonComplete": "Lektion abgeschlossen!",
+      "nextLesson": "Nächste Lektion",
+      "backToDashboard": "Zurück zum Dashboard"
+    },
+    "quizScreen": {
+      "backToPractice": "Zurück zur Übung",
+      "lessonComplete": "Lektion abgeschlossen!",
+      "nextLesson": "Nächste Lektion",
+      "backToDashboard": "Zurück zum Dashboard"
     }
   },
   "certificate": {
