@@ -228,6 +228,14 @@
       "collapse": "Close",
       "paywall": "Hands-on practice for this lesson needs CodePath Pro.",
       "upgrade": "See plans"
+    },
+    "mentor": {
+      "title": "Ask CodeBuddy",
+      "placeholder": "What are you stuck on? (optional — leave blank for a general review)",
+      "ask": "Get a hint",
+      "thinking": "Thinking…",
+      "upsell": "CodeBuddy AI mentor is a Pro feature.",
+      "upgrade": "Upgrade"
     }
   },
   "certificate": {

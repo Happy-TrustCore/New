@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ...except the template itself — SETUP.md tells new clones to copy this,
+# so it needs to actually be in the repo. It holds no real secrets.
+!.env.example
 
 # vercel
 .vercel

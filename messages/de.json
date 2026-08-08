@@ -228,6 +228,14 @@
       "collapse": "Schließen",
       "paywall": "Die praktische Übung dieser Lektion braucht CodePath Pro.",
       "upgrade": "Pläne ansehen"
+    },
+    "mentor": {
+      "title": "CodeBuddy fragen",
+      "placeholder": "Wo hängst du fest? (optional — leer lassen für eine allgemeine Rückmeldung)",
+      "ask": "Hinweis bekommen",
+      "thinking": "Denkt nach…",
+      "upsell": "Der CodeBuddy-KI-Mentor ist eine Pro-Funktion.",
+      "upgrade": "Upgrade"
     }
   },
   "certificate": {

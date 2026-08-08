@@ -61,11 +61,8 @@ export default async function LessonPage({
   ]);
 
   const completedIds = new Set((completedRows ?? []).map((row) => row.lesson_id));
-  const withAccess = computeLessonAccess(
-    courseLessons ?? [],
-    completedIds,
-    hasPremiumAccess(profile)
-  );
+  const isPremium = hasPremiumAccess(profile);
+  const withAccess = computeLessonAccess(courseLessons ?? [], completedIds, isPremium);
   const target = withAccess.find((l) => l.id === lesson.id);
 
   if (!target) {
@@ -101,6 +98,7 @@ export default async function LessonPage({
         hasAssignment={lesson.has_assignment}
         assignmentPassed={myProgress?.assignment_passed ?? false}
         paywalled={target.access === "paywall"}
+        isPremium={isPremium}
       />
     </div>
   );

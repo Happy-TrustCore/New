@@ -30,6 +30,7 @@ export function LessonExperience({
   hasAssignment,
   assignmentPassed,
   paywalled,
+  isPremium,
 }: {
   title: LocalizedText;
   difficulty: Difficulty;
@@ -42,6 +43,7 @@ export function LessonExperience({
   hasAssignment: boolean;
   assignmentPassed: boolean;
   paywalled: boolean;
+  isPremium: boolean;
 }) {
   const [dockOpen, setDockOpen] = useState(false);
 
@@ -69,6 +71,7 @@ export function LessonExperience({
         practicePassed={practicePassed}
         hasAssignment={hasAssignment}
         assignmentPassed={assignmentPassed}
+        isPremium={isPremium}
       />
     </div>
   );

@@ -10,6 +10,7 @@ import { css } from "@codemirror/lang-css";
 import { javascript } from "@codemirror/lang-javascript";
 import { submitPractice } from "@/lib/actions/practice";
 import { submitAssignment } from "@/lib/actions/assignment";
+import { CodeBuddyPanel } from "@/components/learn/CodeBuddyPanel";
 import type { StarterCode } from "@/lib/supabase/types";
 
 type Lang = "html" | "css" | "js" | "jsx";
@@ -82,12 +83,14 @@ export function CodeWorkspace({
   practicePassed,
   hasAssignment,
   assignmentPassed,
+  isPremium,
 }: {
   lessonId: string;
   starterCode: StarterCode | null;
   practicePassed: boolean;
   hasAssignment: boolean;
   assignmentPassed: boolean;
+  isPremium: boolean;
 }) {
   const router = useRouter();
   const t = useTranslations("learn.editor");
@@ -255,6 +258,12 @@ export function CodeWorkspace({
           <p className="mt-2 text-xs text-danger">{t("saveError")}</p>
         )}
       </div>
+
+      <CodeBuddyPanel
+        lessonId={lessonId}
+        code={enabled.map((lang) => `// ${lang}\n${code[lang]}`).join("\n\n")}
+        isPremium={isPremium}
+      />
 
       {hasAssignment && (
         <div className="shrink-0 border-t border-black/40 bg-[#252526] p-3">

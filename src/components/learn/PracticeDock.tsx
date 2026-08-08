@@ -14,6 +14,7 @@ export function PracticeDock({
   practicePassed,
   hasAssignment,
   assignmentPassed,
+  isPremium,
 }: {
   open: boolean;
   onToggle: () => void;
@@ -23,6 +24,7 @@ export function PracticeDock({
   practicePassed: boolean;
   hasAssignment: boolean;
   assignmentPassed: boolean;
+  isPremium: boolean;
 }) {
   const t = useTranslations("learn.dock");
 
@@ -62,6 +64,7 @@ export function PracticeDock({
             practicePassed={practicePassed}
             hasAssignment={hasAssignment}
             assignmentPassed={assignmentPassed}
+            isPremium={isPremium}
           />
         </div>
       )}

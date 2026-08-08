@@ -109,6 +109,25 @@ That unlocks `/admin` — lesson/quiz management and a "Users" page where you
 can manually grant Pro access to any account (useful before real payments
 are wired up).
 
+### Optional: turn on the AI mentor (CodeBuddy)
+
+The AI mentor works without a real payment provider — it's just gated to
+Pro accounts, same as everything else, so grant yourself Pro from the
+Users page above to test it.
+
+1. Go to https://aistudio.google.com and sign in with any Google account
+   (free, no card required).
+2. Click **Get API key -> Create API key**.
+3. Add it to `.env.local`:
+   ```
+   GEMINI_API_KEY=your-key-here
+   ```
+4. In production (Vercel), add the same variable in
+   **Project Settings -> Environment Variables** and redeploy.
+
+Leave it blank and the mentor panel just shows "isn't configured yet"
+instead of erroring — the rest of the site works fine without it.
+
 ## 5. Run the app
 
 ```bash
@@ -161,6 +180,10 @@ account to reach the dashboard.
   interest with an optional note; there's no payment/contract flow yet, so
   an admin follows up manually — manage projects and see who's interested
   at `/admin/marketplace`
+- CodeBuddy AI mentor (Pro-only, inside the practice dock): gives hints and
+  code review, never the full solution — backed by Google Gemini's free
+  tier. Optional — see "Turn on the AI mentor" above. Gracefully disables
+  itself (no errors) if `GEMINI_API_KEY` isn't set
 - Bilingual Privacy Policy and Terms of Service pages (`/privacy`, `/terms`)
   — uses placeholder contact emails you should replace before real users
   sign up, and isn't a substitute for real legal review
@@ -173,7 +196,6 @@ account to reach the dashboard.
 
 ## What's next
 
-- AI mentor — needs you to pick an LLM provider and create an API key
 - Real subscription/payment integration — needs a payment provider account
   (paywall UI + manual admin grant exist, nothing actually charges yet).
   The real project marketplace has the same "no payment provider yet"
