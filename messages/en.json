@@ -117,7 +117,19 @@
     "continueLearning": "Continue learning",
     "percentComplete": "{percent}% complete",
     "dailyMission": "Today’s Mission",
-    "dailyMissionExample": "Create a button that changes color using JavaScript."
+    "dailyMissionExample": "Create a button that changes color using JavaScript.",
+    "achievements": {
+      "title": "Achievements",
+      "badges": {
+        "foundation-complete": { "title": "First Steps", "desc": "Complete the Foundation track" },
+        "first-website": { "title": "First Website", "desc": "Build your first HTML page" },
+        "css-designer": { "title": "CSS Designer", "desc": "Style your first website with CSS" },
+        "frontend-graduate": { "title": "Frontend Graduate", "desc": "Complete all free Frontend lessons" },
+        "backend-explorer": { "title": "Backend Explorer", "desc": "Create your first server" },
+        "backend-graduate": { "title": "Backend Graduate", "desc": "Complete all free Backend lessons" },
+        "full-stack-foundations": { "title": "Full Stack Foundations", "desc": "Complete the Frontend and Backend free tracks" }
+      }
+    }
   },
   "learn": {
     "paywall": {

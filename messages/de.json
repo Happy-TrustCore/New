@@ -117,7 +117,19 @@
     "continueLearning": "Weiterlernen",
     "percentComplete": "{percent}% abgeschlossen",
     "dailyMission": "Heutige Mission",
-    "dailyMissionExample": "Erstelle einen Button, der mit JavaScript die Farbe wechselt."
+    "dailyMissionExample": "Erstelle einen Button, der mit JavaScript die Farbe wechselt.",
+    "achievements": {
+      "title": "Erfolge",
+      "badges": {
+        "foundation-complete": { "title": "Erste Schritte", "desc": "Schließe den Foundation-Track ab" },
+        "first-website": { "title": "Erste Website", "desc": "Baue deine erste HTML-Seite" },
+        "css-designer": { "title": "CSS-Designer", "desc": "Gestalte deine erste Website mit CSS" },
+        "frontend-graduate": { "title": "Frontend-Absolvent", "desc": "Schließe alle kostenlosen Frontend-Lektionen ab" },
+        "backend-explorer": { "title": "Backend-Entdecker", "desc": "Erstelle deinen ersten Server" },
+        "backend-graduate": { "title": "Backend-Absolvent", "desc": "Schließe alle kostenlosen Backend-Lektionen ab" },
+        "full-stack-foundations": { "title": "Full-Stack-Grundlagen", "desc": "Schließe die kostenlosen Frontend- und Backend-Kurse ab" }
+      }
+    }
   },
   "learn": {
     "paywall": {

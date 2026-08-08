@@ -4,6 +4,7 @@ import type { Locale } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { computeLessonAccess, hasPremiumAccess } from "@/lib/lessons";
 import { pickLocale } from "@/lib/i18n-content";
+import { computeBadgeStatus } from "@/lib/achievements";
 
 const TRACK_SLUGS = ["foundation", "frontend", "backend"] as const;
 
@@ -54,11 +55,17 @@ export default async function DashboardPage({
   const currentTrack = tracks.find((t) => t.total > 0 && t.percent < 100) ?? tracks[0];
   const name = profile?.name ?? "Student";
 
+  const completedSlugs = new Set(
+    (lessons ?? []).filter((l) => completedIds.has(l.id)).map((l) => l.slug)
+  );
+  const badgeStatus = computeBadgeStatus(completedSlugs);
+
   return (
     <DashboardBody
       name={name}
       currentTrack={currentTrack}
       tracks={tracks}
+      badgeStatus={badgeStatus}
     />
   );
 }
@@ -76,10 +83,12 @@ function DashboardBody({
   name,
   currentTrack,
   tracks,
+  badgeStatus,
 }: {
   name: string;
   currentTrack: Track;
   tracks: Track[];
+  badgeStatus: ReturnType<typeof computeBadgeStatus>;
 }) {
   const t = useTranslations("dashboard");
 
@@ -129,6 +138,30 @@ function DashboardBody({
         <p className="text-sm font-semibold text-accent">{t("dailyMission")}</p>
         <p className="mt-2 text-foreground">{t("dailyMissionExample")}</p>
         <p className="mt-1 text-sm text-muted">+20 XP</p>
+      </section>
+
+      <section className="mt-6">
+        <p className="text-sm font-semibold">{t("achievements.title")}</p>
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {badgeStatus.map(({ badge, earned }) => (
+            <div
+              key={badge.id}
+              className={`rounded-xl border p-4 text-center ${
+                earned
+                  ? "border-accent/40 bg-accent/5"
+                  : "border-border bg-surface opacity-40 grayscale"
+              }`}
+            >
+              <span className="text-2xl">{badge.icon}</span>
+              <p className="mt-2 text-xs font-semibold">
+                {t(`achievements.badges.${badge.id}.title`)}
+              </p>
+              <p className="mt-1 text-[11px] text-muted">
+                {t(`achievements.badges.${badge.id}.desc`)}
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
     </div>
   );
