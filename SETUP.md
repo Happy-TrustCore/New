@@ -65,11 +65,19 @@ room for the new ones either way.
 Then paste [`db/react_lessons.sql`](db/react_lessons.sql) and run it too. It
 appends 7 paid-tier Frontend lessons covering React — components, props,
 state (`useState`), events, list rendering, and a "Task Tracker" mini
-project — right after the JavaScript lessons. 53 lessons total, 50 with a
-quiz, 9 requiring a project submission. These are the first lessons that use
-the editor's new `jsx` language tab: the preview iframe loads React,
-ReactDOM, and Babel Standalone from a CDN and transforms JSX in the browser,
-so no build step or bundler is needed. Safe to paste more than once.
+project — right after the JavaScript lessons. These are the first lessons
+that use the editor's new `jsx` language tab: the preview iframe loads
+React, ReactDOM, and Babel Standalone from a CDN and transforms JSX in the
+browser, so no build step or bundler is needed. Safe to paste more than
+once.
+
+Then paste [`db/react_hooks_lessons.sql`](db/react_hooks_lessons.sql) and
+run it too. It appends 4 more React lessons — `useEffect` (with a live
+clock and cleanup function), simulated data fetching with a loading state,
+a state-based routing pattern, and a capstone "Mini Dashboard" project that
+combines all of it. This completes the PRD's named React scope
+(components/props/state/hooks/routing/API). **57 lessons total, 54 with a
+quiz, 10 requiring a project submission.** Safe to paste more than once.
 
 ### Make yourself an admin
 
@@ -114,8 +122,9 @@ account to reach the dashboard.
 - Assignment flow + portfolio: lessons can require a project submission,
   saved to a real "Portfolio" section on the dashboard
 - Real curriculum (`db/seed.sql` + `db/checkpoint_exams.sql` +
-  `db/react_lessons.sql`): 53 lessons across Foundation, Frontend (through
-  React), and Backend (through a mini auth system), 50 with quizzes, 9 with
+  `db/react_lessons.sql` + `db/react_hooks_lessons.sql`): 57 lessons across
+  Foundation, Frontend (through React hooks, routing, and data fetching),
+  and Backend (through a mini auth system), 54 with quizzes, 10 with
   assignments, plus mid-part checkpoint exams — see "Add the curriculum"
   above
 - An admin panel (`/admin`) — lesson + quiz CRUD, an overview dashboard, and
@@ -138,8 +147,9 @@ account to reach the dashboard.
 - AI mentor — needs you to pick an LLM provider and create an API key
 - Real subscription/payment integration — needs a payment provider account
   (paywall UI + manual admin grant exist, nothing actually charges yet)
-- Deeper Node/Express/database content, React hooks beyond `useState`
-  (routing, data fetching), and course content past what's listed above —
-  the admin panel makes this authorable without touching code
+- Deeper Node/Express/database content (the Backend track still simulates
+  the server in plain JS — real Express/PostgreSQL content and full-stack
+  capstone projects are still to be written), and course content past what's
+  listed above — the admin panel makes this authorable without touching code
 
 All of this can continue to run on free tiers (Vercel + Supabase free plans).
