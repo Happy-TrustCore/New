@@ -137,7 +137,8 @@
     "level": "Level",
     "dashboard": "Dashboard",
     "logout": "Log out",
-    "settings": "Settings"
+    "settings": "Settings",
+    "leaderboard": "Leaderboard"
   },
   "dashboard": {
     "welcome": "Welcome, {name}",
@@ -212,6 +213,10 @@
       "freeTitle": "Upgrade to CodePath Pro",
       "freeBlurb": "€4.99/month for every lesson, project, exam, AI mentor, and certificates.",
       "upgrade": "Upgrade now"
+    },
+    "streak": {
+      "current": "{days}-day streak",
+      "longest": "Best: {days} days"
     }
   },
   "learn": {
@@ -314,5 +319,13 @@
       "confirmLabel": "Type \"{word}\" to confirm",
       "submit": "Permanently delete my account"
     }
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "subtitle": "Top students by XP.",
+    "empty": "No one's earned XP yet — be the first!",
+    "you": "(you)",
+    "levelXp": "Lv {level} · {xp} XP",
+    "notRanked": "Complete lessons to earn XP and climb onto the board."
   }
 }

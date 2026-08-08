@@ -13,7 +13,7 @@ export default async function LearnLayout({
   } = await supabase.auth.getUser();
 
   const { data: profile } = user
-    ? await supabase.from("profiles").select("xp, level").eq("id", user.id).single()
+    ? await supabase.from("profiles").select("xp, level, current_streak").eq("id", user.id).single()
     : { data: null };
 
   return <LearnChrome profile={profile}>{children}</LearnChrome>;
@@ -23,7 +23,7 @@ function LearnChrome({
   profile,
   children,
 }: {
-  profile: { xp: number; level: number } | null;
+  profile: { xp: number; level: number; current_streak: number } | null;
   children: React.ReactNode;
 }) {
   const t = useTranslations("dashboardChrome");
@@ -37,10 +37,18 @@ function LearnChrome({
         </Link>
         <div className="flex items-center gap-4">
           <LocaleSwitcher />
+          {!!profile?.current_streak && (
+            <span className="pill flex items-center gap-1.5 px-3 py-1 text-xs font-mono text-accent-warm">
+              🔥 {profile.current_streak}
+            </span>
+          )}
           <span className="pill flex items-center gap-1.5 px-3 py-1 text-xs font-mono text-muted">
             <span className="text-accent-warm">⚡</span>
             {t("level")} {profile?.level ?? 1} · {profile?.xp ?? 0} XP
           </span>
+          <Link href="/leaderboard" className="text-sm text-muted hover:text-foreground">
+            {t("leaderboard")}
+          </Link>
           <Link href="/dashboard" className="text-sm text-muted hover:text-foreground">
             {t("dashboard")}
           </Link>

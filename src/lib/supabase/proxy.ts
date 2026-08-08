@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { routing } from "@/i18n/routing";
 
-const PROTECTED_SECTIONS = ["dashboard", "learn", "admin", "marketplace", "settings"];
+const PROTECTED_SECTIONS = ["dashboard", "learn", "admin", "marketplace", "settings", "leaderboard"];
 
 export async function updateSession(request: NextRequest, response: NextResponse) {
   const supabase = createServerClient(

@@ -7,6 +7,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { computeLessonAccess, hasPremiumAccess } from "@/lib/lessons";
 import { isCourseFullyCompleted } from "@/lib/certificates";
+import { computeStreakUpdate } from "@/lib/streaks";
 import type { Lesson } from "@/lib/supabase/types";
 
 export const XP_PER_LESSON = 10;
@@ -81,12 +82,21 @@ export async function finalizeIfReady(supabase: Client, userId: string, lessonId
     .eq("user_id", userId)
     .eq("lesson_id", lessonId);
 
-  const { data: profile } = await supabase.from("profiles").select("xp, name").eq("id", userId).single();
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("xp, name, current_streak, longest_streak, last_activity_date")
+    .eq("id", userId)
+    .single();
   if (profile) {
     const newXp = profile.xp + XP_PER_LESSON;
+    const streak = computeStreakUpdate(
+      profile.last_activity_date,
+      profile.current_streak,
+      profile.longest_streak
+    );
     await supabase
       .from("profiles")
-      .update({ xp: newXp, level: Math.floor(newXp / 100) + 1 })
+      .update({ xp: newXp, level: Math.floor(newXp / 100) + 1, ...streak })
       .eq("id", userId);
   }
 

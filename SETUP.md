@@ -110,6 +110,13 @@ it. It adds two columns to the existing `subscriptions` table
 (`stripe_customer_id`, `stripe_subscription_id`) — skip this until you're
 actually setting up Stripe, there's nothing to see without it.
 
+Then paste
+[`db/phase9_streaks_leaderboard.sql`](db/phase9_streaks_leaderboard.sql)
+and run it. Adds streak columns to `profiles` and a `get_leaderboard()`
+function that only exposes name/xp/level (never email or anything else)
+to any signed-in student, so the leaderboard doesn't need to loosen
+`profiles`' own row-level security.
+
 ### Make yourself an admin
 
 Register a normal account first (step 5 below), then in the SQL Editor run:
@@ -248,6 +255,13 @@ account to reach the dashboard.
   before
 - Achievements: 9 badges derived from lesson completion, shown on the
   dashboard
+- Daily streaks: completing a lesson on consecutive calendar days (UTC)
+  builds a streak, shown on the dashboard and in the app header. Resets to
+  1 on any gap — logic in `src/lib/streaks.ts`, updated alongside XP in
+  `finalizeIfReady`
+- Leaderboard (`/leaderboard`): top 50 students ranked by XP, via a
+  security-definer Postgres function so it never exposes email or other
+  private profile fields to other students
 - Certificates: issued automatically the moment every lesson in a course
   (Foundation/Frontend/Backend) is completed — see the "Certificates"
   section on the dashboard, each links to a public, shareable

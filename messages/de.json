@@ -137,7 +137,8 @@
     "level": "Level",
     "dashboard": "Dashboard",
     "logout": "Abmelden",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "leaderboard": "Bestenliste"
   },
   "dashboard": {
     "welcome": "Willkommen, {name}",
@@ -212,6 +213,10 @@
       "freeTitle": "Auf CodePath Pro upgraden",
       "freeBlurb": "4,99 €/Monat für jede Lektion, jedes Projekt, jede Prüfung, den KI-Mentor und Zertifikate.",
       "upgrade": "Jetzt upgraden"
+    },
+    "streak": {
+      "current": "{days}-Tage-Serie",
+      "longest": "Beste: {days} Tage"
     }
   },
   "learn": {
@@ -314,5 +319,13 @@
       "confirmLabel": "Gib \"{word}\" ein, um zu bestätigen",
       "submit": "Mein Konto endgültig löschen"
     }
+  },
+  "leaderboard": {
+    "title": "Bestenliste",
+    "subtitle": "Top-Studierende nach XP.",
+    "empty": "Noch niemand hat XP gesammelt — sei die/der Erste!",
+    "you": "(du)",
+    "levelXp": "Lv {level} · {xp} XP",
+    "notRanked": "Schließe Lektionen ab, um XP zu sammeln und in die Liste zu kommen."
   }
 }

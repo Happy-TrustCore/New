@@ -11,6 +11,9 @@ create table if not exists profiles (
   student_verified_until timestamptz,
   xp integer not null default 0,
   level integer not null default 1,
+  current_streak integer not null default 0,
+  longest_streak integer not null default 0,
+  last_activity_date date,
   is_admin boolean not null default false,
   created_at timestamptz not null default now()
 );
@@ -194,6 +197,21 @@ create policy "admins read all progress" on lesson_progress for select using (pu
 create policy "admins read all subscriptions" on subscriptions for select using (public.is_admin(auth.uid()));
 create policy "admins manage real projects" on real_projects for all using (public.is_admin(auth.uid()));
 create policy "admins read all interests" on project_interests for select using (public.is_admin(auth.uid()));
+
+-- ── leaderboard ─────────────────────────────────────────────────────────────
+-- Exposes only id/name/xp/level — never email, account_type, or anything
+-- else in profiles — so any signed-in student can call this without
+-- loosening profiles' own SELECT policy.
+create or replace function public.get_leaderboard(result_limit integer default 20)
+returns table(id uuid, name text, xp integer, level integer)
+as $$
+  select id, name, xp, level
+  from public.profiles
+  order by xp desc, level desc
+  limit result_limit;
+$$ language sql security definer stable;
+
+grant execute on function public.get_leaderboard(integer) to authenticated;
 
 -- auto-create a profile row whenever a new auth user signs up
 create or replace function public.handle_new_user()

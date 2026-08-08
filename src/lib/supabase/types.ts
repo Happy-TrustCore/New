@@ -20,6 +20,9 @@ export type Profile = {
   student_verified_until: string | null;
   xp: number;
   level: number;
+  current_streak: number;
+  longest_streak: number;
+  last_activity_date: string | null;
   is_admin: boolean;
   created_at: string;
 };
@@ -136,6 +139,13 @@ export type ProjectInterest = {
   created_at: string;
 };
 
+export type LeaderboardEntry = {
+  id: string;
+  name: string;
+  xp: number;
+  level: number;
+};
+
 type NoRelationships = { Relationships: [] };
 
 export type Database = {
@@ -181,6 +191,11 @@ export type Database = {
       } & NoRelationships;
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      get_leaderboard: {
+        Args: { result_limit?: number };
+        Returns: LeaderboardEntry[];
+      };
+    };
   };
 };

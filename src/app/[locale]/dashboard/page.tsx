@@ -105,6 +105,8 @@ export default async function DashboardPage({
       portfolio={portfolio}
       certificates={earnedCertificates}
       isPremium={isPremium}
+      currentStreak={profile?.current_streak ?? 0}
+      longestStreak={profile?.longest_streak ?? 0}
     />
   );
 }
@@ -139,6 +141,8 @@ function DashboardBody({
   portfolio,
   certificates,
   isPremium,
+  currentStreak,
+  longestStreak,
 }: {
   name: string;
   currentTrack: Track;
@@ -147,17 +151,36 @@ function DashboardBody({
   portfolio: PortfolioItem[];
   certificates: CertificateItem[];
   isPremium: boolean;
+  currentStreak: number;
+  longestStreak: number;
 }) {
   const t = useTranslations("dashboard");
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
-      <h1 className="text-2xl font-bold">
-        {t("welcome", { name })} 👋
-      </h1>
-      <p className="mt-1 text-muted">
-        {t("goalLabel")} <span className="text-foreground">{t("goalValue")}</span>
-      </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold">
+            {t("welcome", { name })} 👋
+          </h1>
+          <p className="mt-1 text-muted">
+            {t("goalLabel")} <span className="text-foreground">{t("goalValue")}</span>
+          </p>
+        </div>
+        {currentStreak > 0 && (
+          <div className="pill flex items-center gap-2 px-4 py-2">
+            <span className="text-lg">🔥</span>
+            <div>
+              <p className="text-sm font-semibold text-accent-warm">
+                {t("streak.current", { days: currentStreak })}
+              </p>
+              {longestStreak > currentStreak && (
+                <p className="text-xs text-muted">{t("streak.longest", { days: longestStreak })}</p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
 
       <section className="mt-8 rounded-xl border border-border bg-surface p-6">
         <p className="text-sm text-muted">{t("currentPath")}</p>
