@@ -176,9 +176,26 @@ export async function deleteQuizQuestion(lessonId: string, questionId: string) {
   redirect({ href: `/admin/lessons/${lessonId}`, locale });
 }
 
+const STUDENT_VERIFICATION_DAYS = 14;
+
 export async function setAccountType(userId: string, accountType: AccountType) {
   const { supabase } = await requireAdmin();
-  await supabase.from("profiles").update({ account_type: accountType }).eq("id", userId);
+
+  // "student" only actually grants access if student_verified_until is in
+  // the future — hasPremiumAccess() checks both. Set a fresh 14-day window
+  // (per the PRD's "verified students get 14 days full free access") every
+  // time student is granted, including re-granting it to extend an existing
+  // student's access. Clear it for any other plan so a past student doesn't
+  // silently keep access if they're ever set back to "student" later.
+  const studentVerifiedUntil =
+    accountType === "student"
+      ? new Date(Date.now() + STUDENT_VERIFICATION_DAYS * 24 * 60 * 60 * 1000).toISOString()
+      : null;
+
+  await supabase
+    .from("profiles")
+    .update({ account_type: accountType, student_verified_until: studentVerifiedUntil })
+    .eq("id", userId);
   await supabase.from("subscriptions").update({ plan: accountType }).eq("user_id", userId);
   revalidatePath("/admin/users");
 }

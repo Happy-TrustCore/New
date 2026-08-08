@@ -37,7 +37,14 @@ export default async function AdminUsersPage() {
                   {p.is_admin ? " (admin)" : ""}
                 </td>
                 <td className="px-4 py-3 text-muted">{p.email}</td>
-                <td className="px-4 py-3 capitalize">{p.account_type}</td>
+                <td className="px-4 py-3 capitalize">
+                  {p.account_type}
+                  {p.account_type === "student" && p.student_verified_until && (
+                    <span className="ml-1 text-xs text-muted normal-case">
+                      (until {new Date(p.student_verified_until).toLocaleDateString()})
+                    </span>
+                  )}
+                </td>
                 <td className="px-4 py-3">{p.xp}</td>
                 <td className="px-4 py-3 text-muted">
                   {new Date(p.created_at).toLocaleDateString()}
