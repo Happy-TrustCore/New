@@ -47,12 +47,20 @@ HTML/CSS site exam), the first 8 free Backend lessons, and now the first
 paid-tier lessons too — 10 JavaScript lessons (variables through two real
 mini-projects: a name-greeting app and a calculator) and 6 more Backend
 lessons (database table design, password hashing, registration, sessions,
-error handling, and a mini auth-system exam). 42 lessons total, 39 with a
-quiz question, 4 requiring a project submission to your portfolio. Backend
+error handling, and a mini auth-system exam). 42 lessons total. Backend
 lessons simulate the server in plain JS (the in-browser editor only runs
 client-side code — it can't execute a real Node.js server). Real content,
 not a placeholder — React and deeper Node/Express/DB content are still to be
 written, and can be added through `/admin` without touching code.
+
+Then paste [`db/checkpoint_exams.sql`](db/checkpoint_exams.sql) and run it
+too. It adds a mid-part "checkpoint" exam to each part that previously only
+had an exam at the very end (HTML/CSS, JavaScript, Backend foundations,
+Backend security) — 46 lessons total, 43 with a quiz question, 8 requiring a
+project submission. Safe to paste more than once (every insert/update is
+guarded), and safe to run on a database that's never seen `seed.sql` before
+or one that's already had it run — it renumbers existing lessons to make
+room for the new ones either way.
 
 ### Make yourself an admin
 
