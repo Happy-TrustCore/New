@@ -4,6 +4,7 @@ import { useState } from "react";
 import { LessonContent } from "./LessonContent";
 import { PracticeScreen } from "./PracticeScreen";
 import { QuizScreen } from "./QuizScreen";
+import { markContentViewed } from "@/lib/actions/progress";
 import type {
   Difficulty,
   LessonContentBlock,
@@ -34,6 +35,7 @@ export function LessonExperience({
   paywalled,
   isPremium,
   nextLessonSlug,
+  initialMode = "lesson",
 }: {
   title: LocalizedText;
   difficulty: Difficulty;
@@ -48,10 +50,16 @@ export function LessonExperience({
   paywalled: boolean;
   isPremium: boolean;
   nextLessonSlug: string | null;
+  initialMode?: Mode;
 }) {
-  const [mode, setMode] = useState<Mode>("lesson");
+  const [mode, setMode] = useState<Mode>(initialMode);
   const hasQuiz = quizQuestions.length > 0;
   const taskText = steps.length > 0 ? steps[steps.length - 1].text : null;
+
+  function goToPractice() {
+    setMode("practice");
+    markContentViewed(lessonId).catch(() => {});
+  }
 
   if (mode === "practice") {
     return (
@@ -92,7 +100,7 @@ export function LessonExperience({
           title={title}
           difficulty={difficulty}
           steps={steps}
-          onStartPractice={() => setMode("practice")}
+          onStartPractice={goToPractice}
         />
       </div>
     </div>

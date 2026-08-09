@@ -240,7 +240,8 @@
   "learn": {
     "sidebar": {
       "pro": "Pro",
-      "lessonOf": "Lesson {current} of {total}"
+      "lessonOf": "Lesson {current} of {total}",
+      "practice": "Practice"
     },
     "content": {
       "difficulty": {

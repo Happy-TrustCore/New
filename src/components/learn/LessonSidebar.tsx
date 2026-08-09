@@ -10,40 +10,41 @@ export function LessonSidebar({
   courseTitle,
   lessons,
   currentLessonId,
+  currentMode = "lesson",
+  contentViewedIds,
 }: {
   courseTitle: string;
   lessons: LessonWithAccess[];
   currentLessonId: string;
+  currentMode?: "lesson" | "practice" | "quiz";
+  contentViewedIds: Set<string>;
 }) {
   const locale = useLocale();
   const t = useTranslations("learn.sidebar");
   const [mobileOpen, setMobileOpen] = useState(false);
   const currentIndex = lessons.findIndex((l) => l.id === currentLessonId);
 
+  function rowClasses(isCurrent: boolean, done: boolean) {
+    return `flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
+      isCurrent
+        ? "bg-accent/10 text-accent font-semibold"
+        : done
+        ? "text-foreground hover:bg-surface-2"
+        : "text-muted"
+    }`;
+  }
+
   const navList = (
     <ul className="mt-3 space-y-1">
       {lessons.map((lesson, i) => {
-        const isCurrent = lesson.id === currentLessonId;
         const title = pickLocale(lesson.title, locale);
-        const icon =
-          lesson.access === "completed"
-            ? "✓"
-            : lesson.access === "locked" || lesson.access === "paywall"
-            ? "🔒"
-            : "▶";
-
-        const rowClasses = `flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
-          isCurrent
-            ? "bg-accent/10 text-accent font-semibold"
-            : lesson.access === "completed"
-            ? "text-foreground hover:bg-surface-2"
-            : "text-muted"
-        }`;
+        const hasPractice = lesson.starter_code !== null;
+        const contentViewed = contentViewedIds.has(lesson.id);
 
         if (lesson.access === "locked") {
           return (
-            <li key={lesson.id} className={`${rowClasses} cursor-not-allowed`}>
-              <span className="w-4 shrink-0">{icon}</span>
+            <li key={lesson.id} className={`${rowClasses(false, false)} cursor-not-allowed`}>
+              <span className="w-4 shrink-0">🔒</span>
               <span className="truncate">
                 {i + 1}. {title}
               </span>
@@ -54,8 +55,8 @@ export function LessonSidebar({
         if (lesson.access === "paywall") {
           return (
             <li key={lesson.id}>
-              <Link href="/#pricing" className={`${rowClasses} hover:bg-surface-2`}>
-                <span className="w-4 shrink-0">{icon}</span>
+              <Link href="/#pricing" className={`${rowClasses(false, false)} hover:bg-surface-2`}>
+                <span className="w-4 shrink-0">🔒</span>
                 <span className="truncate">
                   {i + 1}. {title}
                 </span>
@@ -65,18 +66,44 @@ export function LessonSidebar({
           );
         }
 
+        const lessonDone = contentViewed || lesson.access === "completed";
+        const isLessonRowCurrent = lesson.id === currentLessonId && currentMode === "lesson";
+        const isPracticeRowCurrent =
+          lesson.id === currentLessonId && (currentMode === "practice" || currentMode === "quiz");
+        const practiceDone = lesson.access === "completed";
+
         return (
-          <li key={lesson.id}>
+          <li key={lesson.id} className="space-y-1">
             <Link
               href={`/learn/${lesson.slug}`}
               onClick={() => setMobileOpen(false)}
-              className={rowClasses}
+              className={rowClasses(isLessonRowCurrent, lessonDone)}
             >
-              <span className="w-4 shrink-0">{icon}</span>
+              <span className="w-4 shrink-0">{lessonDone ? "✓" : "▶"}</span>
               <span className="truncate">
                 {i + 1}. {title}
               </span>
             </Link>
+            {hasPractice &&
+              (contentViewed ? (
+                <Link
+                  href={`/learn/${lesson.slug}?start=practice`}
+                  onClick={() => setMobileOpen(false)}
+                  className={`${rowClasses(isPracticeRowCurrent, practiceDone)} pl-7`}
+                >
+                  <span className="w-4 shrink-0">{practiceDone ? "✓" : "▶"}</span>
+                  <span className="truncate">
+                    {i + 1}. {t("practice")}
+                  </span>
+                </Link>
+              ) : (
+                <div className={`${rowClasses(false, false)} cursor-not-allowed pl-7`}>
+                  <span className="w-4 shrink-0">🔒</span>
+                  <span className="truncate">
+                    {i + 1}. {t("practice")}
+                  </span>
+                </div>
+              ))}
           </li>
         );
       })}

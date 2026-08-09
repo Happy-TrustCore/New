@@ -85,10 +85,12 @@ create table if not exists lesson_progress (
   practice_passed boolean not null default false,
   quiz_passed boolean not null default false,
   assignment_passed boolean not null default false,
+  content_viewed boolean not null default false,
   completed_at timestamptz,
   updated_at timestamptz not null default now(),
   unique (user_id, lesson_id)
 );
+alter table lesson_progress add column if not exists content_viewed boolean not null default false;
 
 -- ── projects / portfolio ────────────────────────────────────────────────────
 create table if not exists projects (

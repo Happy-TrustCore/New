@@ -95,6 +95,7 @@ export type LessonProgress = {
   practice_passed: boolean;
   quiz_passed: boolean;
   assignment_passed: boolean;
+  content_viewed: boolean;
   completed_at: string | null;
   updated_at: string;
 };

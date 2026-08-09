@@ -9,8 +9,11 @@ import { LessonExperience } from "@/components/learn/LessonExperience";
 
 export default async function LessonPage({
   params,
+  searchParams,
 }: PageProps<"/[locale]/learn/[lessonSlug]">) {
   const { locale, lessonSlug } = (await params) as { locale: Locale; lessonSlug: string };
+  const sp = await searchParams;
+  const initialMode = sp.start === "practice" ? "practice" : "lesson";
   const supabase = await createClient();
 
   const {
@@ -35,6 +38,7 @@ export default async function LessonPage({
     { data: course },
     { data: courseLessons },
     { data: completedRows },
+    { data: courseProgressRows },
     { data: profile },
     { data: myProgress },
     { data: quizQuestions },
@@ -46,6 +50,11 @@ export default async function LessonPage({
       .select("lesson_id")
       .eq("user_id", user.id)
       .eq("status", "completed"),
+    supabase
+      .from("lesson_progress")
+      .select("lesson_id, content_viewed")
+      .eq("user_id", user.id)
+      .eq("content_viewed", true),
     supabase.from("profiles").select("*").eq("id", user.id).single(),
     supabase
       .from("lesson_progress")
@@ -61,6 +70,7 @@ export default async function LessonPage({
   ]);
 
   const completedIds = new Set((completedRows ?? []).map((row) => row.lesson_id));
+  const contentViewedIds = new Set((courseProgressRows ?? []).map((row) => row.lesson_id));
   const isPremium = hasPremiumAccess(profile);
   const isAdmin = profile?.is_admin ?? false;
   const withAccess = computeLessonAccess(courseLessons ?? [], completedIds, isPremium, isAdmin);
@@ -83,12 +93,20 @@ export default async function LessonPage({
   const targetIndex = withAccess.findIndex((l) => l.id === lesson.id);
   const nextLessonSlug = withAccess[targetIndex + 1]?.slug ?? null;
 
+  // Direct-URL safety net: only honor ?start=practice if the reading part
+  // was actually already viewed (or the lesson is already fully done) —
+  // otherwise fall back to the reading screen, same as the sidebar link logic.
+  const canStartAtPractice = contentViewedIds.has(lesson.id) || target.access === "completed";
+  const resolvedInitialMode = initialMode === "practice" && canStartAtPractice ? "practice" : "lesson";
+
   return (
     <div className="grid h-full grid-rows-[auto_1fr] overflow-hidden sm:grid-cols-[240px_1fr] sm:grid-rows-1">
       <LessonSidebar
         courseTitle={course ? pickLocale(course.title, locale) : ""}
         lessons={withAccess}
         currentLessonId={lesson.id}
+        currentMode={resolvedInitialMode}
+        contentViewedIds={contentViewedIds}
       />
       <LessonExperience
         title={lesson.title}
@@ -101,6 +119,7 @@ export default async function LessonPage({
         practicePassed={myProgress?.practice_passed ?? false}
         hasAssignment={lesson.has_assignment}
         assignmentPassed={myProgress?.assignment_passed ?? false}
+        initialMode={resolvedInitialMode}
         paywalled={target.access === "paywall"}
         isPremium={isPremium}
         nextLessonSlug={nextLessonSlug}

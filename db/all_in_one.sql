@@ -1,23 +1,3 @@
--- =====================================================================
--- CodePath Academy — ALL-IN-ONE database setup
--- Paste this whole file into the Supabase SQL Editor and click Run once.
--- Runs every db/*.sql file in order EXCEPT
--- phase7_marketplace_certificates.sql, which is skipped only because its
--- tables/policies are already fully duplicated inside schema.sql itself
--- (mirrored there for fresh installs) — including it here would just
--- recreate the exact same things a second time for no benefit, not an
--- error (every CREATE POLICY in this project is now paired with a
--- DROP POLICY IF EXISTS, so re-running policy statements is genuinely
--- safe everywhere in this codebase, not just here).
--- Safe to run this whole file more than once.
--- Generated from the individual files in db/ — if those change, this
--- file should be regenerated, not hand-edited.
--- =====================================================================
-
--- #####################################################################
--- ## schema.sql
--- #####################################################################
-
 -- CodePath Academy — core schema
 -- Run this in the Supabase SQL editor (free project) to set up the database.
 
@@ -105,10 +85,12 @@ create table if not exists lesson_progress (
   practice_passed boolean not null default false,
   quiz_passed boolean not null default false,
   assignment_passed boolean not null default false,
+  content_viewed boolean not null default false,
   completed_at timestamptz,
   updated_at timestamptz not null default now(),
   unique (user_id, lesson_id)
 );
+alter table lesson_progress add column if not exists content_viewed boolean not null default false;
 
 -- ── projects / portfolio ────────────────────────────────────────────────────
 create table if not exists projects (
@@ -299,11 +281,6 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
-
--- #####################################################################
--- ## seed.sql
--- #####################################################################
-
 -- CodePath Academy — initial course content
 -- Run this after db/schema.sql. This is the real (if early) curriculum, fully
 -- bilingual (English + German): Foundation (2 lessons), the first 16 free
@@ -873,11 +850,6 @@ values
     '{"en":["A CSS animation library","The core mental model behind real authentication systems","A video game","An image editor"],"de":["Eine CSS-Animationsbibliothek","Das Kernprinzip hinter echten Authentifizierungssystemen","Ein Videospiel","Einen Bildeditor"]}'::jsonb, 1, 1
   )
 on conflict (lesson_id, question) do nothing;
-
--- #####################################################################
--- ## checkpoint_exams.sql
--- #####################################################################
-
 -- CodePath Academy — checkpoint exams
 -- Adds a mid-part "checkpoint" exam to each curriculum part that previously
 -- only had an end-of-part exam (HTML/CSS, JavaScript, Backend foundations,
@@ -1024,10 +996,6 @@ where not exists (
   select 1 from quiz_questions
   where lesson_id = (select id from lessons where slug = 'backend-security-checkpoint-exam')
 );
-
--- #####################################################################
--- ## react_lessons.sql
--- #####################################################################
 
 -- CodePath Academy — React lessons
 -- Appends 7 paid-tier Frontend lessons covering React (components, props,
@@ -1199,10 +1167,6 @@ where not exists (
   where lesson_id = (select id from lessons where slug = 'react-mini-project')
 );
 
--- #####################################################################
--- ## react_hooks_lessons.sql
--- #####################################################################
-
 -- CodePath Academy — React hooks/routing lessons
 -- Appends 4 more paid-tier Frontend lessons (useEffect, simulated data
 -- fetching, state-based routing, and a capstone mini dashboard project)
@@ -1304,10 +1268,6 @@ where not exists (
   select 1 from quiz_questions
   where lesson_id = (select id from lessons where slug = 'react-final-project')
 );
-
--- #####################################################################
--- ## backend_deep_lessons.sql
--- #####################################################################
 
 -- CodePath Academy — deeper Backend lessons
 -- Appends 6 more paid-tier Backend lessons (Express middleware, SQL basics,
@@ -1456,10 +1416,6 @@ where not exists (
   where lesson_id = (select id from lessons where slug = 'backend-fullstack-capstone')
 );
 
--- #####################################################################
--- ## phase8_payments.sql
--- #####################################################################
-
 -- CodePath Academy — Phase 8: real Stripe payments
 -- Adds two nullable columns to the existing subscriptions table so it can
 -- be linked to a real Stripe customer/subscription. Safe to run more than
@@ -1474,11 +1430,6 @@ alter table subscriptions add column if not exists stripe_subscription_id text;
 create unique index if not exists subscriptions_stripe_subscription_id_key
   on subscriptions (stripe_subscription_id)
   where stripe_subscription_id is not null;
-
--- #####################################################################
--- ## phase9_streaks_leaderboard.sql
--- #####################################################################
-
 -- CodePath Academy — Phase 9: daily streaks + leaderboard
 -- New profiles columns (streak tracking) and a security-definer function
 -- for a public leaderboard that doesn't expose the full profiles table
@@ -1502,11 +1453,6 @@ as $$
 $$ language sql security definer stable;
 
 grant execute on function public.get_leaderboard(integer) to authenticated;
-
--- #####################################################################
--- ## quick_checks.sql
--- #####################################################################
-
 -- CodePath Academy — embedded lesson Quick Checks
 -- Adds a small multiple-choice "check" to one step of every existing
 -- lesson's content (LessonContentBlock.check — see src/lib/supabase/types.ts).
