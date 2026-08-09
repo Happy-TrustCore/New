@@ -244,7 +244,8 @@
     "sidebar": {
       "pro": "Pro",
       "lessonOf": "Lektion {current} von {total}",
-      "practice": "Übung"
+      "practice": "Übung",
+      "allTracks": "Alle Bereiche (Admin)"
     },
     "content": {
       "difficulty": {

@@ -42,6 +42,8 @@ export default async function LessonPage({
     { data: profile },
     { data: myProgress },
     { data: quizQuestions },
+    { data: allCourses },
+    { data: allLessons },
   ] = await Promise.all([
     supabase.from("courses").select("*").eq("id", lesson.course_id).single(),
     supabase.from("lessons").select("*").eq("course_id", lesson.course_id),
@@ -67,6 +69,11 @@ export default async function LessonPage({
       .select("id, question, choices")
       .eq("lesson_id", lesson.id)
       .order("sort_order"),
+    // Only actually used for admins (see courseGroups below), but cheap
+    // enough (a handful of rows) to just always fetch alongside everything
+    // else rather than branching the query list on isAdmin.
+    supabase.from("courses").select("*").order("sort_order"),
+    supabase.from("lessons").select("*"),
   ]);
 
   const completedIds = new Set((completedRows ?? []).map((row) => row.lesson_id));
@@ -100,6 +107,23 @@ export default async function LessonPage({
   const canStartAtPractice = isAdmin || contentViewedIds.has(lesson.id) || target.access === "completed";
   const resolvedInitialMode = initialMode === "practice" && canStartAtPractice ? "practice" : "lesson";
 
+  // Admins see every track's lessons in one sidebar, not just the current
+  // course's — computeLessonAccess is inherently per-course (sequential
+  // unlock only makes sense within one track), so run it once per course
+  // and group the results, rather than trying to flatten unlock logic
+  // across tracks that don't actually share an unlock order.
+  const courseGroups = isAdmin
+    ? (allCourses ?? []).map((c) => ({
+        title: pickLocale(c.title, locale),
+        lessons: computeLessonAccess(
+          (allLessons ?? []).filter((l) => l.course_id === c.id),
+          completedIds,
+          isPremium,
+          isAdmin
+        ),
+      }))
+    : undefined;
+
   return (
     <div className="grid h-full grid-rows-[auto_1fr] overflow-hidden sm:grid-cols-[240px_1fr] sm:grid-rows-1">
       <LessonSidebar
@@ -109,6 +133,7 @@ export default async function LessonPage({
         currentMode={resolvedInitialMode}
         contentViewedIds={contentViewedIds}
         isAdmin={isAdmin}
+        courseGroups={courseGroups}
       />
       <LessonExperience
         title={lesson.title}

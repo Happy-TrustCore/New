@@ -13,6 +13,7 @@ export function LessonSidebar({
   currentMode = "lesson",
   contentViewedIds,
   isAdmin = false,
+  courseGroups,
 }: {
   courseTitle: string;
   lessons: LessonWithAccess[];
@@ -20,6 +21,10 @@ export function LessonSidebar({
   currentMode?: "lesson" | "practice" | "quiz";
   contentViewedIds: Set<string>;
   isAdmin?: boolean;
+  // Admin-only: every track's lessons, grouped, so an admin sees Foundation
+  // + Frontend + Backend all in one sidebar instead of only the current
+  // track. When present, this replaces the single-track `lessons` list.
+  courseGroups?: { title: string; lessons: LessonWithAccess[] }[];
 }) {
   const locale = useLocale();
   const t = useTranslations("learn.sidebar");
@@ -36,9 +41,10 @@ export function LessonSidebar({
     }`;
   }
 
-  const navList = (
+  function renderLessonList(lessonList: LessonWithAccess[]) {
+    return (
     <ul className="mt-3 space-y-1">
-      {lessons.map((lesson, i) => {
+      {lessonList.map((lesson, i) => {
         const title = pickLocale(lesson.title, locale);
         const hasPractice = lesson.starter_code !== null;
         const contentViewed = isAdmin || contentViewedIds.has(lesson.id);
@@ -110,6 +116,24 @@ export function LessonSidebar({
         );
       })}
     </ul>
+    );
+  }
+
+  const headerLabel = courseGroups ? t("allTracks") : courseTitle;
+
+  const navList = courseGroups ? (
+    <div className="mt-3 space-y-5">
+      {courseGroups.map((group) => (
+        <div key={group.title}>
+          <p className="px-1 text-[11px] font-semibold uppercase tracking-wide text-muted/80">
+            {group.title}
+          </p>
+          {renderLessonList(group.lessons)}
+        </div>
+      ))}
+    </div>
+  ) : (
+    renderLessonList(lessons)
   );
 
   return (
@@ -121,8 +145,8 @@ export function LessonSidebar({
       >
         <span>☰</span>
         <span className="truncate">
-          {courseTitle}
-          {currentIndex >= 0 && (
+          {headerLabel}
+          {!courseGroups && currentIndex >= 0 && (
             <span className="ml-1 font-normal text-muted">
               — {t("lessonOf", { current: currentIndex + 1, total: lessons.length })}
             </span>
@@ -132,7 +156,7 @@ export function LessonSidebar({
 
       {/* desktop: sidebar occupies its own grid column as before */}
       <nav className="hidden h-full flex-col overflow-y-auto border-r border-border bg-surface/60 p-4 sm:flex">
-        <p className="px-2 text-xs font-semibold uppercase tracking-wide text-muted">{courseTitle}</p>
+        <p className="px-2 text-xs font-semibold uppercase tracking-wide text-muted">{headerLabel}</p>
         {navList}
       </nav>
 
@@ -142,7 +166,7 @@ export function LessonSidebar({
           <div className="absolute inset-0 bg-black/60" onClick={() => setMobileOpen(false)} />
           <div className="relative flex h-full w-72 max-w-[85vw] flex-col overflow-y-auto bg-background p-4 shadow-2xl">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted">{courseTitle}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted">{headerLabel}</p>
               <button
                 onClick={() => setMobileOpen(false)}
                 className="rounded-lg px-2 py-1 text-muted hover:bg-surface-2 hover:text-foreground"
