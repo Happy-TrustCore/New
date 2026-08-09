@@ -7,7 +7,7 @@ import { pickLocale } from "@/lib/i18n-content";
 import { computeBadgeStatus } from "@/lib/achievements";
 import { startCheckout, manageBilling } from "@/lib/actions/billing";
 
-const TRACK_SLUGS = ["foundation", "frontend", "backend"] as const;
+const TRACK_SLUGS = ["foundation", "frontend", "backend", "tools"] as const;
 
 export default async function DashboardPage({
   params,

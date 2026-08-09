@@ -245,7 +245,12 @@
       "pro": "Pro",
       "lessonOf": "Lesson {current} of {total}",
       "practice": "Practice",
-      "allTracks": "All tracks (Admin)"
+      "allTracks": "All tracks (Admin)",
+      "part": {
+        "beginner": "Part 1 — Beginner",
+        "intermediate": "Part 2 — Intermediate",
+        "professional": "Part 3 — Professional"
+      }
     },
     "content": {
       "difficulty": {

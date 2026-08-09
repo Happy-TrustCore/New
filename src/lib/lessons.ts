@@ -45,6 +45,52 @@ export function computeLessonAccess(
   });
 }
 
+export type CoursePart = "beginner" | "intermediate" | "professional";
+
+// Anchored to stable lesson slugs, not raw sort_order numbers — a future
+// content insertion that shifts every later sort_order won't silently move
+// these boundaries to the wrong lesson. Only Frontend and Backend have
+// enough range to meaningfully split into three; Foundation and Tools stay
+// as flat lists (groupLessonsByPart returns null for them).
+const PART_BOUNDARIES: Record<string, { part: CoursePart; startsAt: string }[]> = {
+  frontend: [
+    { part: "beginner", startsAt: "html-hello-world" },
+    { part: "intermediate", startsAt: "js-introduction" },
+    // Git/GitHub lessons that used to live here moved to the Tools course
+    // (see db/foundation_and_tools.sql) — TypeScript is now the first
+    // "professional" lesson that actually stayed in Frontend.
+    { part: "professional", startsAt: "ts-what-is-typescript" },
+  ],
+  backend: [
+    { part: "beginner", startsAt: "what-happens-when-you-open-a-website" },
+    { part: "intermediate", startsAt: "backend-database-tables" },
+    { part: "professional", startsAt: "backend-express-middleware" },
+  ],
+};
+
+export function groupLessonsByPart<T extends { slug: string; sort_order: number }>(
+  courseSlug: string,
+  lessons: T[]
+): { part: CoursePart; lessons: T[] }[] | null {
+  const boundaries = PART_BOUNDARIES[courseSlug];
+  if (!boundaries) return null;
+
+  const resolved = boundaries.map((b) => ({
+    part: b.part,
+    sort: lessons.find((l) => l.slug === b.startsAt)?.sort_order ?? -Infinity,
+  }));
+  const groups: { part: CoursePart; lessons: T[] }[] = resolved.map((r) => ({ part: r.part, lessons: [] }));
+
+  for (const lesson of lessons) {
+    let idx = 0;
+    for (let i = 0; i < resolved.length; i++) {
+      if (lesson.sort_order >= resolved[i].sort) idx = i;
+    }
+    groups[idx].lessons.push(lesson);
+  }
+  return groups.filter((g) => g.lessons.length > 0);
+}
+
 export function hasPremiumAccess(profile: Pick<Profile, "account_type" | "student_verified_until"> | null): boolean {
   if (!profile) return false;
   if (profile.account_type === "premium") return true;

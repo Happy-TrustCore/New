@@ -20,7 +20,17 @@ export type Badge = {
 // entirely from lesson_progress and recomputing is cheap and always
 // consistent with the current curriculum.
 export const BADGES: Badge[] = [
-  { id: "foundation-complete", icon: "🎯", requiredSlugs: ["how-programming-works", "how-websites-work"] },
+  {
+    id: "foundation-complete",
+    icon: "🎯",
+    requiredSlugs: [
+      "how-programming-works",
+      "how-websites-work",
+      "foundation-programming-languages",
+      "foundation-your-toolkit",
+      "foundation-your-roadmap",
+    ],
+  },
   { id: "first-website", icon: "🏆", requiredSlugs: ["html-hello-world"] },
   { id: "css-designer", icon: "🎨", requiredSlugs: ["css-styling-basics"] },
   { id: "frontend-graduate", icon: "🖥️", requiredSlugs: ["frontend-free-exam"] },

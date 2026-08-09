@@ -245,7 +245,12 @@
       "pro": "Pro",
       "lessonOf": "Lektion {current} von {total}",
       "practice": "Übung",
-      "allTracks": "Alle Bereiche (Admin)"
+      "allTracks": "Alle Bereiche (Admin)",
+      "part": {
+        "beginner": "Teil 1 — Anfänger",
+        "intermediate": "Teil 2 — Fortgeschritten",
+        "professional": "Teil 3 — Profi"
+      }
     },
     "content": {
       "difficulty": {

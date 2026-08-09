@@ -114,6 +114,7 @@ export default async function LessonPage({
   // across tracks that don't actually share an unlock order.
   const courseGroups = isAdmin
     ? (allCourses ?? []).map((c) => ({
+        slug: c.slug,
         title: pickLocale(c.title, locale),
         lessons: computeLessonAccess(
           (allLessons ?? []).filter((l) => l.course_id === c.id),
@@ -128,6 +129,7 @@ export default async function LessonPage({
     <div className="grid h-full grid-rows-[auto_1fr] overflow-hidden sm:grid-cols-[240px_1fr] sm:grid-rows-1">
       <LessonSidebar
         courseTitle={course ? pickLocale(course.title, locale) : ""}
+        courseSlug={course?.slug ?? ""}
         lessons={withAccess}
         currentLessonId={lesson.id}
         currentMode={resolvedInitialMode}
