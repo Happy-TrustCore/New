@@ -117,6 +117,13 @@ function that only exposes name/xp/level (never email or anything else)
 to any signed-in student, so the leaderboard doesn't need to loosen
 `profiles`' own row-level security.
 
+Finally, paste [`db/quick_checks.sql`](db/quick_checks.sql) and run it.
+Adds a small embedded multiple-choice "Quick Check" question to one step
+of every one of the 63 lessons — shown right inside the lesson card
+itself, distinct from the separate end-of-lesson quiz and the separate
+practice screen. No schema change, just a `content` jsonb update per
+lesson. Safe to paste more than once.
+
 ### Make yourself an admin
 
 Register a normal account first (step 5 below), then in the SQL Editor run:
