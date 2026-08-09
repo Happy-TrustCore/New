@@ -25,7 +25,10 @@
       "ctaPrimary": "Kostenlos starten",
       "ctaSecondary": "Roadmap ansehen",
       "codeSample": "Hallo, mein Name ist",
-      "codeSampleP": "Das ist meine erste Website."
+      "codeSampleP": "Das ist meine erste Website.",
+      "previewLabel": "Vorschau",
+      "streakBadge": "7 Tage Serie",
+      "xpBadge": "+10 XP"
     },
     "methods": {
       "title": "Das CodePath-Lernsystem",

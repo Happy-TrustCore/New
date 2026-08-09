@@ -20,10 +20,10 @@ export default async function Home({
       <main className="flex-1">
         {/* Hero */}
         <section className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 pb-20 pt-20 text-center sm:pt-28">
-          <span className="animate-float-in pill px-4 py-1 text-xs text-muted">
+          <span className="animate-float-in glass px-4 py-1.5 text-xs text-muted shadow-lg">
             {t("hero.badge")}
           </span>
-          <h1 className="animate-float-in max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
+          <h1 className="animate-float-in max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl">
             {t("hero.titlePrefix")} <span className="text-gradient">{t("hero.titleHighlight")}</span>
             {t("hero.titleSuffix")}
           </h1>
@@ -43,35 +43,68 @@ export default async function Home({
             </a>
           </div>
 
-          {/* mock editor */}
-          <div className="glow-accent card animate-float-in mt-10 w-full max-w-2xl overflow-hidden text-left">
-            <div className="flex items-center gap-1.5 border-b border-border bg-surface-2 px-4 py-3">
-              <span className="h-3 w-3 rounded-full bg-red-500/70" />
-              <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
-              <span className="h-3 w-3 rounded-full bg-green-500/70" />
-              <span className="ml-3 font-mono text-xs text-muted">lesson-01.html</span>
-              <span className="ml-auto flex items-center gap-1.5 font-mono text-[10px] text-accent">
-                <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
-                live
-              </span>
+          {/* mock editor — a real two-pane editor+live-preview, matching the
+              actual /learn product, not an abstract decorative code block */}
+          <div className="relative mt-14 w-full max-w-3xl">
+            <div className="glow-accent card animate-float-in grid overflow-hidden text-left sm:grid-cols-2">
+              <div className="border-b border-border sm:border-b-0 sm:border-r">
+                <div className="flex items-center gap-1.5 border-b border-border bg-surface-2 px-4 py-3">
+                  <span className="h-3 w-3 rounded-full bg-red-500/70" />
+                  <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
+                  <span className="h-3 w-3 rounded-full bg-green-500/70" />
+                  <span className="ml-3 font-mono text-xs text-muted">lesson-01.html</span>
+                </div>
+                <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed">
+                  <code>
+                    <span className="text-accent-2">{"<h1>"}</span>
+                    {t("hero.codeSample")}
+                    <span className="text-accent"> Ahmed</span>
+                    <span className="text-accent-2">{"</h1>"}</span>
+                    {"\n"}
+                    <span className="text-accent-2">{"<p>"}</span>
+                    {t("hero.codeSampleP")}
+                    <span className="text-accent-2">{"</p>"}</span>
+                  </code>
+                </pre>
+              </div>
+              <div className="bg-background/40">
+                <div className="flex items-center gap-1.5 border-b border-border bg-surface-2 px-4 py-3">
+                  <span className="font-mono text-xs text-muted">{t("hero.previewLabel")}</span>
+                  <span className="ml-auto flex items-center gap-1.5 font-mono text-[10px] text-accent">
+                    <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
+                    live
+                  </span>
+                </div>
+                <div className="flex h-full flex-col gap-2 p-5">
+                  <p className="text-lg font-bold">
+                    {t("hero.codeSample")} <span className="text-accent">Ahmed</span>
+                  </p>
+                  <p className="text-sm text-muted">{t("hero.codeSampleP")}</p>
+                </div>
+              </div>
             </div>
-            <pre className="overflow-x-auto p-5 font-mono text-sm leading-relaxed">
-              <code>
-                <span className="text-accent-2">{"<h1>"}</span>
-                {t("hero.codeSample")}
-                <span className="text-accent"> Ahmed</span>
-                <span className="text-accent-2">{"</h1>"}</span>
-                {"\n"}
-                <span className="text-accent-2">{"<p>"}</span>
-                {t("hero.codeSampleP")}
-                <span className="text-accent-2">{"</p>"}</span>
-              </code>
-            </pre>
+
+            {/* floating badges — a quick, glanceable hint of the XP/streak
+                system without requiring the visitor to read anything */}
+            <div className="glass animate-bob absolute -left-6 -top-6 hidden rounded-xl px-4 py-2.5 shadow-2xl sm:flex sm:items-center sm:gap-2">
+              <span className="text-lg">🔥</span>
+              <span className="font-mono text-xs font-semibold">{t("hero.streakBadge")}</span>
+            </div>
+            <div
+              className="glass animate-bob absolute -bottom-5 -right-4 hidden rounded-xl px-4 py-2.5 shadow-2xl sm:flex sm:items-center sm:gap-2"
+              style={{ animationDelay: "1.2s" }}
+            >
+              <span className="text-lg">✓</span>
+              <span className="font-mono text-xs font-semibold text-accent">{t("hero.xpBadge")}</span>
+            </div>
           </div>
         </section>
 
         {/* Stats */}
-        <section className="border-t border-border py-12">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="section-fade" />
+        </div>
+        <section className="py-12">
           <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-6 sm:grid-cols-4">
             {[
               { value: "63", label: t("stats.lessons"), color: "text-accent" },
@@ -79,7 +112,7 @@ export default async function Home({
               { value: "3", label: t("stats.tracks"), color: "text-accent-3" },
               { value: "2", label: t("stats.languages"), color: "text-accent-warm" },
             ].map((stat) => (
-              <div key={stat.label} className="text-center">
+              <div key={stat.label} className="card card-hover px-4 py-6 text-center">
                 <p className={`text-3xl font-bold sm:text-4xl ${stat.color}`}>{stat.value}</p>
                 <p className="mt-1 text-xs text-muted sm:text-sm">{stat.label}</p>
               </div>
@@ -88,7 +121,10 @@ export default async function Home({
         </section>
 
         {/* How it works */}
-        <section id="how-it-works" className="border-t border-border bg-surface/40 py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="section-fade" />
+        </div>
+        <section id="how-it-works" className="bg-surface/40 py-20">
           <div className="mx-auto max-w-6xl px-6">
             <h2 className="text-center text-3xl font-bold">{t("methods.title")}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-center text-muted">
@@ -153,7 +189,10 @@ export default async function Home({
         </section>
 
         {/* Pricing */}
-        <section id="pricing" className="border-t border-border bg-surface/40 py-20">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="section-fade" />
+        </div>
+        <section id="pricing" className="bg-surface/40 py-20">
           <div className="mx-auto max-w-4xl px-6">
             <h2 className="text-center text-3xl font-bold">{t("pricing.title")}</h2>
             <p className="mx-auto mt-3 max-w-xl text-center text-muted">

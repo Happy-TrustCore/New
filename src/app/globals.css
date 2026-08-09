@@ -39,11 +39,29 @@
 
 body {
   background:
-    radial-gradient(1200px 600px at 15% -10%, color-mix(in srgb, var(--accent) 10%, transparent), transparent),
-    radial-gradient(1000px 500px at 100% 0%, color-mix(in srgb, var(--accent-3) 10%, transparent), transparent),
+    radial-gradient(1400px 700px at 12% -15%, color-mix(in srgb, var(--accent) 12%, transparent), transparent),
+    radial-gradient(1100px 550px at 105% -5%, color-mix(in srgb, var(--accent-3) 12%, transparent), transparent),
+    radial-gradient(900px 500px at 50% 115%, color-mix(in srgb, var(--accent-2) 7%, transparent), transparent),
     var(--background);
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  position: relative;
+}
+
+/* faint dot-grid texture — the kind of subtle depth cue premium product
+   sites use so large empty background areas don't read as flat/placeholder */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(color-mix(in srgb, var(--foreground) 14%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(1400px 900px at 50% 0%, black, transparent 75%);
+  -webkit-mask-image: radial-gradient(1400px 900px at 50% 0%, black, transparent 75%);
+  opacity: 0.5;
 }
 
 .text-gradient {
@@ -57,30 +75,47 @@ body {
   border-radius: var(--radius-card);
   border: 1px solid var(--border);
   background: linear-gradient(180deg, var(--surface), color-mix(in srgb, var(--surface) 92%, black));
+  box-shadow: 0 1px 0 0 color-mix(in srgb, white 4%, transparent) inset,
+    0 10px 24px -18px rgba(0, 0, 0, 0.6);
   transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card-hover:hover {
   border-color: var(--border-strong);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px -16px color-mix(in srgb, var(--accent) 35%, transparent);
+  transform: translateY(-3px);
+  box-shadow: 0 1px 0 0 color-mix(in srgb, white 6%, transparent) inset,
+    0 18px 40px -18px color-mix(in srgb, var(--accent) 35%, transparent), 0 8px 20px -12px rgba(0, 0, 0, 0.5);
 }
 
 .glow-accent {
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent),
-    0 20px 60px -20px color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 1px 0 0 color-mix(in srgb, white 6%, transparent) inset,
+    0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent),
+    0 24px 70px -24px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* frosted-glass panel — used for floating UI chrome over busy backgrounds
+   (hero mockup badges, sticky headers) so it reads as "real product", not a flat rectangle */
+.glass {
+  background: color-mix(in srgb, var(--surface) 65%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent);
 }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   color: var(--accent-foreground);
   font-weight: 600;
-  transition: filter 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 1px 0 0 color-mix(in srgb, white 30%, transparent) inset,
+    0 10px 24px -10px color-mix(in srgb, var(--accent) 55%, transparent);
+  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn-primary:hover {
   filter: brightness(1.08);
   transform: translateY(-1px);
+  box-shadow: 0 1px 0 0 color-mix(in srgb, white 30%, transparent) inset,
+    0 14px 32px -10px color-mix(in srgb, var(--accent) 65%, transparent);
 }
 
 .btn-primary:active {
@@ -91,6 +126,13 @@ body {
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--surface-2);
+}
+
+/* thin gradient rule used to replace hard section borders — fades to
+   nothing at both ends instead of drawing a flat line edge-to-edge */
+.section-fade {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
 }
 
 @keyframes float-in {
@@ -120,6 +162,20 @@ body {
 
 .animate-pulse-dot {
   animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-bob {
+  animation: bob 4.5s ease-in-out infinite;
 }
 
 ::selection {

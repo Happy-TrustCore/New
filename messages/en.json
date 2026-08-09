@@ -25,7 +25,10 @@
       "ctaPrimary": "Start Learning Free",
       "ctaSecondary": "See the roadmap",
       "codeSample": "Hello, my name is",
-      "codeSampleP": "This is my first website."
+      "codeSampleP": "This is my first website.",
+      "previewLabel": "Preview",
+      "streakBadge": "7 day streak",
+      "xpBadge": "+10 XP"
     },
     "methods": {
       "title": "The CodePath teaching system",
