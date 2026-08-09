@@ -1,9 +1,12 @@
 -- CodePath Academy — Phase 7: certificates + real-project marketplace
--- New tables only (no changes to existing tables), so this is safe to run
--- on a fresh database or an existing one — every "create table" already
--- uses "if not exists". Run this once in the Supabase SQL editor, after
--- schema.sql. These definitions are also mirrored into schema.sql itself
--- for brand-new installs.
+-- New tables only (no changes to existing tables). Every "create table"
+-- uses "if not exists", and every "create policy" below is preceded by a
+-- "drop policy if exists" — Postgres has no "create policy if not exists",
+-- so that pairing is what actually makes this file safe to paste more than
+-- once. Run this once in the Supabase SQL editor, after schema.sql. These
+-- definitions are also mirrored into schema.sql itself for brand-new
+-- installs (schema.sql is the one you actually want for a fresh database —
+-- this file is for an existing database catching up).
 
 -- ── certificates ────────────────────────────────────────────────────────────
 -- One row per (student, course), issued automatically the moment every
@@ -61,16 +64,22 @@ alter table project_interests enable row level security;
 -- finalizeIfReady, which recomputes completion from the database itself
 -- rather than trusting client input — the same defense-in-depth pattern
 -- used throughout this codebase.
+drop policy if exists "certificates are publicly readable" on certificates;
 create policy "certificates are publicly readable" on certificates for select using (true);
+drop policy if exists "users issue own certificates" on certificates;
 create policy "users issue own certificates" on certificates for insert with check (auth.uid() = user_id);
 
 -- Real projects are publicly readable metadata (like lessons); the
 -- student-facing /marketplace page itself decides whether to show them
 -- based on Pro status, same pattern as the lesson paywall.
+drop policy if exists "real projects are publicly readable" on real_projects;
 create policy "real projects are publicly readable" on real_projects for select using (true);
+drop policy if exists "admins manage real projects" on real_projects;
 create policy "admins manage real projects" on real_projects for all using (public.is_admin(auth.uid()));
 
 -- Interests are private: a student manages their own, and admins can see
 -- everyone's so they can follow up.
+drop policy if exists "users manage own interest" on project_interests;
 create policy "users manage own interest" on project_interests for all using (auth.uid() = user_id);
+drop policy if exists "admins read all interests" on project_interests;
 create policy "admins read all interests" on project_interests for select using (public.is_admin(auth.uid()));

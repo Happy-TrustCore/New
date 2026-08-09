@@ -2,15 +2,14 @@
 -- CodePath Academy — ALL-IN-ONE database setup
 -- Paste this whole file into the Supabase SQL Editor and click Run once.
 -- Runs every db/*.sql file in order EXCEPT
--- phase7_marketplace_certificates.sql — schema.sql already contains its
--- tables AND its exact security policies (folded in for fresh installs),
--- and Postgres CREATE POLICY has no IF NOT EXISTS, so re-running those
--- policy statements here would error out ("policy already exists").
--- phase8_payments.sql and phase9_streaks_leaderboard.sql use ALTER TABLE
--- ADD COLUMN IF NOT EXISTS / CREATE OR REPLACE FUNCTION, which really are
--- safe to re-run, so they stay included.
--- Safe to run this whole file more than once (every statement here is
--- idempotent) if you already ran some of these individually before.
+-- phase7_marketplace_certificates.sql, which is skipped only because its
+-- tables/policies are already fully duplicated inside schema.sql itself
+-- (mirrored there for fresh installs) — including it here would just
+-- recreate the exact same things a second time for no benefit, not an
+-- error (every CREATE POLICY in this project is now paired with a
+-- DROP POLICY IF EXISTS, so re-running policy statements is genuinely
+-- safe everywhere in this codebase, not just here).
+-- Safe to run this whole file more than once.
 -- Generated from the individual files in db/ — if those change, this
 -- file should be regenerated, not hand-edited.
 -- =====================================================================
@@ -193,30 +192,51 @@ alter table certificates enable row level security;
 alter table real_projects enable row level security;
 alter table project_interests enable row level security;
 
+-- Postgres has no "CREATE POLICY IF NOT EXISTS", so every policy below is
+-- preceded by "DROP POLICY IF EXISTS" — that IS idempotent (no error if the
+-- policy is missing), which makes the pair effectively "create or replace".
+-- Necessary because profiles/courses/lessons/etc. have existed since day
+-- one, so a live database already has every one of these from the original
+-- run of this file — without the drop, re-running this file at all (not
+-- just after adding new tables) errors with "policy ... already exists".
+
 -- everyone (including anonymous visitors) can read course/lesson metadata
+drop policy if exists "courses are publicly readable" on courses;
 create policy "courses are publicly readable" on courses for select using (true);
+drop policy if exists "lessons are publicly readable" on lessons;
 create policy "lessons are publicly readable" on lessons for select using (true);
+drop policy if exists "quiz questions are publicly readable" on quiz_questions;
 create policy "quiz questions are publicly readable" on quiz_questions for select using (true);
 
 -- users can only see/edit their own rows
+drop policy if exists "users read own profile" on profiles;
 create policy "users read own profile" on profiles for select using (auth.uid() = id);
+drop policy if exists "users update own profile" on profiles;
 create policy "users update own profile" on profiles for update using (auth.uid() = id);
+drop policy if exists "users insert own profile" on profiles;
 create policy "users insert own profile" on profiles for insert with check (auth.uid() = id);
 
+drop policy if exists "users manage own progress" on lesson_progress;
 create policy "users manage own progress" on lesson_progress for all using (auth.uid() = user_id);
+drop policy if exists "users manage own projects" on projects;
 create policy "users manage own projects" on projects for all using (auth.uid() = user_id);
+drop policy if exists "users read own subscription" on subscriptions;
 create policy "users read own subscription" on subscriptions for select using (auth.uid() = user_id);
 
 -- certificates are shareable by design (an employer might click the link),
 -- so read access is public like lessons/courses; only the owning user can
 -- issue their own (finalizeIfReady decides *whether* to, server-side)
+drop policy if exists "certificates are publicly readable" on certificates;
 create policy "certificates are publicly readable" on certificates for select using (true);
+drop policy if exists "users issue own certificates" on certificates;
 create policy "users issue own certificates" on certificates for insert with check (auth.uid() = user_id);
 
 -- real projects are public metadata; the /marketplace page itself decides
 -- what to show based on Pro status, same pattern as the lesson paywall
+drop policy if exists "real projects are publicly readable" on real_projects;
 create policy "real projects are publicly readable" on real_projects for select using (true);
 
+drop policy if exists "users manage own interest" on project_interests;
 create policy "users manage own interest" on project_interests for all using (auth.uid() = user_id);
 
 -- ── admin access ────────────────────────────────────────────────────────────
@@ -227,14 +247,23 @@ returns boolean as $$
   select coalesce((select is_admin from public.profiles where id = uid), false);
 $$ language sql security definer stable;
 
+drop policy if exists "admins manage courses" on courses;
 create policy "admins manage courses" on courses for all using (public.is_admin(auth.uid()));
+drop policy if exists "admins manage lessons" on lessons;
 create policy "admins manage lessons" on lessons for all using (public.is_admin(auth.uid()));
+drop policy if exists "admins manage quiz questions" on quiz_questions;
 create policy "admins manage quiz questions" on quiz_questions for all using (public.is_admin(auth.uid()));
+drop policy if exists "admins read all profiles" on profiles;
 create policy "admins read all profiles" on profiles for select using (public.is_admin(auth.uid()));
+drop policy if exists "admins update all profiles" on profiles;
 create policy "admins update all profiles" on profiles for update using (public.is_admin(auth.uid()));
+drop policy if exists "admins read all progress" on lesson_progress;
 create policy "admins read all progress" on lesson_progress for select using (public.is_admin(auth.uid()));
+drop policy if exists "admins read all subscriptions" on subscriptions;
 create policy "admins read all subscriptions" on subscriptions for select using (public.is_admin(auth.uid()));
+drop policy if exists "admins manage real projects" on real_projects;
 create policy "admins manage real projects" on real_projects for all using (public.is_admin(auth.uid()));
+drop policy if exists "admins read all interests" on project_interests;
 create policy "admins read all interests" on project_interests for select using (public.is_admin(auth.uid()));
 
 -- ── leaderboard ─────────────────────────────────────────────────────────────
