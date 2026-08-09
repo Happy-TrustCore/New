@@ -42,9 +42,19 @@ export type Course = {
   sort_order: number;
 };
 
+// Optional per-step "quick check" — a small multiple-choice question shown
+// inline in the lesson card itself (not the separate practice screen).
+// Answering it correctly is required to continue past that step.
+export type LessonQuickCheck = {
+  question: LocalizedText;
+  choices: LocalizedChoices;
+  correctIndex: number;
+};
+
 export type LessonContentBlock = {
   step: number;
   text: LocalizedText;
+  check?: LessonQuickCheck;
 };
 
 export type StarterCode = {

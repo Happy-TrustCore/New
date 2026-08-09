@@ -251,7 +251,11 @@
       "stepOf": "Step {current} of {total}",
       "back": "Back",
       "continue": "Continue",
-      "startPractice": "Start practice"
+      "startPractice": "Start practice",
+      "quickCheck": "Quick check",
+      "tryAgain": "Not quite — try again.",
+      "niceWork": "Nice work!",
+      "answerToContinue": "Answer the quick check to continue"
     },
     "quiz": {
       "title": "Quiz",
