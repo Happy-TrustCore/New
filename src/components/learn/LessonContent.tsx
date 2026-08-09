@@ -23,11 +23,13 @@ export function LessonContent({
   difficulty,
   steps,
   onStartPractice,
+  isAdmin = false,
 }: {
   title: LocalizedText;
   difficulty: Difficulty;
   steps: LessonContentBlock[];
   onStartPractice: () => void;
+  isAdmin?: boolean;
 }) {
   const [stepIndex, setStepIndex] = useState(0);
   // Tracks the step index whose quick check has been passed, rather than a
@@ -38,7 +40,9 @@ export function LessonContent({
   const t = useTranslations("learn.content");
   const step = steps[stepIndex];
   const isLast = stepIndex === steps.length - 1;
-  const canContinue = !step?.check || checkPassedStep === stepIndex;
+  // Admins can always browse freely — quick-check questions are a learning
+  // gate for students, not an access-control check, so they don't apply here.
+  const canContinue = isAdmin || !step?.check || checkPassedStep === stepIndex;
 
   return (
     <div className="animate-float-in p-6">

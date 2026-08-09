@@ -96,7 +96,8 @@ export default async function LessonPage({
   // Direct-URL safety net: only honor ?start=practice if the reading part
   // was actually already viewed (or the lesson is already fully done) —
   // otherwise fall back to the reading screen, same as the sidebar link logic.
-  const canStartAtPractice = contentViewedIds.has(lesson.id) || target.access === "completed";
+  // Admins bypass this too, same as every other content_viewed check.
+  const canStartAtPractice = isAdmin || contentViewedIds.has(lesson.id) || target.access === "completed";
   const resolvedInitialMode = initialMode === "practice" && canStartAtPractice ? "practice" : "lesson";
 
   return (
@@ -107,6 +108,7 @@ export default async function LessonPage({
         currentLessonId={lesson.id}
         currentMode={resolvedInitialMode}
         contentViewedIds={contentViewedIds}
+        isAdmin={isAdmin}
       />
       <LessonExperience
         title={lesson.title}
@@ -118,6 +120,7 @@ export default async function LessonPage({
         starterCode={lesson.starter_code}
         practicePassed={myProgress?.practice_passed ?? false}
         hasAssignment={lesson.has_assignment}
+        isAdmin={isAdmin}
         assignmentPassed={myProgress?.assignment_passed ?? false}
         initialMode={resolvedInitialMode}
         paywalled={target.access === "paywall"}

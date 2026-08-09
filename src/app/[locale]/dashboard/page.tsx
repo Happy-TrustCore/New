@@ -123,6 +123,7 @@ export default async function DashboardPage({
       showPathChoice={showPathChoice}
       frontendTrack={frontendTrack}
       backendTrack={backendTrack}
+      isAdmin={isAdmin}
     />
   );
 }
@@ -162,6 +163,7 @@ function DashboardBody({
   showPathChoice,
   frontendTrack,
   backendTrack,
+  isAdmin,
 }: {
   name: string;
   currentTrack: Track;
@@ -175,6 +177,7 @@ function DashboardBody({
   showPathChoice: boolean;
   frontendTrack?: Track;
   backendTrack?: Track;
+  isAdmin: boolean;
 }) {
   const t = useTranslations("dashboard");
 
@@ -249,18 +252,39 @@ function DashboardBody({
       )}
 
       <section className="mt-6 grid gap-4 sm:grid-cols-3">
-        {tracks.map((track) => (
-          <div key={track.slug} className="rounded-xl border border-border bg-surface p-5">
-            <p className="text-sm font-semibold">{track.title}</p>
-            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-surface-2">
-              <div
-                className="h-full rounded-full bg-accent transition-all"
-                style={{ width: `${track.percent}%` }}
-              />
+        {tracks.map((track) => {
+          const body = (
+            <>
+              <p className="text-sm font-semibold">{track.title}</p>
+              <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-surface-2">
+                <div
+                  className="h-full rounded-full bg-accent transition-all"
+                  style={{ width: `${track.percent}%` }}
+                />
+              </div>
+              <p className="mt-2 text-xs text-muted">{t("percentComplete", { percent: track.percent })}</p>
+            </>
+          );
+          // Admins get a direct entry point into every track from here —
+          // students stay funneled through the single "continue" CTA above,
+          // which is the intended sequential flow for them.
+          if (isAdmin && track.nextLesson) {
+            return (
+              <Link
+                key={track.slug}
+                href={`/learn/${track.nextLesson.slug}`}
+                className="card card-hover rounded-xl border border-border p-5"
+              >
+                {body}
+              </Link>
+            );
+          }
+          return (
+            <div key={track.slug} className="rounded-xl border border-border bg-surface p-5">
+              {body}
             </div>
-            <p className="mt-2 text-xs text-muted">{t("percentComplete", { percent: track.percent })}</p>
-          </div>
-        ))}
+          );
+        })}
       </section>
 
       <section className="mt-6 rounded-xl border border-accent/40 bg-accent/5 p-6">

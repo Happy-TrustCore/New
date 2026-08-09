@@ -12,12 +12,14 @@ export function LessonSidebar({
   currentLessonId,
   currentMode = "lesson",
   contentViewedIds,
+  isAdmin = false,
 }: {
   courseTitle: string;
   lessons: LessonWithAccess[];
   currentLessonId: string;
   currentMode?: "lesson" | "practice" | "quiz";
   contentViewedIds: Set<string>;
+  isAdmin?: boolean;
 }) {
   const locale = useLocale();
   const t = useTranslations("learn.sidebar");
@@ -39,7 +41,7 @@ export function LessonSidebar({
       {lessons.map((lesson, i) => {
         const title = pickLocale(lesson.title, locale);
         const hasPractice = lesson.starter_code !== null;
-        const contentViewed = contentViewedIds.has(lesson.id);
+        const contentViewed = isAdmin || contentViewedIds.has(lesson.id);
 
         if (lesson.access === "locked") {
           return (

@@ -36,6 +36,7 @@ export function LessonExperience({
   isPremium,
   nextLessonSlug,
   initialMode = "lesson",
+  isAdmin = false,
 }: {
   title: LocalizedText;
   difficulty: Difficulty;
@@ -51,6 +52,7 @@ export function LessonExperience({
   isPremium: boolean;
   nextLessonSlug: string | null;
   initialMode?: Mode;
+  isAdmin?: boolean;
 }) {
   const [mode, setMode] = useState<Mode>(initialMode);
   const hasQuiz = quizQuestions.length > 0;
@@ -101,6 +103,7 @@ export function LessonExperience({
           difficulty={difficulty}
           steps={steps}
           onStartPractice={goToPractice}
+          isAdmin={isAdmin}
         />
       </div>
     </div>
