@@ -211,6 +211,11 @@ account to reach the dashboard.
 - Landing page, register/login (Supabase Auth), protected dashboard shell
 - Forgot/reset password (`/forgot-password`, `/reset-password`) — see the
   Supabase Redirect URLs note above, required for the email link to work
+- Friendly email-confirmation landing (`/confirmed`): `signUp` now sets
+  `emailRedirectTo` instead of leaving new accounts to land on whatever
+  Supabase's default Site URL happens to be. Also needs `/confirmed` (and
+  the German `/de/confirmed`) added to the same Supabase Redirect URLs
+  allowlist as `/reset-password`, or Supabase silently ignores it too
 - Account settings (`/settings`): change display name, change password, and
   permanently delete your account — the privacy policy promises deletion
   rights, this is what actually does it. Cancels any active Stripe

@@ -28,11 +28,17 @@ export async function signUp(formData: FormData) {
     });
   }
 
+  const headerList = await headers();
+  const host = headerList.get("host") ?? "";
+  const protocol = headerList.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  const origin = headerList.get("origin") ?? `${protocol}://${host}`;
+  const confirmedPath = locale === routing.defaultLocale ? "/confirmed" : `/${locale}/confirmed`;
+
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { name } },
+    options: { data: { name }, emailRedirectTo: `${origin}${confirmedPath}` },
   });
 
   if (error) {

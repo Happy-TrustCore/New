@@ -137,6 +137,12 @@
       "success": "Password updated — taking you to your dashboard…",
       "tooShort": "Password must be at least 8 characters.",
       "mismatch": "Passwords don't match."
+    },
+    "confirmed": {
+      "title": "Email confirmed!",
+      "redirecting": "Taking you to your dashboard…",
+      "body": "Your email is confirmed. Log in to continue.",
+      "login": "Log in"
     }
   },
   "dashboardChrome": {

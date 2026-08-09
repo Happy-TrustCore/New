@@ -137,6 +137,12 @@
       "success": "Passwort aktualisiert — du wirst zu deinem Dashboard weitergeleitet…",
       "tooShort": "Das Passwort muss mindestens 8 Zeichen lang sein.",
       "mismatch": "Die Passwörter stimmen nicht überein."
+    },
+    "confirmed": {
+      "title": "E-Mail bestätigt!",
+      "redirecting": "Du wirst zu deinem Dashboard weitergeleitet…",
+      "body": "Deine E-Mail ist bestätigt. Melde dich an, um fortzufahren.",
+      "login": "Anmelden"
     }
   },
   "dashboardChrome": {
