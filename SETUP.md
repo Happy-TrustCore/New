@@ -47,6 +47,16 @@ registers.
 
 ### Add the curriculum
 
+**Shortcut**: paste [`db/all_in_one.sql`](db/all_in_one.sql) and click Run
+once — it runs every file below (schema, full curriculum, streaks,
+leaderboard, quick checks) in the correct order in one paste. Skips
+`phase7_marketplace_certificates.sql` on purpose (its tables/policies are
+already folded into `schema.sql`, and re-running its `CREATE POLICY`
+statements would error since Postgres has no `IF NOT EXISTS` for those) —
+everything it adds is already included via `schema.sql`. Safe to run more
+than once. If you'd rather go file-by-file (e.g. to understand each step),
+skip this and follow the individual files below instead — same end result.
+
 Paste [`db/seed.sql`](db/seed.sql) into the SQL Editor and run it. This adds
 the real curriculum, fully bilingual (English + German): both Foundation
 lessons, all 16 free Frontend lessons (HTML → HTML+CSS → layout → a full
