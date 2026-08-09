@@ -84,7 +84,7 @@ export default async function LessonPage({
   const nextLessonSlug = withAccess[targetIndex + 1]?.slug ?? null;
 
   return (
-    <div className="grid h-full grid-cols-[240px_1fr] overflow-hidden">
+    <div className="grid h-full grid-rows-[auto_1fr] overflow-hidden sm:grid-cols-[240px_1fr] sm:grid-rows-1">
       <LessonSidebar
         courseTitle={course ? pickLocale(course.title, locale) : ""}
         lessons={withAccess}

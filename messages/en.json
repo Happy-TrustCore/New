@@ -233,7 +233,8 @@
   },
   "learn": {
     "sidebar": {
-      "pro": "Pro"
+      "pro": "Pro",
+      "lessonOf": "Lesson {current} of {total}"
     },
     "content": {
       "difficulty": {
