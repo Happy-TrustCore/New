@@ -62,6 +62,7 @@ export type StarterCode = {
   css?: string;
   js?: string;
   jsx?: string;
+  ts?: string;
 };
 
 export type Lesson = {

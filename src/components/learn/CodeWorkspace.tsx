@@ -13,19 +13,21 @@ import { submitAssignment } from "@/lib/actions/assignment";
 import { CodeBuddyPanel } from "@/components/learn/CodeBuddyPanel";
 import type { StarterCode } from "@/lib/supabase/types";
 
-type Lang = "html" | "css" | "js" | "jsx";
+type Lang = "html" | "css" | "js" | "jsx" | "ts";
 
 const LANG_DOT: Record<Lang, string> = {
   html: "bg-orange-400",
   css: "bg-sky-400",
   js: "bg-yellow-300",
   jsx: "bg-cyan-400",
+  ts: "bg-blue-400",
 };
 const LANG_FILE: Record<Lang, string> = {
   html: "index.html",
   css: "style.css",
   js: "script.js",
   jsx: "App.jsx",
+  ts: "script.ts",
 };
 
 function getExtensions(lang: Lang) {
@@ -38,22 +40,40 @@ function getExtensions(lang: Lang) {
       return [javascript()];
     case "jsx":
       return [javascript({ jsx: true })];
+    case "ts":
+      return [javascript({ typescript: true })];
   }
 }
 
 function buildPreviewDoc(code: Record<Lang, string>, enabled: Lang[]) {
   const hasJsx = enabled.includes("jsx");
+  const hasTs = enabled.includes("ts");
   const bodyHtml = enabled.includes("html") ? code.html : "";
   const styleTag = enabled.includes("css") ? `<style>${code.css}</style>` : "";
   const scriptTag = enabled.includes("js") ? `<script>${code.js}<\/script>` : "";
   const rootDiv = hasJsx ? '<div id="root"></div>' : "";
   const reactScripts = hasJsx
     ? `<script src="https://unpkg.com/react@18/umd/react.development.js"><\/script>
-       <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"><\/script>
-       <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>`
+       <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"><\/script>`
     : "";
+  // Babel Standalone strips JSX and, separately, TypeScript type annotations
+  // client-side with zero build step — the same no-bundler technique React's
+  // own quick-start uses, just aimed at @babel/preset-typescript instead of
+  // preset-react. Only load it once even if a lesson somehow used both.
+  const babelScript =
+    hasJsx || hasTs
+      ? `<script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>`
+      : "";
+  // "react,typescript" (not just "react") so a lesson can write typed props
+  // directly in the JSX tab — e.g. `function Greeting({ name }: Props)` —
+  // without needing a whole separate .tsx language tab. A no-op for every
+  // existing plain-JSX lesson, since the typescript preset only strips
+  // syntax that's actually there.
   const jsxScript = hasJsx
-    ? `<script type="text/babel" data-presets="react">${code.jsx}<\/script>`
+    ? `<script type="text/babel" data-presets="react,typescript">${code.jsx}<\/script>`
+    : "";
+  const tsScript = hasTs
+    ? `<script type="text/babel" data-presets="typescript">${code.ts}<\/script>`
     : "";
 
   const consoleShim = `<script>
@@ -74,7 +94,7 @@ function buildPreviewDoc(code: Record<Lang, string>, enabled: Lang[]) {
     window.addEventListener("error", function (e) { send("error", [e.message]); });
   <\/script>`;
 
-  return `<!doctype html><html><head>${consoleShim}${reactScripts}${styleTag}</head><body>${bodyHtml}${rootDiv}${scriptTag}${jsxScript}</body></html>`;
+  return `<!doctype html><html><head>${consoleShim}${babelScript}${reactScripts}${styleTag}</head><body>${bodyHtml}${rootDiv}${scriptTag}${tsScript}${jsxScript}</body></html>`;
 }
 
 export function CodeWorkspace({
@@ -103,6 +123,7 @@ export function CodeWorkspace({
     if (starterCode?.css !== undefined) langs.push("css");
     if (starterCode?.js !== undefined) langs.push("js");
     if (starterCode?.jsx !== undefined) langs.push("jsx");
+    if (starterCode?.ts !== undefined) langs.push("ts");
     return langs.length > 0 ? langs : ["html"];
   }, [starterCode]);
 
@@ -111,6 +132,7 @@ export function CodeWorkspace({
     css: starterCode?.css ?? "",
     js: starterCode?.js ?? "",
     jsx: starterCode?.jsx ?? "",
+    ts: starterCode?.ts ?? "",
   });
   const [activeTab, setActiveTab] = useState<Lang>(enabled[0]);
   const [srcDoc, setSrcDoc] = useState(() => buildPreviewDoc(code, enabled));

@@ -67,6 +67,10 @@ function parseStarterCode(formData: FormData): StarterCode | null {
     code.jsx = String(formData.get("code_jsx") ?? "");
     any = true;
   }
+  if (formData.get("enable_ts")) {
+    code.ts = String(formData.get("code_ts") ?? "");
+    any = true;
+  }
   return any ? code : null;
 }
 
