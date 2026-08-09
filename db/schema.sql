@@ -18,6 +18,16 @@ create table if not exists profiles (
   created_at timestamptz not null default now()
 );
 
+-- "create table if not exists" is a no-op on a database where profiles
+-- already existed before these columns were added to this file (true for
+-- any live install, since profiles has existed since day one) — it does
+-- NOT retroactively add new columns to an existing table. These explicit
+-- alters are the safety net that actually makes this file idempotent.
+alter table profiles add column if not exists current_streak integer not null default 0;
+alter table profiles add column if not exists longest_streak integer not null default 0;
+alter table profiles add column if not exists last_activity_date date;
+alter table profiles add column if not exists is_admin boolean not null default false;
+
 -- ── tracks / courses ────────────────────────────────────────────────────────
 -- foundation, frontend, backend
 -- title/description are bilingual: {"en": "...", "de": "..."}
@@ -46,6 +56,8 @@ create table if not exists lessons (
   sort_order integer not null,           -- absolute order within the course; drives unlock logic
   created_at timestamptz not null default now()
 );
+
+alter table lessons add column if not exists has_assignment boolean not null default false;
 
 -- ── quizzes ─────────────────────────────────────────────────────────────────
 -- question is bilingual: {"en": "...", "de": "..."}.
@@ -99,6 +111,12 @@ create table if not exists subscriptions (
   stripe_subscription_id text,
   created_at timestamptz not null default now()
 );
+
+-- Same "create table if not exists is a no-op on an existing table" gap as
+-- profiles above — subscriptions has existed since day one too, so these
+-- explicit alters are what actually adds the columns on a live install.
+alter table subscriptions add column if not exists stripe_customer_id text;
+alter table subscriptions add column if not exists stripe_subscription_id text;
 
 create unique index if not exists subscriptions_stripe_subscription_id_key
   on subscriptions (stripe_subscription_id)
