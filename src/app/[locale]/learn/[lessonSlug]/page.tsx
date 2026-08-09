@@ -62,7 +62,8 @@ export default async function LessonPage({
 
   const completedIds = new Set((completedRows ?? []).map((row) => row.lesson_id));
   const isPremium = hasPremiumAccess(profile);
-  const withAccess = computeLessonAccess(courseLessons ?? [], completedIds, isPremium);
+  const isAdmin = profile?.is_admin ?? false;
+  const withAccess = computeLessonAccess(courseLessons ?? [], completedIds, isPremium, isAdmin);
   const target = withAccess.find((l) => l.id === lesson.id);
 
   if (!target) {

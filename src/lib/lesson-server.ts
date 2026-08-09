@@ -39,7 +39,12 @@ export async function requireReachableLesson(
   ]);
 
   const completedIds = new Set((completedRows ?? []).map((row) => row.lesson_id));
-  const withAccess = computeLessonAccess(courseLessons ?? [], completedIds, hasPremiumAccess(profile));
+  const withAccess = computeLessonAccess(
+    courseLessons ?? [],
+    completedIds,
+    hasPremiumAccess(profile),
+    profile?.is_admin ?? false
+  );
   const target = withAccess.find((l) => l.id === lessonId);
 
   // Defense in depth: the UI already prevents this call from firing on a

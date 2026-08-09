@@ -9,11 +9,17 @@ export type LessonWithAccess = Lesson & { access: LessonAccess };
  * previous lesson in the same course is completed — subscription status
  * never lets anyone skip ahead, it only decides whether a *reachable* lesson
  * requires payment (`paywall`) or not.
+ *
+ * Admins bypass both checks entirely (never locked, never paywalled) so
+ * they can click through the real student-facing lesson/practice/quiz
+ * experience for any lesson to review content, without completing every
+ * prerequisite first. This never affects non-admin students.
  */
 export function computeLessonAccess(
   lessons: Lesson[],
   completedLessonIds: Set<string>,
-  hasPremiumAccess: boolean
+  hasPremiumAccess: boolean,
+  isAdmin: boolean = false
 ): LessonWithAccess[] {
   const sorted = [...lessons].sort((a, b) => a.sort_order - b.sort_order);
   let previousCompleted = true;
@@ -24,6 +30,8 @@ export function computeLessonAccess(
 
     if (isCompleted) {
       access = "completed";
+    } else if (isAdmin) {
+      access = "available";
     } else if (!previousCompleted) {
       access = "locked";
     } else if (!lesson.is_free && !hasPremiumAccess) {

@@ -48,11 +48,12 @@ export default async function DashboardPage({
 
   const completedIds = new Set((completed ?? []).map((row) => row.lesson_id));
   const isPremium = hasPremiumAccess(profile);
+  const isAdmin = profile?.is_admin ?? false;
 
   const tracks = TRACK_SLUGS.map((slug) => {
     const course = courses?.find((c) => c.slug === slug);
     const lessonsInCourse = (lessons ?? []).filter((l) => l.course_id === course?.id);
-    const withAccess = computeLessonAccess(lessonsInCourse, completedIds, isPremium);
+    const withAccess = computeLessonAccess(lessonsInCourse, completedIds, isPremium, isAdmin);
     const total = withAccess.length;
     const done = withAccess.filter((l) => l.access === "completed").length;
     const percent = total > 0 ? Math.round((done / total) * 100) : 0;

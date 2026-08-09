@@ -30,18 +30,25 @@ export default async function AdminLessonsPage() {
               </h2>
               <div className="mt-2 divide-y divide-border rounded-xl border border-border bg-surface">
                 {courseLessons.map((lesson) => (
-                  <Link
+                  <div
                     key={lesson.id}
-                    href={`/admin/lessons/${lesson.id}`}
-                    className="flex items-center justify-between px-4 py-3 text-sm hover:bg-surface-2"
+                    className="flex items-center justify-between gap-3 px-4 py-3 text-sm hover:bg-surface-2"
                   >
-                    <span>
+                    <Link href={`/admin/lessons/${lesson.id}`} className="min-w-0 flex-1 truncate">
                       {lesson.sort_order}. {lesson.title.en}
-                    </span>
-                    <span className="text-xs text-muted">
+                    </Link>
+                    <span className="shrink-0 text-xs text-muted">
                       {lesson.is_free ? "Free" : "Pro"} · {lesson.difficulty}
                     </span>
-                  </Link>
+                    <a
+                      href={`/learn/${lesson.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0 rounded-lg border border-border px-2.5 py-1 text-xs text-accent transition hover:bg-surface-2"
+                    >
+                      Preview &rarr;
+                    </a>
+                  </div>
                 ))}
                 {courseLessons.length === 0 && (
                   <p className="px-4 py-3 text-sm text-muted">No lessons yet.</p>
