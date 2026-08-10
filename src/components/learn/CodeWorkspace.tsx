@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import CodeMirror from "@uiw/react-codemirror";
-import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { javascript } from "@codemirror/lang-javascript";
+import { codePathEditorTheme, codePathSyntaxHighlighting } from "@/lib/editor-theme";
 import { submitPractice } from "@/lib/actions/practice";
 import { submitAssignment } from "@/lib/actions/assignment";
 import { CodeBuddyPanel } from "@/components/learn/CodeBuddyPanel";
@@ -15,12 +15,14 @@ import type { StarterCode } from "@/lib/supabase/types";
 
 type Lang = "html" | "css" | "js" | "jsx" | "ts";
 
+// Reuses the site's own 4 accent colors instead of 5 unrelated Tailwind
+// defaults — same "fewer, curated colors" idea as the syntax theme below.
 const LANG_DOT: Record<Lang, string> = {
-  html: "bg-orange-400",
-  css: "bg-sky-400",
-  js: "bg-yellow-300",
-  jsx: "bg-cyan-400",
-  ts: "bg-blue-400",
+  html: "bg-accent-warm",
+  css: "bg-accent-2",
+  js: "bg-accent",
+  jsx: "bg-accent-3",
+  ts: "bg-accent-2",
 };
 const LANG_FILE: Record<Lang, string> = {
   html: "index.html",
@@ -226,8 +228,8 @@ export function CodeWorkspace({
         <CodeMirror
           value={code[activeTab]}
           height="100%"
-          theme={vscodeDark}
-          extensions={getExtensions(activeTab)}
+          theme={codePathEditorTheme}
+          extensions={[...getExtensions(activeTab), codePathSyntaxHighlighting]}
           onChange={(value) => setCode((c) => ({ ...c, [activeTab]: value }))}
         />
       </div>

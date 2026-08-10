@@ -265,7 +265,8 @@
       "quickCheck": "Kurzer Check",
       "tryAgain": "Nicht ganz — versuch's nochmal.",
       "niceWork": "Gut gemacht!",
-      "answerToContinue": "Beantworte den kurzen Check, um fortzufahren"
+      "answerToContinue": "Beantworte den kurzen Check, um fortzufahren",
+      "readyForPractice": "Du schaffst das — Zeit, es in die Praxis umzusetzen."
     },
     "quiz": {
       "title": "Quiz",
@@ -301,6 +302,7 @@
       "backToLesson": "Zurück zur Lektion",
       "continueToQuiz": "Weiter zum Quiz",
       "whatYoureDoing": "Das machst du gerade",
+      "pacingHint": "~4 Min. Übung",
       "paywall": "Die praktische Übung dieser Lektion braucht CodePath Pro.",
       "upgrade": "Pläne ansehen",
       "lessonComplete": "Lektion abgeschlossen!",

@@ -31,8 +31,8 @@ export function QuizScreen({
 
   return (
     <div className="animate-float-in flex h-full flex-col overflow-y-auto">
-      <div className="flex shrink-0 items-center border-b border-border bg-surface px-4 py-2.5">
-        <button onClick={onBackToPractice} className="text-sm text-muted hover:text-foreground">
+      <div className="glass flex shrink-0 items-center px-4 py-2.5">
+        <button onClick={onBackToPractice} className="text-sm text-muted transition hover:text-foreground">
           &larr; {t("backToPractice")}
         </button>
       </div>

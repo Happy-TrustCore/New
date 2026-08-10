@@ -57,14 +57,20 @@ export function LessonContent({
       </h1>
 
       <div className="mt-4 flex gap-1.5">
-        {steps.map((_, i) => (
-          <span
-            key={i}
-            className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
-              i <= stepIndex ? "bg-accent" : "bg-border"
-            }`}
-          />
-        ))}
+        {steps.map((_, i) => {
+          const visited = i <= stepIndex;
+          return (
+            <button
+              key={i}
+              onClick={() => visited && setStepIndex(i)}
+              disabled={!visited}
+              aria-label={t("stepOf", { current: i + 1, total: steps.length })}
+              className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+                visited ? "bg-accent hover:h-2 disabled:hover:h-1.5" : "bg-border"
+              } ${visited && i !== stepIndex ? "cursor-pointer" : "cursor-default"}`}
+            />
+          );
+        })}
       </div>
 
       {step && (
@@ -72,8 +78,12 @@ export function LessonContent({
           key={stepIndex}
           className={`card animate-float-in mt-4 border-l-4 p-6 ${DIFFICULTY_BORDER[difficulty]}`}
         >
-          <p className="flex items-center gap-1.5 text-xs font-mono text-muted">
-            <span className="text-base">📘</span>
+          <p className="flex items-center gap-2 text-xs font-mono text-muted">
+            <span
+              className={`flex h-5 w-5 items-center justify-center rounded-full bg-surface-2 text-[10px] font-semibold ${DIFFICULTY_COLOR[difficulty]}`}
+            >
+              {stepIndex + 1}
+            </span>
             {t("stepOf", { current: stepIndex + 1, total: steps.length })}
           </p>
           <p className="mt-3 whitespace-pre-line text-base leading-relaxed text-foreground">
@@ -84,6 +94,12 @@ export function LessonContent({
             <QuickCheck check={step.check} onPassed={() => setCheckPassedStep(stepIndex)} />
           )}
         </div>
+      )}
+
+      {isLast && canContinue && (
+        <p className="animate-float-in mt-3 flex items-center gap-1.5 text-xs text-accent">
+          🎯 {t("readyForPractice")}
+        </p>
       )}
 
       <div className="mt-4 flex items-center gap-3">

@@ -43,15 +43,15 @@ export function PracticeScreen({
 
   return (
     <div className="animate-float-in flex h-full flex-col overflow-hidden">
-      <div className="flex shrink-0 items-center justify-between border-b border-border bg-surface px-4 py-2.5">
-        <button onClick={onBackToLesson} className="text-sm text-muted hover:text-foreground">
+      <div className="glass flex shrink-0 items-center justify-between px-4 py-2.5">
+        <button onClick={onBackToLesson} className="text-sm text-muted transition hover:text-foreground">
           &larr; {t("backToLesson")}
         </button>
         {hasQuiz && (
           <button
             onClick={onContinueToQuiz}
             disabled={!readyToContinue}
-            className="btn-primary rounded-lg px-4 py-1.5 text-sm disabled:opacity-40"
+            className="btn-primary rounded-lg px-4 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
           >
             {t("continueToQuiz")} &rarr;
           </button>
@@ -86,10 +86,13 @@ export function PracticeScreen({
             </div>
           )}
           <div className="shrink-0 border-b border-border bg-surface p-6">
-            <p className="text-xs font-mono uppercase tracking-wide text-accent-3">
-              {t("whatYoureDoing")}
-            </p>
-            <h2 className="mt-1 text-lg font-semibold">{pickLocale(lessonTitle, locale)}</h2>
+            <div className="flex items-center gap-2">
+              <span className="pill px-3 py-1 text-xs font-mono text-accent-3">
+                🎯 {t("whatYoureDoing")}
+              </span>
+              <span className="pill px-3 py-1 text-xs font-mono text-muted">{t("pacingHint")}</span>
+            </div>
+            <h2 className="mt-2 text-lg font-semibold">{pickLocale(lessonTitle, locale)}</h2>
             {taskText && (
               <p className="mt-2 max-w-2xl whitespace-pre-line text-sm leading-relaxed text-muted">
                 {pickLocale(taskText, locale)}

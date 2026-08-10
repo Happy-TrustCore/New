@@ -265,7 +265,8 @@
       "quickCheck": "Quick check",
       "tryAgain": "Not quite — try again.",
       "niceWork": "Nice work!",
-      "answerToContinue": "Answer the quick check to continue"
+      "answerToContinue": "Answer the quick check to continue",
+      "readyForPractice": "You've got this — time to put it into practice."
     },
     "quiz": {
       "title": "Quiz",
@@ -301,6 +302,7 @@
       "backToLesson": "Back to lesson",
       "continueToQuiz": "Continue to quiz",
       "whatYoureDoing": "What you're doing",
+      "pacingHint": "~4 min practice",
       "paywall": "Hands-on practice for this lesson needs CodePath Pro.",
       "upgrade": "See plans",
       "lessonComplete": "Lesson complete!",
