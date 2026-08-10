@@ -53,28 +53,34 @@ export function QuizPanel({
 
   return (
     <div>
-      <p className="text-sm font-semibold text-accent">{t("title")}</p>
+      <div className="flex items-center gap-3">
+        <span className="pill w-fit px-3 py-1 text-xs font-mono text-accent">{t("title")}</span>
+        <span className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
+      </div>
       {alreadyPassed && !result && (
-        <p className="mt-1 text-xs text-muted">{t("alreadyPassed")}</p>
+        <p className="mt-2 text-xs text-muted">{t("alreadyPassed")}</p>
       )}
 
-      <div className="mt-4 space-y-6">
+      <div className="mt-4 space-y-4">
         {questions.map((q, qi) => {
           const choices = pickLocaleChoices(q.choices, locale);
           return (
-            <div key={q.id}>
-              <p className="text-sm font-medium">{pickLocale(q.question, locale)}</p>
-              <div className="mt-2 space-y-2">
+            <div key={q.id} className="card p-4">
+              <p className="text-sm font-medium">
+                <span className="mr-1.5 font-mono text-xs text-muted">{qi + 1}.</span>
+                {pickLocale(q.question, locale)}
+              </p>
+              <div className="mt-3 space-y-2">
                 {choices.map((choice, ci) => (
                   <button
                     key={ci}
                     onClick={() =>
                       setAnswers((prev) => prev.map((a, i) => (i === qi ? ci : a)))
                     }
-                    className={`block w-full rounded-lg border px-3 py-2 text-left text-sm ${
+                    className={`block w-full rounded-lg border px-3 py-2 text-left text-sm transition ${
                       answers[qi] === ci
                         ? "border-accent bg-accent/10 text-accent"
-                        : "border-border bg-surface hover:bg-surface-2"
+                        : "border-border bg-surface-2/50 hover:border-border-strong hover:bg-surface-2"
                     }`}
                   >
                     {choice}
@@ -89,17 +95,21 @@ export function QuizPanel({
       <button
         onClick={handleSubmit}
         disabled={!allAnswered || isPending}
-        className="mt-6 w-full rounded-lg bg-accent py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90 disabled:opacity-50"
+        className="btn-primary mt-6 w-full rounded-lg py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
       >
         {isPending ? t("checking") : t("submit")}
       </button>
 
       {result && (
-        <p className={`mt-3 text-sm ${result.passed ? "text-accent" : "text-red-400"}`}>
+        <div
+          className={`card mt-3 p-3 text-center text-sm font-semibold ${
+            result.passed ? "border-accent/40 bg-accent/5 text-accent" : "border-danger/40 bg-danger/5 text-danger"
+          }`}
+        >
           {result.passed
             ? t("passed", { correct: result.correctCount, total: result.total })
             : t("failed", { correct: result.correctCount, total: result.total })}
-        </p>
+        </div>
       )}
     </div>
   );
