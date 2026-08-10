@@ -185,15 +185,16 @@ function DashboardBody({
     <div className="mx-auto max-w-5xl px-6 py-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">
-            {t("welcome", { name })} 👋
+          <h1 className="text-2xl font-bold sm:text-3xl">
+            {t("welcome", { name: "" })}
+            <span className="text-gradient">{name}</span> 👋
           </h1>
           <p className="mt-1 text-muted">
             {t("goalLabel")} <span className="text-foreground">{t("goalValue")}</span>
           </p>
         </div>
         {currentStreak > 0 && (
-          <div className="pill flex items-center gap-2 px-4 py-2">
+          <div className="glass animate-bob flex items-center gap-2 rounded-2xl px-4 py-2.5 shadow-lg">
             <span className="text-lg">🔥</span>
             <div>
               <p className="text-sm font-semibold text-accent-warm">
@@ -232,7 +233,7 @@ function DashboardBody({
           </div>
         </section>
       ) : (
-        <section className="mt-8 rounded-xl border border-border bg-surface p-6">
+        <section className="glow-accent card mt-8 p-6">
           <p className="text-sm text-muted">{t("currentPath")}</p>
           <p className="mt-1 text-lg font-semibold">{currentTrack.title}</p>
           <p className="text-sm text-muted">
@@ -240,6 +241,14 @@ function DashboardBody({
               ? t("lessonProgress", { done: currentTrack.done, total: currentTrack.total })
               : t("noLessons")}
           </p>
+          {currentTrack.total > 0 && (
+            <div className="mt-3 h-2 w-full max-w-xs overflow-hidden rounded-full bg-surface-2">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-accent to-accent-2 transition-all"
+                style={{ width: `${currentTrack.percent}%` }}
+              />
+            </div>
+          )}
           {currentTrack.nextLesson && (
             <Link
               href={`/learn/${currentTrack.nextLesson.slug}`}
@@ -251,14 +260,18 @@ function DashboardBody({
         </section>
       )}
 
-      <section className="mt-6 grid gap-4 sm:grid-cols-3">
+      <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {tracks.map((track) => {
+          const isDone = track.total > 0 && track.percent === 100;
           const body = (
             <>
-              <p className="text-sm font-semibold">{track.title}</p>
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold">{track.title}</p>
+                {isDone && <span className="text-base">✓</span>}
+              </div>
               <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-surface-2">
                 <div
-                  className="h-full rounded-full bg-accent transition-all"
+                  className={`h-full rounded-full transition-all ${isDone ? "bg-accent" : "bg-gradient-to-r from-accent to-accent-2"}`}
                   style={{ width: `${track.percent}%` }}
                 />
               </div>
@@ -270,27 +283,26 @@ function DashboardBody({
           // which is the intended sequential flow for them.
           if (isAdmin && track.nextLesson) {
             return (
-              <Link
-                key={track.slug}
-                href={`/learn/${track.nextLesson.slug}`}
-                className="card card-hover rounded-xl border border-border p-5"
-              >
+              <Link key={track.slug} href={`/learn/${track.nextLesson.slug}`} className="card card-hover p-5">
                 {body}
               </Link>
             );
           }
           return (
-            <div key={track.slug} className="rounded-xl border border-border bg-surface p-5">
+            <div key={track.slug} className="card p-5">
               {body}
             </div>
           );
         })}
       </section>
 
-      <section className="mt-6 rounded-xl border border-accent/40 bg-accent/5 p-6">
-        <p className="text-sm font-semibold text-accent">{t("dailyMission")}</p>
+      <section className="card mt-6 border-accent/40 bg-accent/5 p-6">
+        <p className="flex items-center gap-2 text-sm font-semibold text-accent">
+          <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
+          {t("dailyMission")}
+        </p>
         <p className="mt-2 text-foreground">{t("dailyMissionExample")}</p>
-        <p className="mt-1 text-sm text-muted">+20 XP</p>
+        <p className="mt-1 text-sm font-mono text-accent-warm">+20 XP</p>
       </section>
 
       <section className="mt-6">
@@ -299,10 +311,8 @@ function DashboardBody({
           {badgeStatus.map(({ badge, earned }) => (
             <div
               key={badge.id}
-              className={`rounded-xl border p-4 text-center ${
-                earned
-                  ? "border-accent/40 bg-accent/5"
-                  : "border-border bg-surface opacity-40 grayscale"
+              className={`card p-4 text-center ${
+                earned ? "card-hover border-accent/40 bg-accent/5" : "opacity-40 grayscale"
               }`}
             >
               <span className="text-2xl">{badge.icon}</span>
@@ -320,7 +330,7 @@ function DashboardBody({
       <section className="mt-6">
         <p className="text-sm font-semibold">{t("certificates.title")}</p>
         {certificates.length === 0 ? (
-          <div className="mt-3 flex flex-col items-center gap-2 rounded-xl border border-border bg-surface px-6 py-10 text-center">
+          <div className="card mt-3 flex flex-col items-center gap-2 px-6 py-10 text-center">
             <span className="text-2xl">🏆</span>
             <p className="text-sm text-muted">{t("certificates.empty")}</p>
           </div>
@@ -389,7 +399,7 @@ function DashboardBody({
       <section className="mt-6">
         <p className="text-sm font-semibold">{t("portfolio.title")}</p>
         {portfolio.length === 0 ? (
-          <div className="mt-3 flex flex-col items-center gap-2 rounded-xl border border-border bg-surface px-6 py-10 text-center">
+          <div className="card mt-3 flex flex-col items-center gap-2 px-6 py-10 text-center">
             <span className="text-2xl">💼</span>
             <p className="text-sm text-muted">{t("portfolio.empty")}</p>
           </div>
