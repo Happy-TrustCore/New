@@ -12,10 +12,7 @@ export default async function AdminLessonsPage() {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Lessons</h1>
-        <Link
-          href="/admin/lessons/new"
-          className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground hover:opacity-90"
-        >
+        <Link href="/admin/lessons/new" className="btn-primary rounded-lg px-4 py-2 text-sm">
           + New lesson
         </Link>
       </div>
@@ -28,11 +25,11 @@ export default async function AdminLessonsPage() {
               <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
                 {course.title.en}
               </h2>
-              <div className="mt-2 divide-y divide-border rounded-xl border border-border bg-surface">
+              <div className="card mt-2 divide-y divide-border">
                 {courseLessons.map((lesson) => (
                   <div
                     key={lesson.id}
-                    className="flex items-center justify-between gap-3 px-4 py-3 text-sm hover:bg-surface-2"
+                    className="flex items-center justify-between gap-3 px-4 py-3 text-sm transition hover:bg-surface-2"
                   >
                     <Link href={`/admin/lessons/${lesson.id}`} className="min-w-0 flex-1 truncate">
                       {lesson.sort_order}. {lesson.title.en}

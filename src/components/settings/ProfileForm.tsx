@@ -36,7 +36,7 @@ export function ProfileForm({ currentName }: { currentName: string }) {
             setState("idle");
           }}
           required
-          className="mt-1 w-full rounded-lg border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
+          className="mt-1 w-full rounded-lg border border-border bg-surface-2/60 px-3 py-2 outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
         />
       </label>
       <button

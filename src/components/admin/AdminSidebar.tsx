@@ -1,18 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { signOut } from "@/lib/actions/auth";
 
 const NAV_LINKS = [
-  { href: "/admin", label: "Overview" },
-  { href: "/admin/lessons", label: "Lessons" },
-  { href: "/admin/users", label: "Users" },
-  { href: "/admin/marketplace", label: "Marketplace" },
+  { href: "/admin", label: "Overview", icon: "📊" },
+  { href: "/admin/lessons", label: "Lessons", icon: "📚" },
+  { href: "/admin/users", label: "Users", icon: "👤" },
+  { href: "/admin/marketplace", label: "Marketplace", icon: "💼" },
 ] as const;
 
 export function AdminSidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   const sidebarBody = (
     <>
@@ -22,16 +23,22 @@ export function AdminSidebar() {
       </Link>
       <p className="mt-1 text-xs text-muted">Admin panel</p>
       <nav className="mt-6 space-y-1 text-sm">
-        {NAV_LINKS.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={() => setMobileOpen(false)}
-            className="block rounded-lg px-3 py-2 transition hover:bg-surface-2"
-          >
-            {link.label}
-          </Link>
-        ))}
+        {NAV_LINKS.map((link) => {
+          const isActive = link.href === "/admin" ? pathname === "/admin" : pathname.startsWith(link.href);
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-2 rounded-lg px-3 py-2 transition ${
+                isActive ? "bg-accent/10 font-semibold text-accent" : "hover:bg-surface-2"
+              }`}
+            >
+              <span>{link.icon}</span>
+              {link.label}
+            </Link>
+          );
+        })}
       </nav>
       <Link href="/dashboard" className="mt-6 block text-sm text-muted hover:text-foreground">
         &larr; Back to app

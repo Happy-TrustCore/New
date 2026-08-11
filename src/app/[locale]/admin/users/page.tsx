@@ -17,7 +17,7 @@ export default async function AdminUsersPage() {
       <p className="mt-1 text-sm text-muted">
         No payment system is wired up yet — use this to manually grant Pro access.
       </p>
-      <div className="mt-6 overflow-x-auto rounded-xl border border-border bg-surface">
+      <div className="card mt-6 overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-border text-xs uppercase text-muted">
             <tr>

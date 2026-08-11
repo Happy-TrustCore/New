@@ -22,8 +22,15 @@ export default async function SettingsPage({
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-10">
-      <h1 className="text-2xl font-bold">{t("title")}</h1>
-      <p className="mt-1 text-sm text-muted">{user.email}</p>
+      <div className="flex items-center gap-3">
+        <span className="glow-accent flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-surface-2 font-mono text-lg font-semibold text-accent">
+          {(profile?.name ?? user.email ?? "?").charAt(0).toUpperCase()}
+        </span>
+        <div>
+          <h1 className="text-2xl font-bold">{t("title")}</h1>
+          <p className="text-sm text-muted">{user.email}</p>
+        </div>
+      </div>
 
       <div className="mt-8">
         <ProfileForm currentName={profile?.name ?? ""} />

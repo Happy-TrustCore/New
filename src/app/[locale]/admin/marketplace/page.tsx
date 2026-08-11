@@ -24,7 +24,7 @@ export default async function AdminMarketplacePage() {
 
       <form
         action={createRealProject}
-        className="mt-6 grid gap-4 rounded-xl border border-border bg-surface p-6 sm:grid-cols-2"
+        className="card mt-6 grid gap-4 p-6 sm:grid-cols-2"
       >
         <label className="block">
           <span className="text-sm text-muted">Title (English)</span>
@@ -94,7 +94,7 @@ export default async function AdminMarketplacePage() {
             (i) => i.real_project_id === project.id
           );
           return (
-            <div key={project.id} className="rounded-xl border border-border bg-surface p-5">
+            <div key={project.id} className="card p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <span className="pill px-2 py-0.5 text-xs font-mono text-accent">
